@@ -1,0 +1,136 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{amsmath, amsfonts}
+\usepackage{hyperref,bbm, graphicx}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\title{CSCI 1051 Problem Set 2}
+\author{} % TODO: Put your name here
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Submission Instructions}
+
+Please upload your solutions by
+\textbf{5pm Friday January 17, 2025.}
+\begin{itemize}
+\item You are encouraged to discuss ideas
+and work with your classmates. However, you
+\textbf{must acknowledge} your collaborators
+at the top of each solution on which
+you collaborated with others 
+and you \textbf{must write} your solutions
+independently.
+\item Your solutions to theory questions must
+be written legibly, or typeset in LaTeX or markdown.
+If you would like to use LaTeX, you can import the source of this document 
+\href{https://www.rtealwitter.com/deeplearning/psets/pset2.tex}{here}
+to Overleaf.
+\item I recommend that you write your solutions to coding questions in a Jupyter notebook using Google Colab.
+\item You should submit your solutions as a \textbf{single PDF} via the assignment on Gradescope.
+\end{itemize}
+
+\newpage \section*{Problem 1: Visualizing Word Embeddings}
+
+In this problem, we will embed words using a pretrained embedding model. I recommend using the Pytorch \texttt{AutoTokenizer} and \texttt{AutoModel} with the ``bert-base-uncased'' pretrained weights.
+
+\subsection*{Part A: 10D Visualizations}
+
+Embed (at least 8) words of your choice then create a visualization of the first ten embedding dimensions for each word.
+
+\subsection*{Part B: 2D Plots}
+
+Plot the words in the first two embedding dimensions on a 2D plot.
+Do you notice any patterns?
+
+\subsection*{Part C: 2D Plots via PCA}
+
+Use PCA to the embeddings and plot the resulting two principal components on a 2D plot.
+Do you notice any patterns?
+
+\subsection*{Part D: Word Math}
+
+Try adding and subtracting word embeddings from each other, then plot the results in the 2D plots from Part B and Part C, respectively.
+Is the word you create close to what you imagined it would be?
+
+For example, we may expect that
+\begin{align*}
+    \textnormal{king} - \textnormal{man} + \textnormal{woman} \approx \textnormal{queen}.
+\end{align*}
+
+%\input{solutions/solution2_1}
+
+\newpage
+\section*{Problem 2: Visualizing Attention}
+
+\subsection*{Part A: Self-attention Activations}
+
+Consider a pretrained transformer model.
+Select a text input of your choice.
+Plot the self-attention weights at several layers (both early and later) in your transformer model. What patterns do you notice?
+
+\subsection*{Part B: Cross-attention Activations}
+
+Consider a pretrained transformer model for translation.
+Select a text input of your choice and translate it.
+Now feed the original and translated text to a translation model and plot the cross-attention weights at several layers (both early and later). What patterns do you notice?
+
+%\input{solutions/solution2_2}
+
+\newpage
+\section*{Problem 3: Low Rank Adaptation}
+
+In this problem, we will investigate the advantages and disadvantages of low rank adaptation.
+
+\subsection*{Part A: Architectures}
+
+Build a neural network with large linear layers ($\geq$ 1 million parameters).
+In addition, build a similar neural network architecture where each layer $d_\textnormal{in} \times d_\textnormal{out}$ is replaced by two linear layers of dimensions $d_\textnormal{in} \times r$ and $r \times d_\textnormal{out}$ for a small rank $r \approx 100$.
+
+\subsection*{Part B: Comparison}
+
+Train instances of both models on a dataset of your choice.
+Compare the number of parameters in each model and the time it take to train each model.
+Finally, plot the test loss by epoch for the two models.
+
+%\input{solutions/solution2_3}
+
+\newpage
+\section*{Problem 4: Watermarking}
+
+In this problem, we will implement and compare two of the watermarking schemes we discussed in class.
+
+\subsection*{Part A: No Watermarking}
+
+Write a method that takes an input string \texttt{text} and auto-regressively samples \texttt{num\_tokens} from an LLM of your choice.
+
+\subsection*{Part B: Red/Green Watermarking}
+
+Write a method that samples from the red/green watermarking scheme.
+Write a corresponding method that detects whether a text input was likely watermarked with the scheme.
+
+\paragraph{Reminder:} Fix the list of red/green words \textit{once}.
+
+\subsection*{Part C: Exponential Minimum Sampling}
+
+Write a method that samples from the exponential minimum sampling scheme.
+Write a corresponding method that detects whether a text input was likely watermarked with the scheme.
+
+\paragraph{Reminder:} Hash a few of the prior tokens so that you can reproduce the same uniform vector.
+
+\subsection*{Part D: Comparison}
+
+Using the same text prompt, generate an output from each of the three generation methods you implemented above.
+For each output, check the detection costs for both of the detection methods you implemented above.
+
+Repeat the above process with two text prompts; one should be a common phrase and the other should be rare. What do you notice?
+
+%\input{solutions/solution2_4}
+
+
+\end{document}

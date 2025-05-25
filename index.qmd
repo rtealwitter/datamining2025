@@ -1,0 +1,163 @@
+---
+title: "**MATH 166: Data Mining**"
+output:
+  html_document:
+    css: styles.css
+---
+
+<center>
+A course on the mathematical foundations of machine learning.
+</center>
+
+<br>
+
+<div class="row">
+  <div class="col" markdown="1">
+
+  **Instructor**: [R. Teal Witter](https://www.rtealwitter.com/). Please call me Teal.
+  
+  **Class Times**: We meet Tuesdays and Thursdays. The first section is from 2:45 to 4:00pm and the second section is from 4:15 to 5:30pm.
+  
+  **Office Hours**: I will hold office hours TBD.
+  
+  **Participation**: I expect you to engage in class, ask questions, and make connections. To receive credit, please fill out [this](https://forms.gle/zQG3iLAqCDTzDyv98) form after every lecture.
+
+  **Quizzes**:
+  There will be short quizzes at the beginning of our Tues classes. These quizzes will test your understanding of the problem sets and the concepts from the prior week.
+    
+  </div>
+  <div class="col" markdown="1">
+
+  **Problem Sets**: Your primary opportunity to learn the material will be on problem sets. You may work with others to solve the problems, but you must write your solutions by yourself, and explicitly acknowledge any outside help (websites, people, LLMs).
+
+  **Exams**:
+  There will be two midterms: The first is a written exam that covers most of the supervised learning topics. The second is a cumulative oral exam.
+
+  **Project**: You will complete a project on a topic of your choice. You will write a report and give a presentation to the class. The project is due at the end of the semester.  
+  </div>
+</div>
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td>Week</td>
+    <td>Topic</td>
+    <td>Reading</td>
+    <td>Slides</td>
+    <td>Assignments</td>
+  </tr>
+  <tr class="section-header">
+    <td colspan="5" >Linear Algebra and Probability Review</td>
+  </tr>
+  <tr>
+    <td>Tues 8/27 + Thurs 8/29</td>
+    <td>PageRank</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr class="section-header">
+    <td colspan="5" >Supervised Learning</td>
+  </tr>
+  <tr>
+    <td>Tues 9/2 + Thurs 9/4</td>
+    <td>Linear Regression and Optimization</td>
+    <td>[Notes](notes/01_LinearRegression.html)</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 9/9 + Thurs 9/11</td>
+    <td>Linear Regression and Gradient Descent</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 9/16 + Thurs 9/18</td>
+    <td>Support Vector Machines and Optimization</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 9/23 + Thurs 9/25</td>
+    <td>Logistic Regression</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 9/30 + Thurs 10/2</td>
+    <td>Neural Networks</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 10/7 + Thurs 10/9</td>
+    <td>Decision Trees and Boosting</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>~~Tues 10/14~~ + Thurs 10/16</td>
+    <td>Written Exam</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 10/21 + Thurs 10/23</td>
+    <td>K Nearest Neighbors and Kernel Methods</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr class="section-header">
+    <td colspan="5" >Unsupervised Learning</td>
+  </tr>
+  <tr>
+    <td>Tues 10/28 + Thurs 10/30</td>
+    <td>Autoencoders</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 11/4 + Thurs 11/6</td>
+    <td>Principal Component Analysis</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 11/11 + Thurs 11/13</td>
+    <td>Semantic Embeddings</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 11/18 + Thurs 11/20</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 11/25 + ~~Thurs 11/27~~</td>
+    <td>Oral Exam</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 12/2 + Thurs 12/4</td>
+    <td>Interpretability and Active Regression</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+

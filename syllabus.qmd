@@ -1,0 +1,67 @@
+---
+title: "**MATH 166: Syllabus**"
+output:
+  html_document:
+    css: styles.css
+---
+
+**Course Description:**
+Data mining is the process of discovering patterns in large data sets using techniques from mathematics, computer science and statistics with applications ranging from biology and neuroscience to history and economics. The goal of the course is to teach students fundamental data mining techniques that are commonly used in practice. Students will learn advanced data mining techniques (including linear classifiers, clustering, dimension reduction, transductive learning and topic modeling).
+
+**Prerequisites:** I expect familiarity with calculus, linear regression, probability, and Python. In particular, I expect you are comfortable with derivatives, the chain rule, gradients, matrix multiplication, and probability distributions. If this isn't the case, please contact me as soon as possible.
+
+**Structure:** We will meet on Tuesdays and Thursdays. The first section is from 2:45 to 4pm and the second section is from 4:15 to 5:30pm. I will hold my office hours TBD. If you would like to meet outside of these times, please email me.
+
+**Resources**: The primary resource for this class are the typed notes on the homepage. I highly recommend reading them before each class (it should take about 15 minutes). In addition, I will post my preparation for the slides the night before each class.
+
+**Discussion**: Please post all your course related questions on Canvas. If your question reveals your solution to a homework problem, please email me instead.
+
+### **Grading**
+
+Your grade in the class will be based on the number of points $p$ that you earn. You will receive an A if $p \geq 93$, an A- if $93 > p \geq 90$, a B+ if $90 > p \geq 87$, and so on. You may earn points through the following assignments:
+
+- **Participation (10 points):**
+The classes at CMC are intentionally small. Unless you have a reasonable excuse (e.g. sickness, family emergency), I expect you to attend every class. Whether you are able to attend or not, I expect you to fill out the form linked from the home page to receive credit for participation (one point per lecture day that you fill it out). Of course, if you are not able to attend in person, you should read the notes before filling out the form. 
+
+- **Problem Sets (10 Points):**
+Learning requires practice. Your main opportunity to practice the concepts we cover in this class will be on the problem sets. Your grade will be based on turning in solutions to each problem and, so that you engage with the solutions, a self grade of your own work. Because I do not want to incentivize the use of LLMs, I will not grade your solutions for correctness; instead, your problem set grade is based on completion and the accuracy of your own self grade.
+
+- **Quizzes (20 Points):**
+In lieu of grading for correctness on the problem sets, I will give short quizzes at the beginning of our Tuesday classes. These quizzes will be based on the problem sets and will test your understanding of the concepts we cover in class. The quizzes will be short (10-15 minutes) and will be graded for correctness.
+
+- **Written Exam (20 Points):**
+The first midterm will be a written exam. It will cover the material we have covered in class up to that point. The exam will be open book and open notes, but you will not be allowed to use any electronic devices (including your phone). The exam will be graded for correctness.
+
+- **Oral Exam (20 Points):**
+The second midterm will be an oral exam. I will individually ask you questions about the concepts we have covered in class during a 30-minute meeting. The goal is to simultaneously assess your understanding of the material and give you a chance to practice explaining the concepts, as you would in a technical interview. I will provide a list of topics that I will ask about in advance.
+
+- **Project (20 Points):**
+The final project will be a chance for you to apply the concepts we have covered in class to a real-world problem. You will select a topic we cover in class and implement an algorithm we discussed on a data set of your choosing. You will write a report describing your results and what you learned. You will also give a presentation showcasing your results to the class. Except in special circumstances, you will complete your project as an individual. 
+
+- **Extra Credit:**
+This is the first time I am teaching this class, so my typed notes are work in progress and I would love your help improving them! If you find an issue, please email me. I will give extra credit to the first person to find each typo (worth 1/4 point), ambiguous statement (worth 1/2 point), and mistake (worth 1 point)
+
+**Late Policy:**
+I expect all assignments to be turned in on time. If you are unable to turn in an assignment on time, you must email me 24 hours before the assignment is due to request an extension.
+
+### **Honor Code**
+Academic integrity is an important part of your learning experience. You are welcome to use online material and discuss problems with others but you must explicitly acknowledge the outside resources (website, person, or LLM) on the work you submit.
+
+**Large Language Models:** LLMs are a powerful tool. However, while they are very good at producing human-like text, they have no inherent sense of 'correctness'. You may use LLMs (as detailed below) but you are wholly responsible for the material you submit.
+
+You may use LLMs for:
+
+- Implementing short blocks of code that you can easily check.
+
+- Answering simple questions whose answers you can easily verify.
+
+Do not use LLMS for:
+
+- Implementing extensive blocks of code or code that you don't understand.
+
+- Answering complicated questions (like those on the problem sets) that you cannot easily verify. 
+
+Ultimately, the point of the assignments in this class are for you to practice the concepts. If you use an LLM in lieu of practice, then you deny yourself the chance to learn.
+
+### **Academic Accommodations**
+If you have a Letter of Accommodation, please contact me as early in the semester as possible. If you do not have a Letter of Accommodation and you believe you are eligible, please reach out to Accessibility Services at [accessibilityservices@cmc.edu](mailto:accessibilityservices@cmc.edu).

@@ -1,0 +1,25 @@
+project:
+  type: website
+  output-dir: docs
+  resources: CNAME
+
+format:
+  html:
+    theme: [cosmo, custom_theme.scss]
+    css: styles.css
+    toc: false
+    include-in-header: header.html
+    page-layout: full
+
+website:
+  favicon: eve.ico
+  navbar:    
+    css: styles.css
+    title: "Fall 2025"
+    search: false
+    left:
+      - text: "Canvas"
+      - text: "Gradescope"
+      - text: "Syllabus"
+        href: syllabus.html
+      
