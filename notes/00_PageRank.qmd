@@ -1,0 +1,141 @@
+---
+title: "**Review via PageRank**"
+format:
+  html:
+    toc: true
+    math: true
+---
+
+## Math Review
+
+When I first heard about machine *learning*, I imagined a computer that was rewarded every time it gave the right answer. Maybe there were electric carrots and sticks that no one had bothered to tell me about? While I now know as little as I did then about computer hardware, I have learned that machine learning is fundamentally a mathematical process.
+
+Luckily, we've been learning about the very mathematical ideas that make machine learning work for years! We'll review the basics of these concepts and then jump in to linear regression, arguably the foundation of neural networks.
+
+### Derivatives
+
+Imagine a function $\mathcal{L}: \mathbb{R} \to \mathbb{R}$.
+(Instead of the usual $f$, we'll use $\mathcal{L}$ for reasons that will soon become clear.)
+The mapping notation means that $\mathcal{L}$ takes a single real number as input and outputs a single real number.
+In general, mathematicians tell us to be careful about whether we can differentiate a function.
+But, we're computer scientists so we'll risk it for the biscuit.
+
+Let $z \in \mathbb{R}$ be the input to $\mathcal{L}$.
+The derivative of $\mathcal{L}$ with respect to its input $z$ is mathematically denoted by $\frac{\partial}{\partial z}[\mathcal{L}(z)]$.
+
+Formally, the derivative is defined as
+$$
+\frac{\partial}{\partial z}[\mathcal{L}(z)]
+= \lim_{h \to 0} \frac{\mathcal{L}(z + h) - \mathcal{L}(z)}{h}.
+$$
+If we were to plot $\mathcal{L}$, the derivative at a point $z$ would be the slope of the tangent line to the curve at that point.
+
+Here are several examples of functions and their derivatives that you might remember from calculus.
+
+<table style="width: 100%; border-collapse: collapse; text-align: center;">
+  <tr>
+    <td><b>Function: $\mathcal{L}(z)$ </b></td>
+    <td><b>Derivative: $\frac{\partial}{\partial z}[\mathcal{L}(z)]$</b></td>
+  </tr>
+  <tr>
+    <td>$$z^2$$</td>
+    <td>$$2z$$</td>
+  </tr>
+  <tr>
+    <td>$$z^a$$</td>
+    <td>$$a z^{a-1}$$</td>
+  </tr>
+  <tr>
+    <td>$$az + b$$</td>
+    <td>$$a$$</td>
+  </tr>
+  <tr>
+    <td>$$\ln(z)$$</td>
+    <td>$$\frac{1}{z}$$</td>
+  </tr>
+  <tr>
+    <td>$$e^z$$</td>
+    <td>$$e^z$$</td>
+  </tr>
+</table>
+
+### Chain Rule and Product Rule
+
+While working with a simple basic function is easy, we're not always so lucky.
+Modern machine learning chains many many complicated functions together.
+Fortunately, we will think of these operations modularly.
+
+Let $g: \mathbb{R} \to \mathbb{R}$ be another function.
+Consider the composite function $g(\mathcal{L}(z))$.
+
+By the chain rule, the derivative of $g(\mathcal{L}(z))$ with respect to $z$ is
+$$
+\frac{\partial }{\partial z}[g(\mathcal{L}(z))]
+= \frac{\partial g}{\partial z}(\mathcal{L}(z))
+\frac{\partial}{\partial z}[\mathcal{L}(z)].
+$$
+
+Often, we will also multiply functions together.
+The product rule tells us that
+$$
+\frac{\partial }{\partial z}[g(z) \mathcal{L}(z)]
+= g(z) \frac{\partial}{\partial z}[\mathcal{L}(z)]
++ \mathcal{L}(z) \frac{\partial}{\partial z}[g(z)].
+$$
+
+### Gradients
+
+In machine learning, we process high-dimensional data so we are interested in functions with multivariate input.
+Consider $\mathcal{L}: \mathbb{R}^d \to \mathbb{R}$.
+The output of the function is still a real number but the input consists of $d$ real numbers.
+We will use the vector $\mathbf{z} \in \mathbb{R}^d$ to represent all $d$ inputs $z_1, \ldots, z_d$.
+
+Instead of the derivative, we will talk use the partial derivative.
+The partial derivative with respect to $z_i$ is denoted by $\frac{\partial}{\partial z_i}[\mathcal{L}(\mathbf{z})]$.
+In effect, the partial derivative tells us how $\mathcal{L}$ changes when we change $z_i$, while keeping all other inputs fixed.
+
+The gradient stores all the partial derivatives in a vector.
+The $i$th entry of this vector is given by the partial derivative of $\mathcal{L}$ with respect to $z_i$.
+In mathematical notation,
+$$
+\nabla_\mathbf{z} \mathcal{L} = \left[\begin{smallmatrix} \frac{\partial}{\partial z_1}[\mathcal{L}(\mathbf{z})] \\ \vdots \\ \frac{\partial}{\partial z_d}[\mathcal{L}(\mathbf{z})] \\ \end{smallmatrix}\right]
+$$
+
+Just like the derivative in one dimension, the gradient contains information about the slope of $\mathcal{L}$ with respect to each of the $d$ dimensions in its input.
+
+### Vector and Matrix Multiplication
+
+Vector and matrix multiplication lives at the heart of deep learning.
+In fact, deep learning really started to take off when researchers realized that the Graphical Processing Unit (GPU) could be used to perform gradient updates in addition to the matrix multiplication it was designed to do for gaming.
+
+Consider two vectors $\mathbf{u} \in \mathbb{R}^d$ and $\mathbf{v} \in \mathbb{R}^d$.
+We will use $\mathbf{u} \cdot \mathbf{v} = \sum_{i=1}^d u_i v_i$ to denote the inner product of $\mathbf{u}$ and $\mathbf{v}$.
+The $\mathcal{\ell}_2$-norm of $v$ is given by $\|\mathbf{v}\|_2 = \sqrt{\mathbf{u} \cdot \mathbf{u}}$.
+
+Consider two matrices: $\mathbf{A} \in \mathbb{R}^{d \times m}$ and $\mathbf{B} \in \mathbb{R}^{m \times n}$ where $d \neq n$.
+We can only multiply two matrices when their *inner* dimension agrees.
+Because the number of columns in $\mathbf{A}$ is the same as the number of rows in $\mathbf{B}$, we can compute $\mathbf{AB}$.
+However, because the number of columns in $\mathbf{B}$ is not the same as the number of rows in $\mathbf{A}$, the product $\mathbf{BA}$ is not defined.
+
+When we *can* multiply two matrices, the $(i,j)$ entry in $\mathbf{AB}$ is given by the inner product between the $i$th row of $\mathbf{A}$ and the $j$th column of $\mathbf{B}$.
+The resulting dimensions of the matrix product will be the number of rows in $\mathbf{A}$ by the number of columns in $\mathbf{B}$.
+
+### Inverse Matrices
+
+If we have a scalar equation $ax = b$, we can simply solve for $x$ by dividing both sides by $a$.
+In effect, we are applying the inverse of $a$ to $a$ i.e., $\frac1{a} a =1$.
+The same principle applies to matrices.
+The $n \times n$ identity matrix generalizes the scalar identity $1$.
+This identity matrix is denoted by $\mathbf{I}_{n \times n} \in \mathbb{R}^{n \times n}$: the on-diagonal entries $(i,i)$ are 1 while the off-diagonal entries $(i,j)$ for $i\neq j$ are 0.
+
+Consider the matrix equation $\mathbf{Ax} = \mathbf{b}$ where $\mathbf{A} \in \mathbb{R}^{d \times d}$, $\mathbf{x} \in \mathbb{R}^d$, and $\mathbf{b} \in \mathbb{R}^d$.
+(Notice that the inner dimensions of $\mathbf{A}$ and $\mathbf{x}$ agree so their multiplication is well-defined, and the resulting vector is the same dimension as $\mathbf{b}$.)
+
+If we want to solve for $\mathbf{x}$, we can use the matrix inverse.
+For a matrix $\mathbf{A}$, we use $\mathbf{A}^{-1}$ to denote its inverse.
+The inverse is defined so that $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}$ where $\mathbf{I}_{n \times n}$ is the identity matrix.
+Then, we can solve for $\mathbf{x}$ by multiplying both sides of the equation by $\mathbf{A}^{-1}$.
+$$
+\mathbf{A}^{-1} \mathbf{Ax} = \mathbf{A}^{-1} \mathbf{b}
+$$
+Since $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}$, we have that $\mathbf{I}_{n \times n} \mathbf{x} = \mathbf{x} = \mathbf{A}^{-1} \mathbf{b}$.

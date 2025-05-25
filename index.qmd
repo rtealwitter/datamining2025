@@ -51,7 +51,7 @@ A course on the mathematical foundations of machine learning.
   <tr>
     <td>Tues 8/27 + Thurs 8/29</td>
     <td>PageRank</td>
-    <td></td>
+    <td>[Notes](notes/00_PageRank.qmd)</td>
     <td></td>
     <td></td>
   </tr>
