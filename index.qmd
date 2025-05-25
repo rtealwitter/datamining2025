@@ -68,7 +68,7 @@ A course on the mathematical foundations of machine learning.
   <tr>
     <td>Tues 9/9 + Thurs 9/11</td>
     <td>Linear Regression and Gradient Descent</td>
-    <td></td>
+    <td>[Notes](notes/02_LinearRegressionPlus.qmd)</td>
     <td></td>
     <td></td>
   </tr>

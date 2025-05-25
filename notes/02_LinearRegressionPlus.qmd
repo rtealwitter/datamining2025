@@ -1,0 +1,151 @@
+---
+title: "**Linear Regression and Optimization**"
+format:
+  html:
+    toc: true
+    math: true
+---
+
+Recall set up of supervised learning problem, empirical risk minimization, and the three components: model class, loss, and optimizer.
+Last time, we explored linear regression and how to exactly fit a linear model to data using the mean squared error loss.
+There were two issues: computing the exact solution could be computationally expensive, and the data may not have a linear relationship with the labels.
+
+## Gradient Descent
+
+Intuition, instead of just going for the exact solution, we can use an iterative method to find a good approximation by taking steps in the right direction.
+
+Put an image here
+
+We compute the direction of the steepest ascent by computing the gradient of the loss function.
+Intuitively, this gives how the loss function changes as we change the model parameters.
+Then we move away from steepest ascent a small step size $\eta$.
+
+For linear models, this is computed more quickly as $\mathbf{w} \leftarrow \mathbf{w} - \eta \nabla_\mathbf{w} \mathcal{L}(\mathbf{w})$.
+Recall the gradient of the mean squared error loss is given by $\nabla_\mathbf{w} \mathcal{L}(\mathbf{w}) = \frac2{n} \mathbf{X}^\top (\mathbf{X w - y})$.
+Computing this take stime $O(nd)$, which is much faster than the $O(nd^2 + d^3)$ time required to compute the exact solution.
+
+This could still be large when we have a large number of data points $n$ and/or a large number of features $d$.
+We can address this by using *stochastic gradient descent*.
+
+### Stochastic Gradient Descent
+
+The idea of stochastic gradient descent is to use a small random subset of the data to compute the gradient.
+This is often called a *batch*.
+Same idea as before, but now the loss is given by
+$$
+\mathcal{L}_S(\mathbf{w}) = \frac1{|S|} \sum_{i \in S} (f(\mathbf{x}^{(i)}) - y^{(i)})^2,
+$$
+where $S$ is a random subset of the data.
+Then we can compute the gradient as
+$$
+\nabla_\mathbf{w} \mathcal{L}_S(\mathbf{w}) = \frac2{|S|} \mathbf{X}_S^\top (\mathbf{X}_S \mathbf{w} - \mathbf{y}_S),
+$$
+where $\mathbf{X}_S$ is the data matrix for the subset $S$ and $\mathbf{y}_S$ is the target vector for the subset $S$.
+This takes time $O(|S|d)$, which can be much faster than the $O(nd)$ time required to compute the gradient for the full dataset.
+
+### Adaptive Step Sizes
+The step size $\eta$ is a hyperparameter that we need to choose.
+If $\eta$ is too small, then the algorithm will take a long time to converge because it will take small steps towards the minimum.
+If $\eta$ is too large, then the algorithm may overshoot the minimum and diverge by repeatedly moving int he right direction but by too much.
+
+(Put an image here)
+
+Several strategies exist for choosing the step size:
+
+- When searching manually, we can exponentially increase and decrease the step size i.e., multiply by a factor of $2$ or $1/2$. If the loss consistently decreases, then we can try increasing the step size; if the loss is unstable, then we can try decreasing the step size.
+
+- Learning rate schedules, where we start with a large step size and then decrease it over time. This is often done by multiplying the step size by a factor less than $1$ after each iteration.
+
+- Adaptive learning rates, where we adjust the step size based on the gradient. For example, if the gradient is large, then we can decrease the step size to avoid overshooting; if the gradient is small, then we can increase the step size to speed up convergence.
+
+### Momentum
+The convergence of gradient descent is a complex topic, but we can give some intuition.
+The idea is that the algorithm will converge to a local minimum of the loss function, but things can go wrong even if we have the right step size.
+The gradient may not point in the direction of the minimum, especially if the loss function is oblong.
+Here, we take many steps but many of the directions cancel out, and we end up not moving very far.
+
+(Put an image here)
+
+Our solution is to keep track of the direction we have been moving in and use that to inform our next step.
+We can do this by keeping a running average of the gradients, which is called *momentum*.
+We can think of momentum as a ball rolling down a hill, even when the ball is pushed left or right, it will continue to roll downwards.
+
+Combining the ideas of adaptive step sizes and momentum, we can use the following popular update rule: Adam, which combines both methods in the following way:
+$$
+\begin{align}
+\mathbf{m}_t &= \beta_1 \mathbf{m}_{t-1} + (1 - \beta_1) \nabla_\mathbf{w} \mathcal{L}_S(\mathbf{w}_{t-1}) \\
+\mathbf{v}_t &= \beta_2 \mathbf{v}_{t-1} + (1 - \beta_2) \nabla_\mathbf{w} \mathcal{L}_S(\mathbf{w}_{t-1})^2 \\
+\mathbf{w}_t &= \mathbf{w}_{t-1} - \eta \frac{\mathbf{m}_t}{\sqrt{\mathbf{v}_t} + \epsilon},
+\end{align}
+$$
+where $\beta_1$ and $\beta_2$ are hyperparameters that control the momentum and adaptive step size, respectively, and $\epsilon$ is a small constant to avoid division by zero.
+
+## Non-Linear Models
+We have now seen how to fit linear models to data using the mean squared error loss and gradient descent.
+However, we have not addressed the issue of model class misspecification.
+We have assumed that the data has a linear relationship with the labels, but what happens when this is not true?
+
+(Put an image here, of linear model as a neuron, and then multiple neurons in a network)
+
+We can repeatedly combine linear models to create more complex models.
+We can do this by using a *neural network*, which is a collection of linear models (called *neurons*) that are combined together.
+The idea is the same as before: we take a linear combination of the inputs, just now, we are repeatedly combining linear models to create a more complex model.
+
+We can think of a fully connected layer (all neurons in one layer are connected to all neurons in the next layer) as matrix multiplication, where the matrix $\mathbf{W} \in \mathbb{R}^{d_\text{in} \times d_\text{out}}$ is the weight matrix and the input $\mathbf{x} \in \mathbb{R}^{d_\text{in}}$ is the input vector.
+Then multiplying several weight matrices together gives
+$$
+f(\mathbf{x}) = \mathbf{W}_k \mathbf{W}_{k-1} \cdots \mathbf{W}_1 \mathbf{x},
+$$
+where $k$ is the number of layers in the neural network.
+But, there's an issue with this approach: the output is still a linear combination of the inputs, which means that the model is still linear.
+Put differently, we could just multiply all the weight matrices together to get a single weight matrix $\mathbf{W} = \mathbf{W}_k \mathbf{W}_{k-1} \cdots \mathbf{W}_1$ before ever seeing the input $\mathbf{x}$.
+Our solution is to add a *non-linear activation function* after each layer.
+Non-linear activation functions include:
+
+- **ReLU (Rectified Linear Unit):** $f(x) = \max(0, x)$, which is a piecewise linear function that is $0$ for negative inputs and linear for positive inputs.
+
+- **Sigmoid:** $f(x) = \frac{1}{1 + e^{-x}}$, which is a smooth function that maps inputs to the range $(0, 1)$.
+
+- **Tanh (Hyperbolic Tangent):** $f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$, which is a smooth function that maps inputs to the range $(-1, 1)$.
+
+Let $\sigma$ be one of these non-linear activation functions.
+Then we can write the output of the neural network as
+$$
+f(\mathbf{x}) = \sigma(\mathbf{W}_k \sigma(\mathbf{W}_{k-1} \cdots \sigma(\mathbf{W}_1 \mathbf{x}))).
+$$
+
+Which is now doing something non-linear and interesting!
+This is so interesting, in fact, that we don't really understand mathematically what is going on.
+
+But our gradient descent approach for linear regression still works:
+
+- **Model Class:** The model class is now the set of neural networks with a given architecture (number of layers, number of neurons per layer, and activation function).
+
+- **Loss:** The loss function is still the mean squared error loss, which measures how well the model fits the data.
+
+- **Optimizer:** The optimizer is still gradient descent, which computes the gradient of the loss function with respect to the model parameters in each layer and updates the parameters in the direction of the negative gradient.
+
+### Complexity versus Generalization
+
+If neural network models are so powerful, why not just use a neural network for every problem?
+My personal opinion is that neural networks are far less interesting to study because they're so complex, but there's a deeper reason as well.
+Neural networks are so powerful that they can fit any data, even random noise.
+This is a problem because we want our model to generalize to new data, not just perfectly fit the training data.
+This is known as *overfitting*, and it occurs when the model is too complex for the data.
+
+(Put image here showing overfitting with linear model and neural network)
+
+When we believe our data comes from a simpler generating process, it makes sense to use a simpler model.
+Even when that simpler generating process is not a linear model, we can attempt to hack the process through *regularization*.
+Regularization is a technique that adds a penalty to the loss function to discourage the model from fitting the training data too closely.
+The idea is that we can keep the model "simple" by penalizing large weights, which would otherwise allow the model to achieve large changes in the output for small changes in the input.
+
+(Put image here showing fitting quadratic function with linear model and neural network, and regularized neural network)
+
+## Going Forward
+
+There is a whole deep learning course dedicated to neural networks, which covers different types of layers, activation functions, and methods of cleverly applying these approaches to solve different problems, particularly in generative AI.
+For our purposes, we will focus on the mathematical foundations of machine learning, such as what to do in different supervised learning settings, how to optimize different types of models, and the interesting tensions between different approaches.
+
+We have so far been focused in the regression setting, where the labels are real numbers.
+The question we will consider next is how to handle the case where the labels are categorical, e.g., we want to classify the data into two categories such as "cat" and "dog" or "spam" and "not spam".
