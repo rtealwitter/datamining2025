@@ -67,8 +67,8 @@ A course on the mathematical foundations of machine learning.
   </tr>
   <tr>
     <td>Tues 9/9 + Thurs 9/11</td>
-    <td>Linear Regression and Gradient Descent</td>
-    <td>[Notes](notes/02_LinearRegressionPlus.qmd)</td>
+    <td>Gradient Descent and Non-linear Regression</td>
+    <td>[Notes](notes/02_NonlinearRegression.qmd)</td>
     <td></td>
     <td></td>
   </tr>
@@ -88,14 +88,14 @@ A course on the mathematical foundations of machine learning.
   </tr>
   <tr>
     <td>Tues 9/30 + Thurs 10/2</td>
-    <td>Neural Networks</td>
+    <td>Decision Trees and Boosting</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Tues 10/7 + Thurs 10/9</td>
-    <td>Decision Trees and Boosting</td>
+    <td>K Nearest Neighbors and Kernel Methods</td>
     <td></td>
     <td></td>
     <td></td>
@@ -107,40 +107,40 @@ A course on the mathematical foundations of machine learning.
     <td></td>
     <td></td>
   </tr>
-  <tr>
-    <td>Tues 10/21 + Thurs 10/23</td>
-    <td>K Nearest Neighbors and Kernel Methods</td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
   <tr class="section-header">
     <td colspan="5" >Unsupervised Learning</td>
   </tr>
   <tr>
-    <td>Tues 10/28 + Thurs 10/30</td>
+    <td>Tues 10/21 + Thurs 10/23</td>
     <td>Autoencoders</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 11/4 + Thurs 11/6</td>
+    <td>Tues 10/28 + Thurs 10/30</td>
     <td>Principal Component Analysis</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 11/11 + Thurs 11/13</td>
+    <td>Tues 11/4 + Thurs 11/6</td>
     <td>Semantic Embeddings</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 11/18 + Thurs 11/20</td>
+    <td>Tues 11/11 + Thurs 11/13</td>
+    <td>Reinforcement Learning and Policy Gradients</td>
     <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Tues 11/18 + Thurs 11/20</td>
+    <td>Reinforcement Learning and Q-Learning</td>
     <td></td>
     <td></td>
     <td></td>
