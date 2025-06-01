@@ -18,12 +18,12 @@ A course on the mathematical foundations of machine learning.
   
   **Class Times**: We meet Tuesdays and Thursdays. The first section is from 2:45 to 4:00pm and the second section is from 4:15 to 5:30pm.
   
-  **Office Hours**: I will hold office hours TBD.
+  **Office Hours**: Before I schedule office hours, please fill out this [when2meet](https://www.when2meet.com/?30832039-a1d3K) so we can find times that work for all of us.
   
   **Participation**: I expect you to engage in class, ask questions, and make connections. To receive credit, please fill out [this](https://forms.gle/zQG3iLAqCDTzDyv98) form after every lecture.
 
   **Quizzes**:
-  There will be short quizzes at the beginning of our Tues classes. These quizzes will test your understanding of the problem sets and the concepts from the prior week.
+  There will be short quizzes at the beginning of our Tuesday classes. These quizzes will test your understanding of the problem sets and the concepts from the prior week.
     
   </div>
   <div class="col" markdown="1">
@@ -31,7 +31,7 @@ A course on the mathematical foundations of machine learning.
   **Problem Sets**: Your primary opportunity to learn the material will be on problem sets. You may work with others to solve the problems, but you must write your solutions by yourself, and explicitly acknowledge any outside help (websites, people, LLMs).
 
   **Exams**:
-  There will be two midterms: The first is a written exam that covers most of the supervised learning topics. The second is a cumulative oral exam.
+  There will be two midterms: The first is a written exam that covers most of the supervised learning topics. The second is a cumulative verbal exam.
 
   **Project**: You will complete a project on a topic of your choice. You will write a report and give a presentation to the class. The project is due at the end of the semester.  
   </div>
@@ -40,124 +40,140 @@ A course on the mathematical foundations of machine learning.
 <table style="width: 100%; border-collapse: collapse;">
   <tr>
     <td>Week</td>
-    <td>Topic</td>
+    <td>Tuesday</td>
+    <td>Thursday</td>
     <td>Reading</td>
     <td>Slides</td>
     <td>Assignments</td>
   </tr>
+
   <tr class="section-header">
-    <td colspan="5" >Linear Algebra and Probability Review</td>
+    <td colspan="6">Review</td>
   </tr>
   <tr>
-    <td>Tues 8/27 + Thurs 8/29</td>
+    <td>Week 1 (8/27 and 8/29)</td>
+    <td>Probability and Linear Algebra</td>
     <td>PageRank</td>
-    <td>[Notes](notes/00_PageRank.qmd)</td>
+    <td><a href="notes/00_PageRank.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
+
   <tr class="section-header">
-    <td colspan="5" >Supervised Learning</td>
+    <td colspan="6">Supervised Learning</td>
   </tr>
   <tr>
-    <td>Tues 9/2 + Thurs 9/4</td>
-    <td>Linear Regression and Optimization</td>
-    <td>[Notes](notes/01_LinearRegression.html)</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Tues 9/9 + Thurs 9/11</td>
-    <td>Gradient Descent and Non-linear Regression</td>
-    <td>[Notes](notes/02_NonlinearRegression.qmd)</td>
+    <td>Week 2 (9/2 and 9/4)</td>
+    <td colspan="2">Linear Regression and Optimization</td>
+    <td><a href="notes/01_LinearRegression.html">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 9/16 + Thurs 9/18</td>
-    <td>Support Vector Machines and Optimization</td>
-    <td></td>
+    <td>Week 3 (9/9 and 9/11)</td>
+    <td colspan="2">Gradient Descent and Non-linear Regression</td>
+    <td><a href="notes/02_NonlinearRegression.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 9/23 + Thurs 9/25</td>
-    <td>Logistic Regression</td>
+    <td>Week 4 (9/16 and 9/18)</td>
+    <td colspan="2">Support Vector Machines and Optimization</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 9/30 + Thurs 10/2</td>
-    <td>Decision Trees and Boosting</td>
+    <td>Week 5 (9/23 and 9/25)</td>
+    <td colspan="2">Logistic Regression</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 10/7 + Thurs 10/9</td>
-    <td>K Nearest Neighbors and Kernel Methods</td>
+    <td>Week 6 (9/30 and 10/2)</td>
+    <td colspan="2">Decision Trees and Boosting</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>~~Tues 10/14~~ + Thurs 10/16</td>
-    <td>Written Exam</td>
+    <td>Week 7 (10/7 and 10/9)</td>
+    <td colspan="2">K Nearest Neighbors and Kernel Methods</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
+  <tr>
+    <td>Week 8 (10/14 and 10/16)</td>
+    <td><i>Fall Break (<s>Class<s>)<i></td>
+    <td><i>Written Exam<i></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
   <tr class="section-header">
-    <td colspan="5" >Unsupervised Learning</td>
+    <td colspan="6">Beyond Supervised Learning</td>
   </tr>
   <tr>
-    <td>Tues 10/21 + Thurs 10/23</td>
-    <td>Autoencoders</td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Tues 10/28 + Thurs 10/30</td>
-    <td>Principal Component Analysis</td>
+    <td>Week 9 (10/21 and 10/23)</td>
+    <td colspan="2">Autoencoders</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 11/4 + Thurs 11/6</td>
-    <td>Semantic Embeddings</td>
+    <td>Week 10 (10/28 and 10/30)</td>
+    <td colspan="2">Principal Component Analysis</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 11/11 + Thurs 11/13</td>
-    <td>Reinforcement Learning and Policy Gradients</td>
+    <td>Week 11 (11/4 and 11/6)</td>
+    <td colspan="2">Semantic Embeddings</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 11/18 + Thurs 11/20</td>
-    <td>Reinforcement Learning and Q-Learning</td>
+    <td>Week 12 (11/11 and 11/13)</td>
+    <td colspan="2">Reinforcement Learning</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 11/25 + ~~Thurs 11/27~~</td>
-    <td>Oral Exam</td>
+    <td>Week 13 (11/18 and 11/20)</td>
+    <td>Interpretability</td>
+    <td>Active Regression</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td>Tues 12/2 + Thurs 12/4</td>
-    <td>Interpretability and Active Regression</td>
+    <td>Week 14 (11/25 and 11/27)</td>
+    <td><i>Verbal Exam<i></td>
+    <td><i>Thanksgiving (<s>Class<s>)<i></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Week 15 (12/2 and 12/4)</td>
+    <td><i>Project Preparation<i></td>
+    <td><i>NeurIPS (<s>Class<s>)<i></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Week 16 (12/9 and 12/11)</td>
+    <td><i>Sec. 2 Presents 7-10pm<i></td>
+    <td><i>Sec 1. Presents 2-5pm<i></td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
 </table>
-

@@ -32,8 +32,8 @@ In lieu of grading for correctness on the problem sets, I will give short quizze
 - **Written Exam (20 Points):**
 The first midterm will be a written exam. It will cover the material we have covered in class up to that point. The exam will be open book and open notes, but you will not be allowed to use any electronic devices (including your phone). The exam will be graded for correctness.
 
-- **Oral Exam (20 Points):**
-The second midterm will be an oral exam. I will individually ask you questions about the concepts we have covered in class during a 30-minute meeting. The goal is to simultaneously assess your understanding of the material and give you a chance to practice explaining the concepts, as you would in a technical interview. I will provide a list of topics that I will ask about in advance.
+- **Verbal Exam (20 Points):**
+The second midterm will be a verbal exam. I will individually ask you questions about the concepts we have covered in class during a 30-minute meeting. The goal is to simultaneously assess your understanding of the material and give you a chance to practice explaining the concepts, as you would in a technical interview. I will provide a list of topics that I will ask about in advance.
 
 - **Project (20 Points):**
 The final project will be a chance for you to apply the concepts we have covered in class to a real-world problem. You will select a topic we cover in class and implement an algorithm we discussed on a data set of your choosing. You will write a report describing your results and what you learned. You will also give a presentation showcasing your results to the class. Except in special circumstances, you will complete your project as an individual. 
