@@ -162,16 +162,16 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-supervised-learning-problem" id="toc-the-supervised-learning-problem" class="nav-link active" data-scroll-target="#the-supervised-learning-problem">The Supervised Learning Problem</a></li>
+  <li><a href="#supervised-learning" id="toc-supervised-learning" class="nav-link active" data-scroll-target="#supervised-learning">Supervised Learning</a></li>
   <li><a href="#univariate-linear-regression" id="toc-univariate-linear-regression" class="nav-link" data-scroll-target="#univariate-linear-regression">Univariate Linear Regression</a>
   <ul class="collapse">
-  <li><a href="#linear-models" id="toc-linear-models" class="nav-link" data-scroll-target="#linear-models">Linear Models</a></li>
+  <li><a href="#linear-functions" id="toc-linear-functions" class="nav-link" data-scroll-target="#linear-functions">Linear functions</a></li>
   <li><a href="#mean-squared-error-loss" id="toc-mean-squared-error-loss" class="nav-link" data-scroll-target="#mean-squared-error-loss">Mean Squared Error Loss</a></li>
   <li><a href="#exact-optimization" id="toc-exact-optimization" class="nav-link" data-scroll-target="#exact-optimization">Exact Optimization</a></li>
   </ul></li>
   <li><a href="#multivariate-linear-regression" id="toc-multivariate-linear-regression" class="nav-link" data-scroll-target="#multivariate-linear-regression">Multivariate Linear Regression</a>
   <ul class="collapse">
-  <li><a href="#linear-model" id="toc-linear-model" class="nav-link" data-scroll-target="#linear-model">Linear Model</a></li>
+  <li><a href="#linear-function" id="toc-linear-function" class="nav-link" data-scroll-target="#linear-function">Linear function</a></li>
   <li><a href="#mean-squared-error" id="toc-mean-squared-error" class="nav-link" data-scroll-target="#mean-squared-error">Mean Squared Error</a></li>
   <li><a href="#exact-optimization-1" id="toc-exact-optimization-1" class="nav-link" data-scroll-target="#exact-optimization-1">Exact Optimization</a></li>
   </ul></li>
@@ -202,38 +202,40 @@ window.Quarto = {
 </header>
 
 
-<section id="the-supervised-learning-problem" class="level2">
-<h2 class="anchored" data-anchor-id="the-supervised-learning-problem">The Supervised Learning Problem</h2>
-<p>Supervised learning is perhaps the most natural setting for machine learning. In this setting, we are given labeled data, and our goal is to train a model to approximately match the labels. The supervised learning problem is versatile and powerful, some examples include:</p>
+<section id="supervised-learning" class="level2">
+<h2 class="anchored" data-anchor-id="supervised-learning">Supervised Learning</h2>
+<p>Machine learning is incredibly popular. Seen extensive progress in the past several decades, and especially recently with the advent of generative AI.</p>
+<p>There are many problems that fall under the umbrella of machine learning:</p>
 <ul>
 <li><p>Predicting temperature based on present weather conditions,</p></li>
-<li><p>Identifying the type of animal in an image, and</p></li>
+<li><p>Identifying whether an image contains a cat or dog, and</p></li>
 <li><p>Generating the next word in a sentence.</p></li>
 </ul>
-<p>We can encompass all of these settings and more with the following mathematical formulation: Concretely, we are given <span class="math inline">\(n\)</span> data points <span class="math inline">\(\mathbf{x}^{(1)}, \ldots, \mathbf{x}^{(n)} \in \mathbb{R}^d\)</span>, each with <span class="math inline">\(d\)</span> dimensions, and associated labels <span class="math inline">\(y^{(1)}, y^{(2)}, \ldots, y^{(n)} \in \mathbb{R}\)</span>. Our goal is to learn a model <span class="math inline">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> so that <span class="math inline">\(f(\mathbf{x}^{(i)}) \approx y^{(i)}\)</span> for all data points <span class="math inline">\(i \in \{1,2,\ldots,n\}\)</span>.</p>
-<p>Our general approach to solving supervised learning problems will be to use <em>empirical risk minimization</em>, which gives a flexible scaffolding that encompasses many of the topics we’ll discuss in this course. Given a model class (e.g., linear models or neural networks), the idea is to select the model that most closely explains the data. In particular, there are three components to empirical risk minimization:</p>
+<p>This course is about how we go about solving these problems. The first half of the course will cover <em>supervised learning</em>, where we are given labeled data, and our goal is to train a function to approximately match the labels.</p>
+<p>Concretely, we are given <span class="math inline">\(n\)</span> data points <span class="math inline">\(\mathbf{x}^{(1)}, \ldots, \mathbf{x}^{(n)} \in \mathbb{R}^d\)</span>, each with <span class="math inline">\(d\)</span> dimensions, and associated labels <span class="math inline">\(y^{(1)}, y^{(2)}, \ldots, y^{(n)} \in \mathbb{R}\)</span>. Our goal is to learn a function <span class="math inline">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> so that <span class="math inline">\(f(\mathbf{x}^{(i)}) \approx y^{(i)}\)</span> for all data points <span class="math inline">\(i \in \{1,2,\ldots,n\}\)</span>.</p>
+<p>Our general approach to solving supervised learning problems will be to use <em>empirical risk minimization</em>, which gives a flexible scaffolding that encompasses many of the topics we’ll discuss in this course. Given a function class (e.g., linear functions or neural networks), the idea is to select the function that most closely explains the data. In particular, there are three components to empirical risk minimization:</p>
 <ul>
-<li><p><strong>Model Class:</strong> The model class <span class="math inline">\(\mathcal{F}\)</span> from which we will select the model <span class="math inline">\(f\)</span> that most closely fits the observed data.</p></li>
+<li><p><strong>Function Class:</strong> The function class <span class="math inline">\(\mathcal{F}\)</span> from which we will select the function <span class="math inline">\(f\)</span> that most closely fits the observed data.</p></li>
 <li><p><strong>Loss:</strong> The loss function that measures how well a function <span class="math inline">\(f\)</span> fits the observed data. (Without loss of generality, we will assume that lower is better.)</p></li>
-<li><p><strong>Optimizer:</strong> The method of selecting the model from the model class.</p></li>
+<li><p><strong>Optimizer:</strong> The method of selecting the function from the function class.</p></li>
 </ul>
-<p>Empirical risk minimization is an abstract idea. Luckily, we will revisit it again and again. Our first example will be <em>linear regression</em>, where the model class is the set of linear functions and the loss is the squared difference between the true label and our prediction. Let’s dive in!</p>
+<p>Empirical risk minimization is an abstract idea. Luckily, we will revisit it again and again. Our first example will be <em>linear regression</em>, where the function class is the set of linear functions and the loss is the squared difference between the true label and our prediction. Let’s dive in!</p>
 </section>
 <section id="univariate-linear-regression" class="level2">
 <h2 class="anchored" data-anchor-id="univariate-linear-regression">Univariate Linear Regression</h2>
 <p>Linear regression is a simple but powerful tool that we will use to understand the basics of machine learning. For simplicity, we will first consider the <em>univariate</em> case where the inputs are all one-dimensional i.e., <span class="math inline">\(x^{(1)}, \ldots, x^{(n)} \in \mathbb{R}\)</span>.</p>
-<section id="linear-models" class="level3">
-<h3 class="anchored" data-anchor-id="linear-models">Linear Models</h3>
-<p>As its name suggests, linear regression uses a linear model to process the input into an approximation of the output. Let <span class="math inline">\(w \in \mathbb{R}\)</span> be a weight parameter. The linear model (for one-dimensional inputs) is given by <span class="math inline">\(f(x) = wx\)</span>.</p>
-<p>Unlike many machine learning models, we can visualize the linear model since it is given by a line. In the plot, we have the <span class="math inline">\(n=10\)</span> data points plotted in two dimensions. There is one linear model <span class="math inline">\(f(x) = 2x\)</span> that closely approximates the data and another linear model <span class="math inline">\(f(x)=\frac12 x\)</span> that poorly approximates the data.</p>
+<section id="linear-functions" class="level3">
+<h3 class="anchored" data-anchor-id="linear-functions">Linear functions</h3>
+<p>As its name suggests, linear regression uses a linear function to process the input into an approximation of the output. Let <span class="math inline">\(w \in \mathbb{R}\)</span> be a weight parameter. The linear function (for one-dimensional inputs) is given by <span class="math inline">\(f(x) = wx\)</span>.</p>
+<p>Unlike many machine learning functions, we can visualize the linear function since it is given by a line. In the plot, we have the <span class="math inline">\(n=10\)</span> data points plotted in two dimensions. There is one linear function <span class="math inline">\(f(x) = 2x\)</span> that closely approximates the data and another linear function <span class="math inline">\(f(x)=\frac12 x\)</span> that poorly approximates the data.</p>
 <center>
 <img src="images/regression_1d.pdf" width="700">
 </center>
-<p>Our goal is to learn how to find a linear model that fits the data well. Before we can do this, though, we will need to define what it means for a model to “fit the data well”.</p>
+<p>Our goal is to learn how to find a linear function that fits the data well. Before we can do this, though, we will need to define what it means for a function to “fit the data well”.</p>
 </section>
 <section id="mean-squared-error-loss" class="level3">
 <h3 class="anchored" data-anchor-id="mean-squared-error-loss">Mean Squared Error Loss</h3>
-<p>Our goal for the loss function is to measure how closely the data fits the prediction made by our model. Intuitively, we should take the difference between the prediction and the true outcome <span class="math inline">\(f(x^{(i)})-y^{(i)}\)</span>.</p>
+<p>Our goal for the loss function is to measure how closely the data fits the prediction made by our function. Intuitively, we should take the difference between the prediction and the true outcome <span class="math inline">\(f(x^{(i)})-y^{(i)}\)</span>.</p>
 <p>The issue with this approach is that <span class="math inline">\(f(x^{(i)})-y^{(i)}\)</span> can be small (negative) even when <span class="math inline">\(f(x^{(i)}) \neq y^{(i)}\)</span>. A natural fix is to take the absolute value <span class="math inline">\(|f(x^{(i)}) - y^{(i)}|\)</span>. The benefit of the absolute value is that the loss is <span class="math inline">\(0\)</span> if and only if <span class="math inline">\(f(x^{(i)}) = y^{(i)}\)</span>. However, the absolute value function is not differentiable, which is a property we’ll need for optimization. Instead, we use the squared loss:</p>
 <p><span class="math inline">\(\mathcal{L}(w) = \frac1{n} \sum_{i=1}^n (f(x^{(i)}) - y^{(i)})^2.\)</span></p>
 <p>Here, we use the mean squared error loss, which is the average squared difference between the prediction and the true output over the dataset. Unlike the absolute value function, the squared function is differentiable everywhere. In addition, the squared error disproportionately penalizes predictions that are far from the true labels, a property that may be desirable when we want <em>all</em> of our predictions to be reasonably accurate.</p>
@@ -244,7 +246,7 @@ window.Quarto = {
 </section>
 <section id="exact-optimization" class="level3">
 <h3 class="anchored" data-anchor-id="exact-optimization">Exact Optimization</h3>
-<p>We now have our model class and loss function: linear models and mean squared error loss. The question becomes how to update the weights of the model to minimize the loss. In particular, we want to find <span class="math inline">\(w\)</span> that minimizes <span class="math inline">\(\mathcal{L}(w)\)</span>. While the language we’re using is new, the problem is not. We’ve actually been studying how to do this since pre-calculus!</p>
+<p>We now have our function class and loss function: linear functions and mean squared error loss. The question becomes how to update the weights of the function to minimize the loss. In particular, we want to find <span class="math inline">\(w\)</span> that minimizes <span class="math inline">\(\mathcal{L}(w)\)</span>. While the language we’re using is new, the problem is not. We’ve actually been studying how to do this since pre-calculus!</p>
 <p>The squared loss is convex (a bowl facing up versus the downward facing <em>cave</em> of con<em>cave</em>); see the plot above for a ‘proof’ by example. In this case, we know there is only one minimum. Not only that but we can find the minimum by setting the derivative to <span class="math inline">\(0\)</span>.</p>
 <p>As such, our game plan is to set <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial w}\)</span> to <span class="math inline">\(0\)</span> and solve for <span class="math inline">\(w\)</span>. Recall that <span class="math inline">\(f(x) = wx\)</span>. We will use the linearity of the derivative, the chain rule, and the power rule to compute the derivative of <span class="math inline">\(\mathcal{L}\)</span> with respect to <span class="math inline">\(w\)</span>:</p>
 <p><span class="math display">\[
@@ -258,20 +260,20 @@ window.Quarto = {
 <p>Setting the derivative to <span class="math inline">\(0\)</span> and solving for <span class="math inline">\(w\)</span>, we get <span class="math inline">\(\frac2{n} \sum_{i=1}^n w \cdot (x^{(i)})^2 = \frac2{n} \sum_{i=1}^n y^{(i)} x^{(i)}\)</span> and so <span class="math display">\[
 w = \frac{\sum_{i=1}^n y^{(i)} \cdot x^{(i)}}{\sum_{i=1}^n (x^{(i)})^2}.
 \]</span></p>
-<p>This is the exact solution to the univariate linear regression problem! We can now use this formula to find the best linear model for our univariate data. However, we’ll have to work slightly harder for the general case with multidimensional data.</p>
+<p>This is the exact solution to the univariate linear regression problem! We can now use this formula to find the best linear function for our univariate data. However, we’ll have to work slightly harder for the general case with multidimensional data.</p>
 </section>
 </section>
 <section id="multivariate-linear-regression" class="level2">
 <h2 class="anchored" data-anchor-id="multivariate-linear-regression">Multivariate Linear Regression</h2>
 <p>Consider the more general setting where the input is <span class="math inline">\(d\)</span>-dimensional. As before, we observe <span class="math inline">\(n\)</span> training observations <span class="math inline">\((\mathbf{x}^{(1)}, y^{(1)}), \ldots, (\mathbf{x}^{(n)}, y^{(n)})\)</span> but now <span class="math inline">\(\mathbf{x}^{(i)} \in \mathbb{R}^d\)</span>. We will generalize the ideas from univariate linear regression to the multivariate setting.</p>
-<section id="linear-model" class="level3">
-<h3 class="anchored" data-anchor-id="linear-model">Linear Model</h3>
-<p>Instead of using a single weight <span class="math inline">\(w \in \mathbb{R}\)</span>, we will use <span class="math inline">\(d\)</span> weights <span class="math inline">\(\mathbf{w} \in \mathbb{R}^d\)</span>. Then the model is given by <span class="math inline">\(f(x) = \langle \mathbf{w}, \mathbf{x} \rangle\)</span>.</p>
-<p>Instead of using a <em>line</em> to fit the data, we use a <em>hyperplane</em>. While visualizing the model is difficult in high dimensions, we can still see the model when <span class="math inline">\(d=2\)</span>.</p>
+<section id="linear-function" class="level3">
+<h3 class="anchored" data-anchor-id="linear-function">Linear function</h3>
+<p>Instead of using a single weight <span class="math inline">\(w \in \mathbb{R}\)</span>, we will use <span class="math inline">\(d\)</span> weights <span class="math inline">\(\mathbf{w} \in \mathbb{R}^d\)</span>. Then the function is given by <span class="math inline">\(f(x) = \langle \mathbf{w}, \mathbf{x} \rangle\)</span>.</p>
+<p>Instead of using a <em>line</em> to fit the data, we use a <em>hyperplane</em>. While visualizing the function is difficult in high dimensions, we can still see the function when <span class="math inline">\(d=2\)</span>.</p>
 <center>
 <img src="images/regression_2d.pdf" width="600">
 </center>
-<p>In the plot above, we have <span class="math inline">\(n=10\)</span> data points in 3 dimensions. There is one linear model <span class="math inline">\(\mathbf{w} = \begin{bmatrix} 2 \\ \frac12 \end{bmatrix}\)</span> that closely approximates the data and another linear model <span class="math inline">\(\mathbf{w} = \begin{bmatrix} \frac12 \\ 0 \end{bmatrix}\)</span> that poorly approximates the data.</p>
+<p>In the plot above, we have <span class="math inline">\(n=10\)</span> data points in 3 dimensions. There is one linear function <span class="math inline">\(\mathbf{w} = \begin{bmatrix} 2 \\ \frac12 \end{bmatrix}\)</span> that closely approximates the data and another linear function <span class="math inline">\(\mathbf{w} = \begin{bmatrix} \frac12 \\ 0 \end{bmatrix}\)</span> that poorly approximates the data.</p>
 </section>
 <section id="mean-squared-error" class="level3">
 <h3 class="anchored" data-anchor-id="mean-squared-error">Mean Squared Error</h3>
@@ -283,12 +285,51 @@ w = \frac{\sum_{i=1}^n y^{(i)} \cdot x^{(i)}}{\sum_{i=1}^n (x^{(i)})^2}.
 <section id="exact-optimization-1" class="level3">
 <h3 class="anchored" data-anchor-id="exact-optimization-1">Exact Optimization</h3>
 <p>Just like computing the derivative and setting it to <span class="math inline">\(0\)</span>, we can compute the gradient and set it to the zero vector <span class="math inline">\(\mathbf{0} \in \mathbb{R}^d\)</span>. In mathematical notation, we will set <span class="math inline">\(\nabla_\mathbf{w} \mathcal{L}(\mathbf{w}^*) = \mathbf{0}\)</span> and solve for <span class="math inline">\(\mathbf{w}^*\)</span>. The intuition is that such a point is a local minimum in every direction; that is, we cannot improve the loss by moving in any of the dimensions. Since the loss is convex (i.e., there can be only one minima), such a point is the unique global minimum and achieves the optimal loss.</p>
-<p>We will leave computing <span class="math inline">\(\mathbf{w}^*\)</span> as an exercise on the homework. As you will show, <span class="math inline">\(\mathbf{w}^* = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}\)</span>.</p>
+<p>As you may recall from multivariate calculus, the gradient <span class="math inline">\(\nabla_\mathbf{w} \mathcal{L}(\mathbf{w})\)</span> is simply a vector with the same dimension as <span class="math inline">\(\mathbf{w}\)</span>; the value in the <span class="math inline">\(i\)</span>th dimension is <span class="math inline">\(\frac{\partial \mathcal{L}(\mathbf{w})}{\partial w_i}\)</span>.</p>
+<p>Let’s compute this quantity <span class="math display">\[
+\begin{align}
+\frac{\partial \mathcal{L}(\mathbf{w})}{\partial w_i}
+&amp;= \lim_{\Delta \to 0} \frac{\mathcal{L}(\mathbf{w}+\Delta \mathbf{e}_i) - \mathcal{L}(\mathbf{w})}{\Delta}
+\\&amp;=\lim_{\Delta \to 0} \frac{\| \mathbf{X} (\mathbf{w}+\Delta \mathbf{e}_i) - \mathbf{y}\|^2 - \| \mathbf{X} \mathbf{w} - \mathbf{y}\|^2 }{\Delta}.
+\end{align}
+\]</span> Let <span class="math inline">\(\mathbf{a}, \mathbf{b}\)</span> be two vectors in the same dimensional space. We have <span class="math inline">\(\|\mathbf{a} + \mathbf{b} \|^2 = \langle \mathbf{a} + \mathbf{b} , \mathbf{a} + \mathbf{b} \rangle = \| \mathbf{a} \|^2 + 2\langle \mathbf{a}, \mathbf{b} \rangle + \| \mathbf{b}\|^2\)</span>, where we foiled to reach the final equality, and used that <span class="math inline">\(\langle \mathbf{a}, \mathbf{b} \rangle = \langle \mathbf{a}, \mathbf{b} \rangle\)</span>. By letting <span class="math inline">\(\mathbf{a} = \mathbf{X w - b}\)</span> and <span class="math inline">\(\mathbf{b} = \Delta \mathbf{X} \mathbf{e}_i\)</span>, we reach <span class="math display">\[
+\begin{align}
+\frac{\partial \mathcal{L}(\mathbf{w})}{\partial w_i}
+&amp;=\lim_{\Delta \to 0} \frac{\| \mathbf{X} \mathbf{w} - \mathbf{y}\|^2
++ 2 \langle \mathbf{X} \mathbf{w} - \mathbf{y}, \Delta \mathbf{X e}_i \rangle
++\|\Delta \mathbf{X e}_i\|^2
+- \| \mathbf{X} \mathbf{w} - \mathbf{y}\|^2 }{\Delta}.
+\\&amp;= \lim_{\Delta \to 0} \frac{2 \Delta \langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle
++\Delta^2 \|\mathbf{X e}_i\|^2}{\Delta}
+\\&amp;= \lim_{\Delta \to 0} 2 \langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle + \Delta \|\mathbf{X e}_i\|^2
+\\&amp;=\langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle.
+\end{align}
+\]</span> Let <span class="math inline">\(\mathbf{X}_i = \mathbf{Xe}_i\)</span> be the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\mathbf{X}\)</span>. Then, the full gradient is given by <span class="math display">\[
+\begin{align}
+\nabla_\mathbf{w}\mathcal{L}(\mathbf{w})
+= 2 \begin{bmatrix}
+\mathbf{X}_1^\top (\mathbf{X} \mathbf{w} - \mathbf{y}) \\ \mathbf{X}_2^\top (\mathbf{X} \mathbf{w} - \mathbf{y}) \\ \vdots
+\end{bmatrix}
+\end{align}
+= 2 \mathbf{X}^\top (\mathbf{X} \mathbf{w} - \mathbf{y}).
+\]</span></p>
+<p>By the convexity of the loss function <span class="math inline">\(\mathcal{L}\)</span>, we know that <span class="math inline">\(\nabla_\mathbf{w}\mathcal{L}(\mathbf{w}^*)=0\)</span> at the optimal weights <span class="math inline">\(\mathbf{w}^*\)</span>. Solving for <span class="math inline">\(\mathbf{w}^*\)</span> yields <span class="math display">\[
+\begin{align}
+\nabla_\mathbf{w}\mathcal{L}(\mathbf{w}^*)
+&amp;= 2 \mathbf{X}^\top (\mathbf{X} \mathbf{w}^* - \mathbf{y})
+= 0
+\\ \Leftrightarrow
+\mathbf{X}^\top \mathbf{X} \mathbf{w}^* &amp;= \mathbf{X}^\top \mathbf{y}
+\\ \Leftrightarrow
+\mathbf{w}^* &amp;= (\mathbf{X}^\top \mathbf{X})^+ \mathbf{X}^\top \mathbf{y}
+\end{align}
+\]</span> where <span class="math inline">\((\cdot)^+\)</span> is the pseudoinverse i.e., <span class="math inline">\((\mathbf{M})^+ \mathbf{M} = \mathbf{I}\)</span> for all symmetric matrices <span class="math inline">\(\mathbf{M}\)</span>.</p>
+<p>Question: Is the pseudoinverse also defined for non-symmetric square matrices?</p>
 </section>
 </section>
 <section id="empirical-risk-minimization" class="level2">
 <h2 class="anchored" data-anchor-id="empirical-risk-minimization">Empirical Risk Minimization</h2>
-<p>We have now seen how to fit a linear model to data using the mean squared error loss. However, we have not given a satisfying answer to the question:</p>
+<p>We have now seen how to fit a linear function to data using the mean squared error loss. However, we have not given a satisfying answer to the question:</p>
 <center>
 <em>Why use mean squared error as our loss function?</em>
 </center>
@@ -296,18 +337,18 @@ w = \frac{\sum_{i=1}^n y^{(i)} \cdot x^{(i)}}{\sum_{i=1}^n (x^{(i)})^2}.
 <p>So far, our answer has been that the quadratic function is differentiable (which we use to find the optimal solution), and that it naturally penalizes predictions which are farther away more. The first point is one of convenience and, a priori, should not be particularly persuasive. The second seems somewhat arbitrary, why penalize at a quadratic rate rather than an e.g., quartic rate? We’ll now consider a more compelling answer.</p>
 <p>On our way to the answer, let’s take a step back and consider another question:</p>
 <center>
-<em>Why fit the data with a linear model?</em>
+<em>Why fit the data with a linear function?</em>
 </center>
 <p><br></p>
 <p>Well, we may do so when we expect the data truly has a linear relationship with the labels. To make things interesting, we will assume that there is random noise added to the labels, but that this noise is mean-centered so that, on average, the labels come from the linear model. Concretely, we observe some point <span class="math inline">\(\mathbf{x}\)</span> with a label that comes from a linear model <span class="math inline">\(\mathbf{w}^*\)</span> but with added noise, i.e., <span class="math display">\[
 y= \langle \mathbf{w}^*, \mathbf{x} \rangle + \eta.
 \]</span> We will model this noise as distributed from a normal distribution, i.e., <span class="math inline">\(\eta \sim \mathcal{N}(0, \sigma^2)\)</span> for some unknown standard deviation <span class="math inline">\(\sigma\)</span>. (To justify this choice, we imagine the noise as a sum of random variables from some other distribution(s) which, by the law of large numbers, will follow the normal distribution when the sum contains sufficiently many terms.)</p>
-<p>Recall that the goal of our empirical risk minimization strategy is to find the model which most closely aligns with the data, or, put differently, <em>we want the model that most likely generated the data we observed</em>. In order to compute this likelihood, we will use the probability density function of the normal distribution: The probability we observe a random variable <span class="math inline">\(y\)</span> drawn from a normal distribution with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span> is given by <span class="math display">\[
+<p>Recall that the goal of our empirical risk minimization strategy is to find the function which most closely aligns with the data, or, put differently, <em>we want the function that most likely generated the data we observed</em>. In order to compute this likelihood, we will use the probability density function of the normal distribution: The probability we observe a random variable <span class="math inline">\(y\)</span> drawn from a normal distribution with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span> is given by <span class="math display">\[
 \frac1{\sqrt{2\pi \sigma}} \exp\left( - \frac{(y- \mu)^2}{2\sigma^2} \right).
 \]</span> If the noisy linear model <span class="math inline">\(\mathbf{w}\)</span> <em>did</em> generate the training data <span class="math inline">\((\mathbf{x}^{(i)}, y^{(i)})\)</span>, then the expectation of the generation would be <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span>. Then, combined with the assumption that the training data was drawn independently, the probability of observing the training data is given by the product of the probabilities of each individual observation: <span class="math display">\[
 \prod_{i=1}^n
 \frac1{\sqrt{2\pi \sigma}} \exp\left( - \frac{(y^{(i)}- \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)^2}{2\sigma^2} \right).
-\]</span> Our goal is to find the model <span class="math inline">\(\mathbf{w}\)</span> that maximizes this likelihood i.e., <span class="math display">\[
+\]</span> Our goal is to find the function <span class="math inline">\(\mathbf{w}\)</span> that maximizes this likelihood i.e., <span class="math display">\[
 \begin{align}
 &amp;{\arg\max}_{\mathbf{w} \in \mathbb{R}^d}
 \prod_{i=1}^n
@@ -321,13 +362,13 @@ y= \langle \mathbf{w}^*, \mathbf{x} \rangle + \eta.
 - \sum_{i=1}^n - (y^{(i)}- \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)^2.
 \end{align}
 \]</span> Here, we used the following facts: maximizing an objective is equivalent to minimizing the negative of that objective, the logarithmic function is monotonically increasing so minimizing the likelihood is equivalent to minimizing the log-likelihood, the product of exponentials is the exponential of the sum, and removing a constant scalar factor or additive constant does not change the minimum.</p>
-<p>The punchline is that the model <span class="math inline">\(\mathbf{w}\)</span> that maximizes the likelihood of observing the training data is the same model that minimizes the mean squared error loss. This is a powerful result that justifies our use of the mean squared error loss.</p>
+<p>The punchline is that the function <span class="math inline">\(\mathbf{w}\)</span> that maximizes the likelihood of observing the training data is the same function that minimizes the mean squared error loss. This is a powerful result that justifies our use of the mean squared error loss.</p>
 </section>
 <section id="looking-forward" class="level2">
 <h2 class="anchored" data-anchor-id="looking-forward">Looking Forward</h2>
-<p>While we have seen the benefits of exactly optimizing linear regression models, there are several limitations that we will address.</p>
+<p>While we have seen the benefits of exactly optimizing linear regression functions, there are several limitations that we will address.</p>
 <p><strong>Computational Complexity</strong> We saw (and you will prove) that the exact solution to linear regression is given by <span class="math inline">\(\mathbf{w}^* = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}\)</span>. This requires building the matrix <span class="math inline">\(\mathbf{X}^\top \mathbf{X}\)</span>, which takes <span class="math inline">\(O(nd^2)\)</span> time, and then inverting it, which takes <span class="math inline">\(O(d^3)\)</span>. When we have a large number of data points <span class="math inline">\(n\)</span> and/or a large number of features <span class="math inline">\(d\)</span>, this can be prohibitively expensive.</p>
-<p><strong>Model Class Misspecification</strong> We have assumed that the data has a linear relationship (or close to linear relationship) with the labels. What happens when this is not true? That is, even the best linear model gives a poor approximation?</p>
+<p><strong>function Class Misspecification</strong> We have assumed that the data has a linear relationship (or close to linear relationship) with the labels. What happens when this is not true? That is, even the best linear function gives a poor approximation?</p>
 
 
 

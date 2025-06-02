@@ -48,11 +48,11 @@ A course on the mathematical foundations of machine learning.
   </tr>
 
   <tr class="section-header">
-    <td colspan="6">Review</td>
+    <td colspan="6">Warmup</td>
   </tr>
   <tr>
     <td>Week 1 (8/27 and 8/29)</td>
-    <td>Probability and Linear Algebra</td>
+    <td>Linear Algebra Review</td>
     <td>PageRank</td>
     <td><a href="notes/00_PageRank.qmd">Notes</a></td>
     <td></td>
@@ -146,8 +146,7 @@ A course on the mathematical foundations of machine learning.
   </tr>
   <tr>
     <td>Week 13 (11/18 and 11/20)</td>
-    <td>Interpretability</td>
-    <td>Active Regression</td>
+    <td colspan="2">Interpretability and Active Learning</td>
     <td></td>
     <td></td>
     <td></td>

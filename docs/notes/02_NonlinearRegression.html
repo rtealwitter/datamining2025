@@ -168,9 +168,10 @@ window.Quarto = {
   <li><a href="#adaptive-step-sizes" id="toc-adaptive-step-sizes" class="nav-link" data-scroll-target="#adaptive-step-sizes">Adaptive Step Sizes</a></li>
   <li><a href="#momentum" id="toc-momentum" class="nav-link" data-scroll-target="#momentum">Momentum</a></li>
   </ul></li>
-  <li><a href="#non-linear-models" id="toc-non-linear-models" class="nav-link" data-scroll-target="#non-linear-models">Non-Linear Models</a>
+  <li><a href="#beyond-linear-models" id="toc-beyond-linear-models" class="nav-link" data-scroll-target="#beyond-linear-models">Beyond Linear Models</a>
   <ul class="collapse">
-  <li><a href="#complexity-vs.-generalization" id="toc-complexity-vs.-generalization" class="nav-link" data-scroll-target="#complexity-vs.-generalization">Complexity vs.&nbsp;Generalization</a></li>
+  <li><a href="#generalization-error" id="toc-generalization-error" class="nav-link" data-scroll-target="#generalization-error">Generalization Error</a></li>
+  <li><a href="#regularization" id="toc-regularization" class="nav-link" data-scroll-target="#regularization">Regularization</a></li>
   </ul></li>
   <li><a href="#going-forward" id="toc-going-forward" class="nav-link" data-scroll-target="#going-forward">Going Forward</a></li>
   </ul>
@@ -254,40 +255,42 @@ window.Quarto = {
 \]</span> where <span class="math inline">\(\beta\)</span> is a hyperparameter that controls the amount of history we keep in the momentum vector <span class="math inline">\(\mathbf{m}^{(t)}\)</span>.</p>
 </section>
 </section>
-<section id="non-linear-models" class="level2">
-<h2 class="anchored" data-anchor-id="non-linear-models">Non-Linear Models</h2>
-<p>We have seen how gradient descent can be used to efficiently optimize linear models, but what if the relationship between the inputs and outputs is not linear? We can still use gradient descent to optimize non-linear models, but we need to expand our model class to include non-linear functions.</p>
-<center>
-<img src="images/regression_vs_network.pdf" width="500">
-</center>
-<p>In the right of the figure, we have a linear model, which uses a linear combination of the inputs to make predictions. We can generalize this approach by repeatedly combining linear models to create a more complex model. In particular, we create several <em>neurons</em>, each of which is a linear model that takes the inputs and produces an output. Each neuron computes a linear combination of the inputs, and then we linearly combine the outputs of the neurons, and so on. The resulting model is a <em>neural network</em>, which combines linear models to create a more complex model.</p>
-<p>We can think of a fully connected layer (all neurons in one layer are connected to all neurons in the next layer) as matrix multiplication, where the matrix <span class="math inline">\(\mathbf{W}^{(\ell)} \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}}\)</span> is the weight matrix and <span class="math inline">\(\mathbf{x} \in \mathbb{R}^{d_\text{in}}\)</span> is the input to the <span class="math inline">\(\ell\)</span>th layer. Then multiplying several weight matrices together gives <span class="math display">\[
-f(\mathbf{x}) = \mathbf{W}^{(k)} \mathbf{W}^{(k-1)} \cdots \mathbf{W}^{(1)} \mathbf{x}
-\]</span> where <span class="math inline">\(k\)</span> is the number of layers in the neural network. But, there’s an issue with this approach: the output is still a linear combination of the inputs, which means that the model is still linear. Put differently, we could just multiply all the weight matrices together to get a single weight matrix <span class="math inline">\(\mathbf{W} = \mathbf{W}_k \mathbf{W}_{k-1} \cdots \mathbf{W}_1\)</span> before ever seeing the input <span class="math inline">\(\mathbf{x}\)</span>. Our solution is to add a <em>non-linear activation function</em> after each layer. Formally, we apply activation functions <span class="math inline">\(\sigma: \mathbb{R} \to \mathbb{R}\)</span> element-wise to the output of each layer. Examples of common activation functions include:</p>
-<ul>
-<li><p><strong>ReLU (Rectified Linear Unit):</strong> <span class="math inline">\(\sigma(x) = \max(0, x)\)</span>, which is a piecewise linear function that is <span class="math inline">\(0\)</span> for negative inputs and linear for positive inputs.</p></li>
-<li><p><strong>Sigmoid:</strong> <span class="math inline">\(\sigma(x) = \frac{1}{1 + e^{-x}}\)</span>, which is a smooth function that maps inputs to the range <span class="math inline">\((0, 1)\)</span>.</p></li>
-<li><p><strong>Tanh (Hyperbolic Tangent):</strong> <span class="math inline">\(\sigma(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}\)</span>, which is another smooth function that maps inputs to the range <span class="math inline">\((-1, 1)\)</span>.</p></li>
-</ul>
-<p>Now we can write the output of the neural network as <span class="math display">\[
-f(\mathbf{x}) = \sigma(\mathbf{W}_k \sigma(\mathbf{W}_{k-1} \cdots \sigma(\mathbf{W}_1 \mathbf{x}))).
-\]</span> Thanks to the non-linear activation functions, the output is no longer a linear combination of the inputs, but rather a complex function that can capture non-linear relationships between the inputs and outputs. Neural networks are so complex, in fact, that we don’t really understand how they work. But we <em>can</em> still apply gradient descent. In summary, we can think of neural networks in following empirical risk minimization formulation:</p>
-<ul>
-<li><p><strong>Model Class:</strong> The model class is the set of neural networks with a given architecture (type of layer, number of layers, number of neurons per layer, and activation function).</p></li>
-<li><p><strong>Loss:</strong> The loss function is the mean squared error loss.</p></li>
-<li><p><strong>Optimizer:</strong> The optimizer is gradient descent.</p></li>
-</ul>
-<section id="complexity-vs.-generalization" class="level3">
-<h3 class="anchored" data-anchor-id="complexity-vs.-generalization">Complexity vs.&nbsp;Generalization</h3>
-<p>Neural networks are incredibly powerful models that can approximate any function, given enough data and parameters. However, this power comes with a cost: neural networks are very complex models that can easily overfit the training data. That is, they can learn to memorize, but fail to generalize to unseen data.</p>
+<section id="beyond-linear-models" class="level2">
+<h2 class="anchored" data-anchor-id="beyond-linear-models">Beyond Linear Models</h2>
+<p>Introduce variables that give better fit to the data, manipulate the data to create new features, e.g., polynomial regression.</p>
+<p>Claim: The fit of the regression model can only be improved by adding additional features.</p>
+<p>(Add picture here of polynomial regression with various degrees of polynomial, e.g., linear, quadratic, cubic, etc.)</p>
+<p>In picture, we can tell which gives the right fit</p>
+<p>How do we do this automatically?</p>
+<section id="generalization-error" class="level3">
+<h3 class="anchored" data-anchor-id="generalization-error">Generalization Error</h3>
+<p>Training data versus testing data</p>
+<p>Generalization error</p>
+<p>If we withhold data, this gives us an unbiased estimate of the generalization error: Expectation of performance on random sample, is performance on true data set.</p>
+<p>Can we use data more efficiently? <span class="math inline">\(k\)</span>-fold cross validation</p>
+<p>In practice, we often bias this process by training, testing, updating the model (hyperparameters, architecture, training method), training, testing, updating the model, etc. The repeated use of the test data means our model depends on the test data and eventually overfits to it, even though we are not using the test data to train the model.</p>
+</section>
+<section id="regularization" class="level3">
+<h3 class="anchored" data-anchor-id="regularization">Regularization</h3>
+<p>Non-linear models are incredibly powerful models that can approximate any function, given enough data and features. However, this power comes with a cost: non-linear models can be very complex models and can easily overfit the training data. That is, they can learn to memorize, but fail to generalize to unseen data.</p>
+<p>(Redo this figures with polynomial regression)</p>
 <center>
 <img src="images/regression_overfitting.pdf" width="700">
 </center>
-<p>When we believe our data comes from a simpler generating process, it makes sense to use a simpler model. Even when that simpler generating process is not a linear model, we can attempt to find simpler models through <em>regularization</em>. Regularization is a technique that adds a penalty to the loss function to discourage the model from fitting the training data too closely. The idea is that we can keep the model “simple” by penalizing large weights, which would otherwise allow the model to achieve large changes in the output for small changes in the input.</p>
+<p>When we believe our data comes from a simpler generating process, it makes sense to use a simpler model. Even when that simpler generating process is not a linear model, we can attempt to find simpler models through <em>regularization</em>. Regularization is a technique that adds a penalty to the loss function to discourage the model from fitting the training data too closely.</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac1n \sum_{i=1}^n (f(\mathbf{x}^{(i)}) - y^{(i)})^2 + \lambda \|\mathbf{w}\|^2_2,
+\end{align*}
+\]</span> where <span class="math inline">\(\lambda\)</span> is a hyperparameter that controls the strength of the penalty and <span class="math inline">\(\|\mathbf{w}\|_2\)</span> is the <span class="math inline">\(\ell-2\)</span> norm of the weights, which is the square root of the sum of the squares of the weights.</p>
+<p>The idea is that we can keep the model “simple” by penalizing large weights, which would otherwise allow the model to achieve large changes in the output for small changes in the input.</p>
 <center>
 <img src="images/regression_regularization.pdf" width="700">
 </center>
 <p>In the plot, we see data generated from a quadratic function. The linear model is too simple and fails to capture the underlying relationship, while the standard neural network is too complex and overfits the training data. The regularized neural network, however, is able to capture the underlying relationship while still being simple enough to generalize to unseen data.</p>
+<p>How to control the strength of the regularization <span class="math inline">\(\lambda\)</span>?</p>
+<p>How do we minimize the regularized loss function for regression?</p>
+<p>We can also use a regularizaiton with <span class="math inline">\(\ell_1\)</span> norm, which penalizes the absolute value of the weights. This is called <em>Lasso</em> regression, and it has the effect of encouraging sparsity in the model, i.e., some weights will be exactly zero. Useful when we have many features, but we believe only a few of them are actually relevant to the prediction.</p>
 </section>
 </section>
 <section id="going-forward" class="level2">
