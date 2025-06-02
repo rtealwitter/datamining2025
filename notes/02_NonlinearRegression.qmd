@@ -114,60 +114,52 @@ $$
 $$
 where $\beta$ is a hyperparameter that controls the amount of history we keep in the momentum vector $\mathbf{m}^{(t)}$.
 
-## Non-Linear Models
-We have seen how gradient descent can be used to efficiently optimize linear models, but what if the relationship between the inputs and outputs is not linear?
-We can still use gradient descent to optimize non-linear models, but we need to expand our model class to include non-linear functions.
+## Beyond Linear Models
 
-<center><img src="images/regression_vs_network.pdf" width="500"></center>
+Introduce variables that give better fit to the data, manipulate the data to create new features, e.g., polynomial regression.
 
-In the right of the figure, we have a linear model, which uses a linear combination of the inputs to make predictions.
-We can generalize this approach by repeatedly combining linear models to create a more complex model.
-In particular, we create several *neurons*, each of which is a linear model that takes the inputs and produces an output.
-Each neuron computes a linear combination of the inputs, and then we linearly combine the outputs of the neurons, and so on.
-The resulting model is a *neural network*, which combines linear models to create a more complex model.
+Claim: The fit of the regression model can only be improved by adding additional features.
 
-We can think of a fully connected layer (all neurons in one layer are connected to all neurons in the next layer) as matrix multiplication, where the matrix $\mathbf{W}^{(\ell)} \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}}$ is the weight matrix and $\mathbf{x} \in \mathbb{R}^{d_\text{in}}$ is the input to the $\ell$th layer.
-Then multiplying several weight matrices together gives
-$$
-f(\mathbf{x}) = \mathbf{W}^{(k)} \mathbf{W}^{(k-1)} \cdots \mathbf{W}^{(1)} \mathbf{x} 
-$$
-where $k$ is the number of layers in the neural network.
-But, there's an issue with this approach: the output is still a linear combination of the inputs, which means that the model is still linear.
-Put differently, we could just multiply all the weight matrices together to get a single weight matrix $\mathbf{W} = \mathbf{W}_k \mathbf{W}_{k-1} \cdots \mathbf{W}_1$ before ever seeing the input $\mathbf{x}$.
-Our solution is to add a *non-linear activation function* after each layer.
-Formally, we apply activation functions $\sigma: \mathbb{R} \to \mathbb{R}$ element-wise to the output of each layer.
-Examples of common activation functions include:
+(Add picture here of polynomial regression with various degrees of polynomial, e.g., linear, quadratic, cubic, etc.)
 
-- **ReLU (Rectified Linear Unit):** $\sigma(x) = \max(0, x)$, which is a piecewise linear function that is $0$ for negative inputs and linear for positive inputs.
+In picture, we can tell which gives the right fit
 
-- **Sigmoid:** $\sigma(x) = \frac{1}{1 + e^{-x}}$, which is a smooth function that maps inputs to the range $(0, 1)$.
+How do we do this automatically?
 
-- **Tanh (Hyperbolic Tangent):** $\sigma(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$, which is another smooth function that maps inputs to the range $(-1, 1)$.
+### Generalization Error
 
-Now we can write the output of the neural network as
-$$
-f(\mathbf{x}) = \sigma(\mathbf{W}_k \sigma(\mathbf{W}_{k-1} \cdots \sigma(\mathbf{W}_1 \mathbf{x}))).
-$$
-Thanks to the non-linear activation functions, the output is no longer a linear combination of the inputs, but rather a complex function that can capture non-linear relationships between the inputs and outputs.
-Neural networks are so complex, in fact, that we don't really understand how they work.
-But we *can* still apply gradient descent. In summary, we can think of neural networks in following empirical risk minimization formulation:
+Training data versus testing data
 
-- **Model Class:** The model class is the set of neural networks with a given architecture (type of layer, number of layers, number of neurons per layer, and activation function).
+Generalization error
 
-- **Loss:** The loss function is the mean squared error loss.
+If we withhold data, this gives us an unbiased estimate of the generalization error: Expectation of performance on random sample, is performance on true data set.
 
-- **Optimizer:** The optimizer is gradient descent.
+Can we use data more efficiently? $k$-fold cross validation
 
-### Complexity vs. Generalization
-Neural networks are incredibly powerful models that can approximate any function, given enough data and parameters.
-However, this power comes with a cost: neural networks are very complex models that can easily overfit the training data.
+In practice, we often bias this process by training, testing, updating the model (hyperparameters, architecture, training method), training, testing, updating the model, etc. The repeated use of the test data means our model depends on the test data and eventually overfits to it, even though we are not using the test data to train the model.
+
+### Regularization
+
+Non-linear models are incredibly powerful models that can approximate any function, given enough data and features.
+However, this power comes with a cost: non-linear models can be very complex models and can easily overfit the training data.
 That is, they can learn to memorize, but fail to generalize to unseen data.
+
+(Redo this figures with polynomial regression)
 
 <center><img src="images/regression_overfitting.pdf" width="700"></center>
 
 When we believe our data comes from a simpler generating process, it makes sense to use a simpler model.
 Even when that simpler generating process is not a linear model, we can attempt to find simpler models through *regularization*.
 Regularization is a technique that adds a penalty to the loss function to discourage the model from fitting the training data too closely.
+
+$$
+\begin{align*}
+\frac1n \sum_{i=1}^n (f(\mathbf{x}^{(i)}) - y^{(i)})^2 + \lambda \|\mathbf{w}\|^2_2,
+\end{align*}
+$$
+where $\lambda$ is a hyperparameter that controls the strength of the penalty and $\|\mathbf{w}\|_2$ is the $\ell-2$ norm of the weights, which is the square root of the sum of the squares of the weights.
+
+
 The idea is that we can keep the model "simple" by penalizing large weights, which would otherwise allow the model to achieve large changes in the output for small changes in the input.
 
 <center><img src="images/regression_regularization.pdf" width="700"></center>
@@ -175,6 +167,14 @@ The idea is that we can keep the model "simple" by penalizing large weights, whi
 In the plot, we see data generated from a quadratic function.
 The linear model is too simple and fails to capture the underlying relationship, while the standard neural network is too complex and overfits the training data.
 The regularized neural network, however, is able to capture the underlying relationship while still being simple enough to generalize to unseen data.
+
+How to control the strength of the regularization $\lambda$?
+
+How do we minimize the regularized loss function for regression?
+
+We can also use a regularizaiton with $\ell_1$ norm, which penalizes the absolute value of the weights.
+This is called *Lasso* regression, and it has the effect of encouraging sparsity in the model, i.e., some weights will be exactly zero.
+Useful when we have many features, but we believe only a few of them are actually relevant to the prediction.
 
 ## Going Forward
 

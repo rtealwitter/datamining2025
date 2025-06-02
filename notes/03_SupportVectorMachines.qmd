@@ -1,0 +1,32 @@
+---
+title: "**Support Vector Machines and Optimization**"
+format:
+  html:
+    toc: true
+    math: true
+---
+
+## Classification
+
+## Support Vector Machines
+
+### Hard Margin
+
+$$
+\begin{align}
+\min_{\mathbf{w}, b} \| \mathbf{w} \|^2 \textnormal{ such that }
+1 - y_i(\mathbf{w}^\top \mathbf{x}^{(i)} - b) \leq 0 \text{ } \forall i
+\end{align}
+$$
+
+### Soft Margin
+
+## Convex Optimization
+
+Optimizing an objective in a constrained problem is challenging, we'll attempt to convert it into an unconstrained problem by putting the constraint in the objective
+
+Our first attempt: We could add a term to the objective which is infinity if any of the constraints are satisfied and 0 otherwise.
+This would certainly yield the same solution: every constraint must be satisfied (so the objective is finite), and we have the minimum objective when the constraint is satisfied.
+The issue is that solving this problem is difficult because the objective is not continuous: a slight violation of the constraints results in a jump to infinity.
+
+### Kernel Trick
