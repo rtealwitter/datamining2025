@@ -213,6 +213,7 @@ window.Quarto = {
 </section>
 <section id="soft-margin" class="level3">
 <h3 class="anchored" data-anchor-id="soft-margin">Soft Margin</h3>
+<p>Add slack variables <span class="math inline">\(\xi_i\)</span> to allow for some misclassification:</p>
 </section>
 </section>
 <section id="convex-optimization" class="level2">
@@ -221,6 +222,9 @@ window.Quarto = {
 <p>Our first attempt: We could add a term to the objective which is infinity if any of the constraints are satisfied and 0 otherwise. This would certainly yield the same solution: every constraint must be satisfied (so the objective is finite), and we have the minimum objective when the constraint is satisfied. The issue is that solving this problem is difficult because the objective is not continuous: a slight violation of the constraints results in a jump to infinity.</p>
 <section id="kernel-trick" class="level3">
 <h3 class="anchored" data-anchor-id="kernel-trick">Kernel Trick</h3>
+<p>Consider polynomial features of power <span class="math inline">\(p\)</span>: There are <span class="math inline">\(d^p\)</span> such features, so representing the data in this way is not feasible for large <span class="math inline">\(d\)</span>. Instead, we can use the kernel trick to compute the inner product in this space without explicitly computing the features. $$ <span class="math display">\[\begin{align}
+\langle \phi(\mathbf{x}^{(i)}), \phi(\mathbf{x}^{(j)}) \rangle = K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \left( \mathbf{x}^{(i)} \cdot \mathbf{x}^{(j)} \right)^p
+\end{align}\]</span></p>
 
 
 
