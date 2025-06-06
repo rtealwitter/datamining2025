@@ -6,7 +6,7 @@ output:
 ---
 
 <center>
-A course on the mathematical foundations of machine learning.
+*A course on the mathematical foundations of machine learning.*
 </center>
 
 <br>
@@ -16,7 +16,7 @@ A course on the mathematical foundations of machine learning.
 
   **Instructor**: [R. Teal Witter](https://www.rtealwitter.com/). Please call me Teal.
   
-  **Class Times**: We meet Tuesdays and Thursdays. The first section is from 2:45 to 4:00pm and the second section is from 4:15 to 5:30pm.
+  **Class Times**: We meet Tuesdays and Thursdays; Sec. 1 is scheduled from 2:45 to 4:00pm, and Sec. 2 from 4:15 to 5:30pm.
   
   **Office Hours**: Before I schedule office hours, please fill out this [when2meet](https://www.when2meet.com/?30832039-a1d3K) so we can find times that work for all of us.
   
@@ -31,9 +31,9 @@ A course on the mathematical foundations of machine learning.
   **Problem Sets**: Your primary opportunity to learn the material will be on problem sets. You may work with others to solve the problems, but you must write your solutions by yourself, and explicitly acknowledge any outside help (websites, people, LLMs).
 
   **Exams**:
-  There will be two midterms: The first is a written exam that covers most of the supervised learning topics. The second is a cumulative verbal exam.
+  The two midterm exams are designed to give you a multiple ways of demonstrating your understanding. The first is a written midterm focused on supervised learning. The second is a verbal exam, *à la* a technical interview.
 
-  **Project**: You will complete a project on a topic of your choice. You will write a report and give a presentation to the class. The project is due at the end of the semester.  
+  **Project**: The  project offers a chance to explore an area that interests you, practice writing high quality code, and develop your ability to communicate technical ideas to an audience. In addition to your codebase, you will write a report and give a short presentation at the end of the semester. 
   </div>
 </div>
 
@@ -78,21 +78,21 @@ A course on the mathematical foundations of machine learning.
   </tr>
   <tr>
     <td>Week 4 (9/16 and 9/18)</td>
-    <td colspan="2">Support Vector Machines and Optimization</td>
-    <td></td>
+    <td colspan="2">Support Vector Machines and Convex Optimization</td>
+    <td><a href="notes/03_SupportVectorMachines.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 5 (9/23 and 9/25)</td>
-    <td colspan="2">Logistic Regression</td>
-    <td></td>
+    <td colspan="2">Logistic Regression and Neural Networks</td>
+    <td><a href="notes/04_LogisticRegression.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 6 (9/30 and 10/2)</td>
-    <td colspan="2">Decision Trees and Boosting</td>
+    <td colspan="2">Decision Trees and Gradient Boosting</td>
     <td></td>
     <td></td>
     <td></td>
@@ -118,7 +118,7 @@ A course on the mathematical foundations of machine learning.
   </tr>
   <tr>
     <td>Week 9 (10/21 and 10/23)</td>
-    <td colspan="2">Autoencoders</td>
+    <td colspan="2">Autoencoders and Variational Autoencoders</td>
     <td></td>
     <td></td>
     <td></td>

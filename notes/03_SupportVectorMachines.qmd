@@ -1,10 +1,13 @@
 ---
-title: "**Support Vector Machines and Optimization**"
+title: "**Support Vector Machines and Convex Optimization**"
 format:
   html:
     toc: true
     math: true
 ---
+
+
+Nice link: https://www.cs.cmu.edu/~aarti/Class/10701_Spring21/Lecs/svm_dual_kernel_inked.pdf
 
 ## Classification
 
