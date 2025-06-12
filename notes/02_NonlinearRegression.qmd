@@ -32,14 +32,53 @@ The gradient quantifies how the loss function responds as we tweak each paramete
 If the partial derivative is positive (increasing the parameter increases the loss), then we will want to decrease the parameter.
 Analogously, if the partial derivative is negative (increasing the parameter decreases the loss), then we will want to increase the parameter.
 In both cases, we are moving in the direction away from the gradient.
-Hence,
-we reach the next parameter vector by subtracting the gradient from the current parameter vector:
+Hence, we reach the next parameter vector by subtracting the gradient from the current parameter vector:
 $$
 \begin{align*}
 \mathbf{w}^{(t+1)} \gets \mathbf{w}^{(t)} - \alpha \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}^{(t)}),
 \end{align*}
 $$
 where $\alpha$ is a small positive constant called the *step size* or *learning rate*.
+
+Notice that, for one, this approach stops when we reach a point where the gradient is 0, i.e., we have reached a local minimum.
+
+Beyond the stopping condition, why does this work?
+Consider the one dimensional setting.
+The derivative of the loss function is
+$$
+\begin{align*}
+\mathcal{L}'(w) = \lim_{\Delta \to 0} \frac{\mathcal{L}(w + \Delta) - \mathcal{L}(w)}{\Delta}.
+\end{align*}
+$$
+so, for small $\Delta$, we can approximate the loss function as
+$$
+\begin{align*}
+\mathcal{L}(w+\Delta) - \mathcal{L}(w) &\approx \mathcal{L}'(w) \cdot \Delta \\
+\end{align*}
+$$
+We want $\mathcal{L}(w+\Delta)$ to be smaller than $\mathcal{L}(w)$, so we want $\mathcal{L}'(w) \Delta < 0$.
+This can be achieved by setting $\Delta = -\eta \mathcal{L}'(w)$, where $\eta$ is a small positive constant.
+Then $w^{(t+1)} = w^{(t)} - \eta \mathcal{L}'(w^{(t)})$ is a step in the direction of descent.
+
+In the multi-dimensional setting, the partial derivative of the loss function with respect to each parameter is given by the gradient:
+$$
+\frac{\partial \mathcal{L}}{\partial w_i} = \lim_{\Delta \to 0} \frac{\mathcal{L}(\mathbf{w} + \Delta \mathbf{e}_i) - \mathcal{L}(\mathbf{w})}{\Delta},
+$$
+where $\mathbf{e}_i$ is the $i$-th standard basis vector.
+Then, for small $\Delta$, we can approximate the loss function as
+$$
+\mathcal{L}(\mathbf{w} + \Delta \mathbf{e}_i) - \mathcal{L}(\mathbf{w}) \approx \frac{\partial \mathcal{L}}{\partial w_i} \cdot \Delta
+= \langle \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}), \Delta \mathbf{e}_i \rangle.
+$$
+For a general vector $\mathbf{v}$, we can write
+$$
+\mathcal{L}(\mathbf{w} + \Delta \mathbf{v}) - \mathcal{L}(\mathbf{w}) \approx \langle \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}), \Delta \mathbf{v} \rangle.
+$$
+If we want to move in the direction of steepest descent, we can set $\Delta \mathbf{v} = -\eta \nabla_\mathbf{w} \mathcal{L}(\mathbf{w})$, where $\eta$ is a small positive constant.
+Then, we have $\mathcal{L}(\mathbf{w} - \eta \nabla_\mathbf{w} \mathcal{L}(\mathbf{w})) - \mathcal{L}(\mathbf{w}) \approx -\eta \langle \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}), \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}) \rangle = -\eta \|\nabla_\mathbf{w} \mathcal{L}(\mathbf{w})\|^2$.
+Why is this the right choice? Well, recall for any vectors $\mathbf{a}$ and $\mathbf{b}$, we have $\langle \mathbf{a}, \mathbf{b} \rangle = \|\mathbf{a}\| \|\mathbf{b}\| \cos(\theta)$, where $\theta$ is the angle between the two vectors.
+The largest value of $\cos(\theta)$ is $1$, which occurs when the two vectors are in the same direction.
+Notice we achieve the largest magnitude of the inner product when we take the step in the direction of the gradient, i.e., $- \nabla_\mathbf{w} \mathcal{L}(\mathbf{w})$.
 
 For linear models, we already know the gradient of the mean squared error loss:
 $$
