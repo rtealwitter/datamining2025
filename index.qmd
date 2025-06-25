@@ -71,42 +71,42 @@ output:
   </tr>
   <tr>
     <td>Week 3 (9/9 and 9/11)</td>
-    <td colspan="2">Gradient Descent and Non-linear Regression</td>
+    <td colspan="2">Gradient Descent and Polynomial Regression</td>
     <td><a href="notes/02_NonlinearRegression.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 4 (9/16 and 9/18)</td>
-    <td colspan="2">Support Vector Machines and Convex Optimization</td>
+    <td colspan="2">Probability and Logistic Regression</td>
     <td><a href="notes/03_SupportVectorMachines.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 5 (9/23 and 9/25)</td>
-    <td colspan="2">Logistic Regression and Neural Networks</td>
+    <td colspan="2">Support Vector Machines and Constrained Optimization</td>
     <td><a href="notes/04_LogisticRegression.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 6 (9/30 and 10/2)</td>
-    <td colspan="2">Decision Trees and Gradient Boosting</td>
+    <td colspan="2">Kernel Methods and Neural Networks</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 7 (10/7 and 10/9)</td>
-    <td colspan="2">K Nearest Neighbors and Kernel Methods</td>
+    <td colspan="2">Decision Trees and Gradient Boosting</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 8 (10/14 and 10/16)</td>
-    <td><i>Fall Break (<s>Class<s>)<i></td>
+    <td><i>Fall Break (No Class)<i></td>
     <td><i>Written Exam<i></td>
     <td></td>
     <td></td>
@@ -125,28 +125,28 @@ output:
   </tr>
   <tr>
     <td>Week 10 (10/28 and 10/30)</td>
-    <td colspan="2">Principal Component Analysis</td>
+    <td colspan="2">Principal Component Analysis and Semantic Embeddings</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 11 (11/4 and 11/6)</td>
-    <td colspan="2">Semantic Embeddings</td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Week 12 (11/11 and 11/13)</td>
     <td colspan="2">Reinforcement Learning</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
+    <td>Week 12 (11/11 and 11/13)</td>
+    <td colspan="2">PAC Learning and Active Learning</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
     <td>Week 13 (11/18 and 11/20)</td>
-    <td colspan="2">Interpretability and Active Learning</td>
+    <td colspan="2">Active Learning and Interpretability</td>
     <td></td>
     <td></td>
     <td></td>
@@ -154,7 +154,7 @@ output:
   <tr>
     <td>Week 14 (11/25 and 11/27)</td>
     <td><i>Verbal Exam<i></td>
-    <td><i>Thanksgiving (<s>Class<s>)<i></td>
+    <td><i>Thanksgiving (No Class)<i></td>
     <td></td>
     <td></td>
     <td></td>
@@ -162,7 +162,7 @@ output:
   <tr>
     <td>Week 15 (12/2 and 12/4)</td>
     <td><i>Project Preparation<i></td>
-    <td><i>NeurIPS (<s>Class<s>)<i></td>
+    <td><i>NeurIPS (No Class)<i></td>
     <td></td>
     <td></td>
     <td></td>
