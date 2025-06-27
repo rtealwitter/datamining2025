@@ -1,5 +1,5 @@
 ---
-title: "**Gradient Descent and Non-linear Regression**"
+title: "**Gradient Descent and Polynomial Regression**"
 format:
   html:
     toc: true
@@ -153,7 +153,7 @@ $$
 $$
 where $\beta$ is a hyperparameter that controls the amount of history we keep in the momentum vector $\mathbf{m}^{(t)}$.
 
-## Beyond Linear Models
+## Polynomial Regression
 
 Introduce variables that give better fit to the data, manipulate the data to create new features, e.g., polynomial regression.
 

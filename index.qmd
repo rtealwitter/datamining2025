@@ -72,21 +72,21 @@ output:
   <tr>
     <td>Week 3 (9/9 and 9/11)</td>
     <td colspan="2">Gradient Descent and Polynomial Regression</td>
-    <td><a href="notes/02_NonlinearRegression.qmd">Notes</a></td>
+    <td><a href="notes/02_GradientDescent.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 4 (9/16 and 9/18)</td>
     <td colspan="2">Probability and Logistic Regression</td>
-    <td><a href="notes/03_SupportVectorMachines.qmd">Notes</a></td>
+    <td><a href="notes/03_LogisticRegression.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 5 (9/23 and 9/25)</td>
     <td colspan="2">Support Vector Machines and Constrained Optimization</td>
-    <td><a href="notes/04_LogisticRegression.qmd">Notes</a></td>
+    <td><a href="notes/04_SupportVectorMachines.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
@@ -107,7 +107,7 @@ output:
   <tr>
     <td>Week 8 (10/14 and 10/16)</td>
     <td><i>Fall Break (No Class)<i></td>
-    <td><i>Written Exam<i></td>
+    <td>Autoencoders</td>
     <td></td>
     <td></td>
     <td></td>
@@ -118,8 +118,8 @@ output:
   </tr>
   <tr>
     <td>Week 9 (10/21 and 10/23)</td>
-    <td colspan="2">Autoencoders and Variational Autoencoders</td>
-    <td></td>
+    <td><i>Midterm Exam<i></td>
+    <td>Variational Autoencoders</td>
     <td></td>
     <td></td>
   </tr>
@@ -139,7 +139,7 @@ output:
   </tr>
   <tr>
     <td>Week 12 (11/11 and 11/13)</td>
-    <td colspan="2">PAC Learning and Active Learning</td>
+    <td colspan="2">PAC Learning</td>
     <td></td>
     <td></td>
     <td></td>
@@ -153,7 +153,7 @@ output:
   </tr>
   <tr>
     <td>Week 14 (11/25 and 11/27)</td>
-    <td><i>Verbal Exam<i></td>
+    <td><i>Final Exam<i></td>
     <td><i>Thanksgiving (No Class)<i></td>
     <td></td>
     <td></td>

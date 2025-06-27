@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Logistic Regression and Neural Networks</title>
+<title>Kernel Methods and Neural Networks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -157,26 +157,20 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#neural-networks" id="toc-neural-networks" class="nav-link active" data-scroll-target="#neural-networks">Neural Networks</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><strong>Logistic Regression and Neural Networks</strong></h1>
+<h1 class="title"><strong>Kernel Methods and Neural Networks</strong></h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -188,33 +182,9 @@ window.Quarto = {
 </header>
 
 
-<section id="neural-networks" class="level2">
-<h2 class="anchored" data-anchor-id="neural-networks">Neural Networks</h2>
-<p>We have seen how gradient descent can be used to efficiently optimize linear models, but what if the relationship between the inputs and outputs is not linear? We can still use gradient descent to optimize non-linear models, but we need to expand our model class to include non-linear functions.</p>
-<center>
-<img src="images/regression_vs_network.pdf" width="500">
-</center>
-<p>In the right of the figure, we have a linear model, which uses a linear combination of the inputs to make predictions. We can generalize this approach by repeatedly combining linear models to create a more complex model. In particular, we create several <em>neurons</em>, each of which is a linear model that takes the inputs and produces an output. Each neuron computes a linear combination of the inputs, and then we linearly combine the outputs of the neurons, and so on. The resulting model is a <em>neural network</em>, which combines linear models to create a more complex model.</p>
-<p>We can think of a fully connected layer (all neurons in one layer are connected to all neurons in the next layer) as matrix multiplication, where the matrix <span class="math inline">\(\mathbf{W}^{(\ell)} \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}}\)</span> is the weight matrix and <span class="math inline">\(\mathbf{x} \in \mathbb{R}^{d_\text{in}}\)</span> is the input to the <span class="math inline">\(\ell\)</span>th layer. Then multiplying several weight matrices together gives <span class="math display">\[
-f(\mathbf{x}) = \mathbf{W}^{(k)} \mathbf{W}^{(k-1)} \cdots \mathbf{W}^{(1)} \mathbf{x}
-\]</span> where <span class="math inline">\(k\)</span> is the number of layers in the neural network. But, there’s an issue with this approach: the output is still a linear combination of the inputs, which means that the model is still linear. Put differently, we could just multiply all the weight matrices together to get a single weight matrix <span class="math inline">\(\mathbf{W} = \mathbf{W}_k \mathbf{W}_{k-1} \cdots \mathbf{W}_1\)</span> before ever seeing the input <span class="math inline">\(\mathbf{x}\)</span>. Our solution is to add a <em>non-linear activation function</em> after each layer. Formally, we apply activation functions <span class="math inline">\(\sigma: \mathbb{R} \to \mathbb{R}\)</span> element-wise to the output of each layer. Examples of common activation functions include:</p>
-<ul>
-<li><p><strong>ReLU (Rectified Linear Unit):</strong> <span class="math inline">\(\sigma(x) = \max(0, x)\)</span>, which is a piecewise linear function that is <span class="math inline">\(0\)</span> for negative inputs and linear for positive inputs.</p></li>
-<li><p><strong>Sigmoid:</strong> <span class="math inline">\(\sigma(x) = \frac{1}{1 + e^{-x}}\)</span>, which is a smooth function that maps inputs to the range <span class="math inline">\((0, 1)\)</span>.</p></li>
-<li><p><strong>Tanh (Hyperbolic Tangent):</strong> <span class="math inline">\(\sigma(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}\)</span>, which is another smooth function that maps inputs to the range <span class="math inline">\((-1, 1)\)</span>.</p></li>
-</ul>
-<p>Now we can write the output of the neural network as <span class="math display">\[
-f(\mathbf{x}) = \sigma(\mathbf{W}_k \sigma(\mathbf{W}_{k-1} \cdots \sigma(\mathbf{W}_1 \mathbf{x}))).
-\]</span> Thanks to the non-linear activation functions, the output is no longer a linear combination of the inputs, but rather a complex function that can capture non-linear relationships between the inputs and outputs. Neural networks are so complex, in fact, that we don’t really understand how they work. But we <em>can</em> still apply gradient descent. In summary, we can think of neural networks in following empirical risk minimization formulation:</p>
-<ul>
-<li><p><strong>Model Class:</strong> The model class is the set of neural networks with a given architecture (type of layer, number of layers, number of neurons per layer, and activation function).</p></li>
-<li><p><strong>Loss:</strong> The loss function is the mean squared error loss.</p></li>
-<li><p><strong>Optimizer:</strong> The optimizer is gradient descent.</p></li>
-</ul>
 
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

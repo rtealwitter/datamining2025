@@ -1,11 +1,10 @@
 ---
-title: "**Logistic Regression and Neural Networks**"
+title: "**Kernel Methods and Neural Networks**"
 format:
   html:
     toc: true
     math: true
 ---
-
 
 ## Neural Networks
 

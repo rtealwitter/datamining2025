@@ -1,0 +1,7 @@
+---
+title: "**Kernel Methods and Neural Networks**"
+format:
+  html:
+    toc: true
+    math: true
+---
