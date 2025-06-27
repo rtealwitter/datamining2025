@@ -10,7 +10,7 @@ Instead of predicting a continuous value, there are many applications where we w
 
 ## Probability
 
-Before we can build a classification model, we need to understand the concept of probability. Probability is a measure of how likely an event is to occur.
+We will review some basic concepts of probability that are useful for understanding classification models. We will also introduce Bayes' Rule, and see how useful it can be for making predictions.
 
 Let $A$ and $B$ be two events. For example, $A$ could be the event that it rains tomorrow, and $B$ could be the event that I wear a raincoat tomorrow.
 We will use the following notation:  
@@ -25,11 +25,15 @@ Let's see it in a Venn diagram.
 
 We can reason through several properties of probabilities.
 
-* **Probability Range** The probability of an event is always between 0 and 1, inclusive: $0 \leq \Pr(A) \leq 1$. An event with probability 0 is impossible, while an event with probability 1 is certain to occur.
+* **Probability Range** The probability of an event is always between 0 and 1, inclusive: $0 \leq \Pr(A) \leq 1$. An event with probability 0 never occurs, while an event with probability 1 is certain to occur.
 
 * **Conditional Probabilities** We can write the probability of both events $A$ and $B$ occurring in terms of conditional probabilities:
   $$\Pr(A \cap B) = \Pr(A | B) \Pr(B) = \Pr(B | A) \Pr(A).$$
   This means that the probability of both events occurring can be expressed as the product of the probability of one event given the other and the probability of the other event.
+
+* **Union of Events** The probability that either event $A$ or event $B$ occurs is given by:
+  $$\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B).$$
+  This means that the probability of either event occurring is the sum of the probabilities of each event minus the probability of both events occurring together, to avoid double counting.
 
 * **Complement Rule** The *complement* of an event $A$ is the event that $A$ does not occur, denoted as $\neg A$. Since either $A$ occurs or $\neg A$ occurs, we have that $Pr(A) + \Pr(\neg A) = 1$. Rearranging this gives us that $\Pr(\neg A) = 1 - \Pr(A)$.
 
@@ -37,13 +41,101 @@ We can reason through several properties of probabilities.
 
 We will often model random events with *random variables*. A random variable is a function that maps outcomes to real numbers. For example, we could define a random variable $X$ that takes the outcome of a die roll and maps it to the number on the die. The probability distribution of a random variable describes the probabilities of each possible outcome. In our die example, if we roll a fair six-sided die, the probability distribution of the random variable $X$ is given by $\Pr(X = x) = \frac{1}{6}$ for $x \in \{1, 2, 3, 4, 5, 6\}$.
 
-A particularly useful rule in machine learning is **Bayes' Rule**, which allows us to more easily compute conditional probabilities. Bayes' Rule states that
+**Bayes' Rule** A particularly useful rule in machine learning is **Bayes' Rule**, which allows us to more easily compute conditional probabilities. Formally, Bayes' Rule states that for any two events $A$ and $B$ with $\Pr(B) > 0$,
 $$\Pr(A | B) = \frac{\Pr(B | A) \Pr(A)}{\Pr(B)}.$$
 
 Based on what we have so far learned about probability, can you prove Bayes' Rule?
 
 ### Maximum A Posteriori (MAP) Estimation
 
+When we justified the mean squared error loss for regression, we said that it was the maximum likelihood estimate (MLE) of the parameters of a linear model. We can extend this idea to classification models as well.
+Suppose we have a *binary classification* problem, where we want to predict whether the random variable $Y=0$ or $Y=1$.
+We observe evidence $\mathbf{X} = \mathbf{x}$, e.g., $\mathbf{X}$ is the random variable that takes on the value of the features of an email, and we want to predict whether the email is spam or not.
+We will compare the posteriors
+$$\Pr(Y = 1 | \mathbf{X} = \mathbf{x})$$
+and
+$$\Pr(Y = 0 | \mathbf{X} = \mathbf{x})$$
+to determine which class is more likely given the evidence.
+
+However, it's not immediately clear how to compute these probabilities.
+Luckily, we can use Bayes' Rule to rewrite the posteriors.
+Without loss of generality, consider the event that $Y = 1$.
+Then
+$$
+\begin{align*}
+\Pr(Y = 1 | \mathbf{X} = \mathbf{x})
+&= \frac{\Pr(\mathbf{X} = \mathbf{x} | Y = 1) \Pr(Y = 1)}{\Pr(\mathbf{X} = \mathbf{x})} \\
+&= \frac{\textnormal{likelihood} \cdot \textnormal{prior}}{\textnormal{evidence}}
+\end{align*}.
+$$
+
+Let's get some familiarity through a medical example.
+Suppose we have a medical test that can detect whether a patient has a particular disease.
+The disease is rare, affecting only 1% of the population.
+The test is unfortunately not perfect: it has a false positive rate of 5% and a false negative rate of 10%.
+Suppose $X=1$ i.e., the test is positive.
+Is it more likely that the patient has the disease or not?
+
+In this medical example, we were explicitly given the likelihood of the disease. What can we do when our only information is the labelled data?
+
 ### Naive Bayes Classifier
 
+The **Naive Bayes Classifier** is a simple yet effective classification algorithm that uses Bayes' Rule to make predictions. The key assumption of the Naive Bayes Classifier is that the features are conditionally independent given the class label. This means that the presence or absence of a feature does not affect the presence or absence of another feature, given the class label.
+
+Let's see an example with a spam classifier.
+Suppose we have a dataset of emails, each labelled as either spam or not spam. We want to predict whether a new email is spam or not based on its features, such as the presence of certain words.
+In particular, let $\mathbf{X} = (X_1, X_2, \ldots, X_d)$ be the features of the email, where $X_i$ is a binary variable indicating whether the $i$th word is present in the email.
+Let $p_i^{(1)} = \Pr(X_i=1 | Y=0)$ be the probability that the $i$th word is present in a spam email, while $p_i^{(0)} = \Pr(X_i=1 | Y=1)$ be the probability that the $i$th word is present in a non-spam email.
+We will use the independence assumption to compute the likelihood of the features given the class label.
+For example,
+$$
+\Pr(\mathbf{X} = (0, 1, 0, 0, 1) | Y = 1) =
+(1-p_1^{(1)}) p_2^{(1)} (1-p_3^{(1)}) (1-p_4^{(1)}) p_5^{(1)}.
+$$
+
+Beyond the likelihood, we also need the prior probability of the class label.
+This is even easier to compute, e.g., we can simply compute the fraction of spam and non-spam emails in the training set.
+Then we can use Bayes' Rule to determine whether the posterior probability of the email being spam is greater than the posterior probability of the email being non-spam.
+
+More formally, we can use the Naive Bayes Classifier by
+
+1. Computing $\Pr(Y = 1)$ and $\Pr(Y = 0)$ from the training data.
+
+2. Computing the observed probabilities $\Pr(X_i = 1 | Y = 1)$ and $\Pr(X_i = 1 | Y = 0)$ for each feature $X_i$ from the training data.
+
+3. Computing the likelihoods $\Pr(\mathbf{X} = \mathbf{x} | Y=1)$ and $\Pr(\mathbf{X} = \mathbf{x} | Y=0)$ using the independence assumption e.g.,
+$$
+\Pr(\mathbf{X} = \mathbf{x} | Y=1) = \prod_{i=1}^d \Pr(X_i = x_i | Y=1).
+$$
+
+4. Using Bayes' Rule to compute the posteriors, and predicting the class label $y \in \{0,1\}$ with the highest posterior probability:
+$$
+\Pr(Y = y | \mathbf{X} = \mathbf{x}) = \frac{\Pr(\mathbf{X} = \mathbf{x} | Y=y) \Pr(Y=y)}{\Pr(\mathbf{X} = \mathbf{x})}.
+$$
+
 ## Logistic Regression
+
+Using basic probability, we saw how the Naive Bayes Classifier can be used to make predictions.
+However, the Naive Bayes Classifier makes a strong independence assumption that is often violated in practice.
+Now, we will see how we can generalize linear regression to classification problems.
+
+Our setup will be the standard supervised learning setting, where we have labelled data $(\mathbf{x}^{(1)}, y^{(1)}), \ldots, (\mathbf{x}^{(n)}, y^{(n)})$, for $\mathbf{x}^{(i)} \in \mathbb{R}^d$ is the feature vector for the $i$th example. Instead of predicting a continuous value $y^{(i)} \in \mathbb{R}$, we want to predict a binary value $y^{(i)} \in \{0, 1\}$.
+We can use the same linear model as before, i.e., we will predict the output as $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$, where $\mathbf{w} \in \mathbb{R}^d$ is the weight vector.
+However, now we run into an issue: the output of the linear model can take on any real value, but we want to predict a binary value.
+
+Attempt #1: We could simply threshold the output of the linear model, i.e., predict $y^{(i)} = 1$ if $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle > 0$ and $y^{(i)} = 0$ otherwise. The loss could be the difference between the predicted value and the true value, i.e., $\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n |y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle|^2$. However, this loss is not differentiable, so we cannot use gradient descent to optimize it.
+
+Attempt #2: We could use the mean squared error loss, i.e., $\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n (y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)^2$. This loss is differentiable, but it does not work well for classification problems: if we have a large positive value for $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$, the loss will be large even if $y^{(i)} = 1$.
+
+Attempt #3: We can apply the *sigmoid function* to the output of the linear model to map it to the range $(0, 1)$, i.e., we will predict $f(\mathbf{x}^{(i)}) = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)$, where $\sigma(z) = \frac{1}{1 + e^{-z}}$ is the sigmoid function. The sigmoid function is a smooth, non-linear function that maps any real number to the range $(0, 1)$. We can then interpret $f(\mathbf{x}^{(i)})$ as the probability that $y^{(i)} = 1$ given the features $\mathbf{x}^{(i)}$.
+
+To train our model, we need a loss function that measures how well our predictions match the true labels. A common choice is the *binary cross-entropy loss*, which is defined as
+$$\mathcal{L}(\mathbf{w}) = -\frac{1}{n} \sum_{i=1}^n \left[y^{(i)} \log(f(\mathbf{x}^{(i)})) + (1 - y^{(i)}) \log(1 - f(\mathbf{x}^{(i)}))\right].$$
+This loss function measures the distance (in some sense) between the predicted probabilities and the true labels. It is differentiable, so we can use gradient descent to optimize it.
+
+[image here] Comparing the predictions by $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$
+
+[image here] Comparing the loss when $y=1$ by $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$
+
+### Non-linear Transformations
+

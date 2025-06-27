@@ -162,7 +162,7 @@ output:
   <tr>
     <td>Week 15 (12/2 and 12/4)</td>
     <td><i>Project Preparation<i></td>
-    <td><i>NeurIPS (No Class)<i></td>
+    <td><i>Project Preparation (No Class)<i></td>
     <td></td>
     <td></td>
     <td></td>
