@@ -170,6 +170,9 @@ window.Quarto = {
   <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link" data-scroll-target="#logistic-regression">Logistic Regression</a>
   <ul class="collapse">
   <li><a href="#non-linear-transformations" id="toc-non-linear-transformations" class="nav-link" data-scroll-target="#non-linear-transformations">Non-linear Transformations</a></li>
+  <li><a href="#measuring-error-in-classification" id="toc-measuring-error-in-classification" class="nav-link" data-scroll-target="#measuring-error-in-classification">Measuring Error in Classification</a></li>
+  <li><a href="#multiple-classes" id="toc-multiple-classes" class="nav-link" data-scroll-target="#multiple-classes">Multiple Classes</a></li>
+  <li><a href="#optimization" id="toc-optimization" class="nav-link" data-scroll-target="#optimization">Optimization</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -207,14 +210,12 @@ window.Quarto = {
 • <span class="math inline">\(\Pr(A | B)\)</span> represents the probability that event <span class="math inline">\(A\)</span> occurs given that event <span class="math inline">\(B\)</span> has occurred.</p>
 <p>Let’s see it in a Venn diagram.</p>
 <p>[image here]</p>
-<p>We can reason through several properties of probabilities.</p>
-<ul>
-<li><p><strong>Probability Range</strong> The probability of an event is always between 0 and 1, inclusive: <span class="math inline">\(0 \leq \Pr(A) \leq 1\)</span>. An event with probability 0 never occurs, while an event with probability 1 is certain to occur.</p></li>
-<li><p><strong>Conditional Probabilities</strong> We can write the probability of both events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occurring in terms of conditional probabilities: <span class="math display">\[\Pr(A \cap B) = \Pr(A | B) \Pr(B) = \Pr(B | A) \Pr(A).\]</span> This means that the probability of both events occurring can be expressed as the product of the probability of one event given the other and the probability of the other event.</p></li>
-<li><p><strong>Union of Events</strong> The probability that either event <span class="math inline">\(A\)</span> or event <span class="math inline">\(B\)</span> occurs is given by: <span class="math display">\[\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B).\]</span> This means that the probability of either event occurring is the sum of the probabilities of each event minus the probability of both events occurring together, to avoid double counting.</p></li>
-<li><p><strong>Complement Rule</strong> The <em>complement</em> of an event <span class="math inline">\(A\)</span> is the event that <span class="math inline">\(A\)</span> does not occur, denoted as <span class="math inline">\(\neg A\)</span>. Since either <span class="math inline">\(A\)</span> occurs or <span class="math inline">\(\neg A\)</span> occurs, we have that <span class="math inline">\(Pr(A) + \Pr(\neg A) = 1\)</span>. Rearranging this gives us that <span class="math inline">\(\Pr(\neg A) = 1 - \Pr(A)\)</span>.</p></li>
-<li><p><strong>Independence</strong> Two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <em>independent</em> if the occurrence of one event does not affect the probability of the other event occurring. In this case, we have that <span class="math inline">\(\Pr(A \cap B) = \Pr(A) \Pr(B)\)</span>. Equivalently, <span class="math inline">\(\Pr(A | B) = \Pr(A)\)</span> and <span class="math inline">\(\Pr(B | A) = \Pr(B)\)</span>, do you see why this follows?</p></li>
-</ul>
+<p>We can reason through several properties of probabilities:</p>
+<p><strong>Probability Range</strong> The probability of an event is always between 0 and 1, inclusive: <span class="math inline">\(0 \leq \Pr(A) \leq 1\)</span>. An event with probability 0 never occurs, while an event with probability 1 is certain to occur.</p>
+<p><strong>Conditional Probabilities</strong> We can write the probability of both events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occurring in terms of conditional probabilities: <span class="math display">\[\Pr(A \cap B) = \Pr(A | B) \Pr(B) = \Pr(B | A) \Pr(A).\]</span> This means that the probability of both events occurring can be expressed as the product of the probability of one event given the other and the probability of the other event.</p>
+<p><strong>Union of Events</strong> The probability that either event <span class="math inline">\(A\)</span> or event <span class="math inline">\(B\)</span> occurs is given by: <span class="math display">\[\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B).\]</span> This means that the probability of either event occurring is the sum of the probabilities of each event minus the probability of both events occurring together, to avoid double counting.</p>
+<p><strong>Complement Rule</strong> The <em>complement</em> of an event <span class="math inline">\(A\)</span> is the event that <span class="math inline">\(A\)</span> does not occur, denoted as <span class="math inline">\(\neg A\)</span>. Since either <span class="math inline">\(A\)</span> occurs or <span class="math inline">\(\neg A\)</span> occurs, we have that <span class="math inline">\(Pr(A) + \Pr(\neg A) = 1\)</span>. Rearranging this gives us that <span class="math inline">\(\Pr(\neg A) = 1 - \Pr(A)\)</span>.</p>
+<p><strong>Independence</strong> Two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <em>independent</em> if the occurrence of one event does not affect the probability of the other event occurring. In this case, we have that <span class="math inline">\(\Pr(A \cap B) = \Pr(A) \Pr(B)\)</span>. Equivalently, <span class="math inline">\(\Pr(A | B) = \Pr(A)\)</span> and <span class="math inline">\(\Pr(B | A) = \Pr(B)\)</span>, do you see why this follows?</p>
 <p>We will often model random events with <em>random variables</em>. A random variable is a function that maps outcomes to real numbers. For example, we could define a random variable <span class="math inline">\(X\)</span> that takes the outcome of a die roll and maps it to the number on the die. The probability distribution of a random variable describes the probabilities of each possible outcome. In our die example, if we roll a fair six-sided die, the probability distribution of the random variable <span class="math inline">\(X\)</span> is given by <span class="math inline">\(\Pr(X = x) = \frac{1}{6}\)</span> for <span class="math inline">\(x \in \{1, 2, 3, 4, 5, 6\}\)</span>.</p>
 <p><strong>Bayes’ Rule</strong> A particularly useful rule in machine learning is <strong>Bayes’ Rule</strong>, which allows us to more easily compute conditional probabilities. Formally, Bayes’ Rule states that for any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> with <span class="math inline">\(\Pr(B) &gt; 0\)</span>, <span class="math display">\[\Pr(A | B) = \frac{\Pr(B | A) \Pr(A)}{\Pr(B)}.\]</span></p>
 <p>Based on what we have so far learned about probability, can you prove Bayes’ Rule?</p>
@@ -254,16 +255,44 @@ window.Quarto = {
 </section>
 <section id="logistic-regression" class="level2">
 <h2 class="anchored" data-anchor-id="logistic-regression">Logistic Regression</h2>
-<p>Using basic probability, we saw how the Naive Bayes Classifier can be used to make predictions. However, the Naive Bayes Classifier makes a strong independence assumption that is often violated in practice. Now, we will see how we can generalize linear regression to classification problems.</p>
-<p>Our setup will be the standard supervised learning setting, where we have labelled data <span class="math inline">\((\mathbf{x}^{(1)}, y^{(1)}), \ldots, (\mathbf{x}^{(n)}, y^{(n)})\)</span>, for <span class="math inline">\(\mathbf{x}^{(i)} \in \mathbb{R}^d\)</span> is the feature vector for the <span class="math inline">\(i\)</span>th example. Instead of predicting a continuous value <span class="math inline">\(y^{(i)} \in \mathbb{R}\)</span>, we want to predict a binary value <span class="math inline">\(y^{(i)} \in \{0, 1\}\)</span>. We can use the same linear model as before, i.e., we will predict the output as <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span>, where <span class="math inline">\(\mathbf{w} \in \mathbb{R}^d\)</span> is the weight vector. However, now we run into an issue: the output of the linear model can take on any real value, but we want to predict a binary value.</p>
+<p>With a little probability, we saw how the Naive Bayes Classifier can be used to make predictions. However, the Naive Bayes Classifier makes a strong independence assumption that is often violated in practice. As an alternative approach to classification problems, we will see how we can generalize linear regression, with a little non-linearity.</p>
+<p>Our setup will be the standard supervised learning setting, where we have labelled data <span class="math inline">\((\mathbf{x}^{(1)}, y^{(1)}), \ldots, (\mathbf{x}^{(n)}, y^{(n)})\)</span>, for <span class="math inline">\(\mathbf{x}^{(i)} \in \mathbb{R}^d\)</span> the feature vector for the <span class="math inline">\(i\)</span>th example. However, unlike regression where we predict a continuous value <span class="math inline">\(y^{(i)} \in \mathbb{R}\)</span>, we will now predict a binary value <span class="math inline">\(y^{(i)} \in \{0, 1\}\)</span>. We can use the same linear model as before, i.e., we will predict the output as <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span>, where <span class="math inline">\(\mathbf{w} \in \mathbb{R}^d\)</span> is the weight vector. But, we run into an issue: the output of the linear model can take on any real value, but we want to predict a binary value.</p>
 <p>Attempt #1: We could simply threshold the output of the linear model, i.e., predict <span class="math inline">\(y^{(i)} = 1\)</span> if <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle &gt; 0\)</span> and <span class="math inline">\(y^{(i)} = 0\)</span> otherwise. The loss could be the difference between the predicted value and the true value, i.e., <span class="math inline">\(\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n |y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle|^2\)</span>. However, this loss is not differentiable, so we cannot use gradient descent to optimize it.</p>
 <p>Attempt #2: We could use the mean squared error loss, i.e., <span class="math inline">\(\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n (y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)^2\)</span>. This loss is differentiable, but it does not work well for classification problems: if we have a large positive value for <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span>, the loss will be large even if <span class="math inline">\(y^{(i)} = 1\)</span>.</p>
-<p>Attempt #3: We can apply the <em>sigmoid function</em> to the output of the linear model to map it to the range <span class="math inline">\((0, 1)\)</span>, i.e., we will predict <span class="math inline">\(f(\mathbf{x}^{(i)}) = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)\)</span>, where <span class="math inline">\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</span> is the sigmoid function. The sigmoid function is a smooth, non-linear function that maps any real number to the range <span class="math inline">\((0, 1)\)</span>. We can then interpret <span class="math inline">\(f(\mathbf{x}^{(i)})\)</span> as the probability that <span class="math inline">\(y^{(i)} = 1\)</span> given the features <span class="math inline">\(\mathbf{x}^{(i)}\)</span>.</p>
-<p>To train our model, we need a loss function that measures how well our predictions match the true labels. A common choice is the <em>binary cross-entropy loss</em>, which is defined as <span class="math display">\[\mathcal{L}(\mathbf{w}) = -\frac{1}{n} \sum_{i=1}^n \left[y^{(i)} \log(f(\mathbf{x}^{(i)})) + (1 - y^{(i)}) \log(1 - f(\mathbf{x}^{(i)}))\right].\]</span> This loss function measures the distance (in some sense) between the predicted probabilities and the true labels. It is differentiable, so we can use gradient descent to optimize it.</p>
+<p>Attempt #3: We can apply the <em>sigmoid function</em> to the output of the linear model to map it to the range <span class="math inline">\((0, 1)\)</span>, i.e., we will predict <span class="math inline">\(f(\mathbf{x}^{(i)}) = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)\)</span>, where <span class="math inline">\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</span> is the sigmoid function. The sigmoid function is a smooth, non-linear function that maps any real number to the range <span class="math inline">\((0, 1)\)</span>. We can then interpret <span class="math inline">\(f(\mathbf{x}^{(i)})\)</span> as the probability that <span class="math inline">\(y^{(i)} = 1\)</span> given the features <span class="math inline">\(\mathbf{x}^{(i)}\)</span>. If we need to report a class label, we can threshold the predicted probability, e.g., predict <span class="math inline">\(y^{(i)} = 1\)</span> if <span class="math inline">\(f(\mathbf{x}^{(i)}) &gt; \frac12\)</span> and <span class="math inline">\(y^{(i)} = 0\)</span> otherwise.</p>
+<p>To train our model, we need a loss function that measures how well our predicted probabilities match the true labels. A common choice is the <em>binary cross-entropy loss</em>, which is defined as <span class="math display">\[\mathcal{L}(\mathbf{w}) = -\frac{1}{n} \sum_{i=1}^n \left[y^{(i)} \log(f(\mathbf{x}^{(i)})) + (1 - y^{(i)}) \log(1 - f(\mathbf{x}^{(i)}))\right].\]</span> This loss function measures the distance (in a sense we’ll explore later in the course) between the predicted probabilities and the true labels. It is differentiable, so we can use gradient descent to optimize it.</p>
 <p>[image here] Comparing the predictions by <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span></p>
 <p>[image here] Comparing the loss when <span class="math inline">\(y=1\)</span> by <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span></p>
 <section id="non-linear-transformations" class="level3">
 <h3 class="anchored" data-anchor-id="non-linear-transformations">Non-linear Transformations</h3>
+<p>Often, our data is not linearly separable, i.e., we cannot draw a straight line to separate the two classes. In this case, we can use non-linear transformations to map the data to a higher-dimensional space, where it <em>is</em> linearly separable. For example, as we saw for linear regression, we can add polynomial features to the data.</p>
+<p>[image here] Circle data that is not linearly separable, and the cone transformation that makes it linearly separable.</p>
+<p>It is not a priori clear which non-linear transformation will work best for a given dataset. In several lectures, we will explore how to use kernel methods to implicitly map the data to a higher-dimensional space, which captures many of the non-linear transformations we might want to use.</p>
+</section>
+<section id="measuring-error-in-classification" class="level3">
+<h3 class="anchored" data-anchor-id="measuring-error-in-classification">Measuring Error in Classification</h3>
+<p>The simplest way to measure the error of a classification model is to compute the <em>error rate</em>, which is the fraction of examples that are misclassified. For example, if we have <span class="math inline">\(n\)</span> examples and our model misclassifies <span class="math inline">\(k\)</span> of them, the error rate is <span class="math inline">\(\frac{k}{n}\)</span>.</p>
+<p>However, the error rate does not take into account <em>which</em> points are misclassified. We will often break down the accuracy of a classification model into four categories:<br>
+• <strong>True Positives (TP):</strong> The model correctly predicts a positive class.<br>
+• <strong>True Negatives (TN):</strong> The model correctly predicts a negative class.<br>
+• <strong>False Positives (FP):</strong> The model incorrectly predicts a positive class when the true class is negative.<br>
+• <strong>False Negatives (FN):</strong> The model incorrectly predicts a negative class when the true class is positive.</p>
+<p>[image here] Venn diagram of true positives, true negatives, false positives, and false negatives.</p>
+<p>The raw counts of these four categories can be summarized in a <strong>confusion matrix</strong>. The confusion matrix is a square matrix with dimensions equal to the number of classes, where the rows represent the true classes and the columns represent the predicted classes.</p>
+<p>But, these raw counts themselves are not very informative.</p>
+<p>We often report the <strong>True Positive Rate (TPR)</strong>, also known as <em>recall</em>, which is the fraction of true positives out of all actual positives: <span class="math inline">\(\text{TPR} = \frac{\text{TP}}{\text{TP} + \text{FN}}.\)</span> The TPR measures how well the model identifies positive examples (higher is better).</p>
+<p>We also report the <strong>False Positive Rate (FPR)</strong>, which is the fraction of false positives out of all actual negatives: <span class="math inline">\(\text{FPR} = \frac{\text{FP}}{\text{FP} + \text{TN}}.\)</span> The FPR measures how often the model incorrectly identifies negative examples as positive (lower is better).</p>
+<p>Finally, we can report the <strong>Precision</strong>, which is the fraction of true positives out of all predicted positives: <span class="math inline">\(\text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}.\)</span> Precision measures how well the model identifies positive examples among all predicted positives (higher is better).</p>
+<p>If we have a model that does not achieve the desired TPR or FPR, we have a hidden lever we can pull: the threshold for predicting a positive class. By default, we predict a positive class if the predicted probability is greater than <span class="math inline">\(\frac12\)</span>. But, we can change this threshold to an arbitrary value <span class="math inline">\(\tau \in [0, 1]\)</span>. Increasing the threshold can only decrease the TPR, since we are less likely to predict a positive class; simultaneously, the FPR can only increase, since we are more likely to predict a negative class.</p>
+<p>[image here] 2D plots with linearly separable data, with different thresholds <span class="math inline">\(\tau\)</span>.</p>
+<p>We can visualize the trade-off between TPR and FPR by plotting the <strong>Receiver Operating Characteristic (ROC) curve</strong>. The ROC curve is a plot of the TPR against the FPR for different threshold values <span class="math inline">\(\tau\)</span>. Because a higher TPR is better and a lower FPR is better, we want the ROC curve to be as close to the top-left corner as possible. The area under the ROC curve (AUC) is a single number that summarizes the performance of the model across all threshold values. A model with an AUC of 1 is perfect, while a model with an AUC of 0.5 is no better than random guessing.</p>
+<p>[image here] ROC curve with different thresholds <span class="math inline">\(\tau\)</span>.</p>
+</section>
+<section id="multiple-classes" class="level3">
+<h3 class="anchored" data-anchor-id="multiple-classes">Multiple Classes</h3>
+</section>
+<section id="optimization" class="level3">
+<h3 class="anchored" data-anchor-id="optimization">Optimization</h3>
 
 
 
@@ -271,6 +300,28 @@ window.Quarto = {
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const wordsPerMinute = 200;
+  const text = document.body.innerText;
+  const words = text.trim().split(/\s+/).length;
+  const readingTime = Math.ceil(words / wordsPerMinute);
+
+  const readTimeEl = document.createElement("div");
+  readTimeEl.innerText = `⏱️ ${readingTime} min read`;
+
+  // Style it to appear centered
+  readTimeEl.style.fontSize = "0.9em";
+  readTimeEl.style.margin = "1em auto";
+  readTimeEl.style.textAlign = "left";
+  readTimeEl.style.width = "100%";
+
+  const title = document.querySelector("h1");
+  if (title) {
+    title.parentNode.insertBefore(readTimeEl, title.nextSibling);
+  }
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
