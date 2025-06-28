@@ -14,25 +14,23 @@ We will review some basic concepts of probability that are useful for understand
 Let $A$ and $B$ be two events. For example, $A$ could be the event that it rains tomorrow, and $B$ could be the event that I wear a raincoat tomorrow.
 We will use the following notation:  
 • $\Pr(A)$ represents the probability that event $A$ occurs,  
-• $\Pr(A \cap B)$ represents the probability that both events $A$ and $B$ occur,  
 • $\Pr(A \cup B)$ represents the probability that either event $A$ or event $B$ occurs,  
+• $\Pr(A \cap B)$ represents the probability that both events $A$ and $B$ occur,  
 • $\Pr(A | B)$ represents the probability that event $A$ occurs given that event $B$ has occurred.
 
-Let's see it in a Venn diagram.
-
-[image here]
+<center><img src="images/venn_prob.pdf" width="700"></center>
 
 We can reason through several properties of probabilities:
 
-**Probability Range** The probability of an event is always between 0 and 1, inclusive: $0 \leq \Pr(A) \leq 1$. An event with probability 0 never occurs, while an event with probability 1 is certain to occur.  
+**Probability Range** The probability of an event is always between 0 and 1, i.e., $0 \leq \Pr(A) \leq 1$ for all events $A$. An event with probability 0 never occurs, while an event with probability 1 is certain to occur.  
 
 **Conditional Probabilities** We can write the probability of both events $A$ and $B$ occurring in terms of conditional probabilities:
-  $$\Pr(A \cap B) = \Pr(A | B) \Pr(B) = \Pr(B | A) \Pr(A).$$
-  This means that the probability of both events occurring can be expressed as the product of the probability of one event given the other and the probability of the other event.  
+  $$\Pr(A \cap B) = \Pr(B) \Pr(A | B)  = \Pr(A) \Pr(B | A).$$
+  This means that the probability of both events occurring is the product of the probability of one event and the conditional probability of the other event given that the first event has occurred.
 
 **Union of Events** The probability that either event $A$ or event $B$ occurs is given by:
   $$\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B).$$
-  This means that the probability of either event occurring is the sum of the probabilities of each event minus the probability of both events occurring together, to avoid double counting.  
+  This means that the probability of either event occurring is the sum of the probabilities of each event minus the probability of both events occurring together (we subtract the event that both occur because it is counted twice in the sum).
 
 **Complement Rule** The *complement* of an event $A$ is the event that $A$ does not occur, denoted as $\neg A$. Since either $A$ occurs or $\neg A$ occurs, we have that $Pr(A) + \Pr(\neg A) = 1$. Rearranging this gives us that $\Pr(\neg A) = 1 - \Pr(A)$.  
 
@@ -40,10 +38,10 @@ We can reason through several properties of probabilities:
 
 We will often model random events with *random variables*. A random variable is a function that maps outcomes to real numbers. For example, we could define a random variable $X$ that takes the outcome of a die roll and maps it to the number on the die. The probability distribution of a random variable describes the probabilities of each possible outcome. In our die example, if we roll a fair six-sided die, the probability distribution of the random variable $X$ is given by $\Pr(X = x) = \frac{1}{6}$ for $x \in \{1, 2, 3, 4, 5, 6\}$.
 
-**Bayes' Rule** A particularly useful rule in machine learning is **Bayes' Rule**, which allows us to more easily compute conditional probabilities. Formally, Bayes' Rule states that for any two events $A$ and $B$ with $\Pr(B) > 0$,
+**Bayes' Rule** is a particularly useful rule in machine learning: For any two events $A$ and $B$ with $\Pr(B) > 0$,
 $$\Pr(A | B) = \frac{\Pr(B | A) \Pr(A)}{\Pr(B)}.$$
 
-Based on what we have so far learned about probability, can you prove Bayes' Rule?
+Based on what we have seen so far, can you prove Bayes' Rule?
 
 ### Maximum A Posteriori (MAP) Estimation
 

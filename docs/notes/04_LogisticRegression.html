@@ -197,12 +197,16 @@ window.Quarto = {
 <section id="model-and-loss" class="level3">
 <h3 class="anchored" data-anchor-id="model-and-loss">Model and Loss</h3>
 <p>We’ll explore several attempts to convert our linear model into a binary classifier.</p>
-<p>Attempt #1: We could simply threshold the output of the linear model, i.e., predict <span class="math inline">\(y^{(i)} = 1\)</span> if <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle &gt; 0\)</span> and <span class="math inline">\(y^{(i)} = 0\)</span> otherwise. The loss could be the difference between the predicted value and the true value, i.e., <span class="math inline">\(\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n |y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle|^2\)</span>. However, this loss is not differentiable, so we cannot use gradient descent to optimize it.</p>
+<p>Attempt #1: We could simply apply a step function to the output of the linear model, i.e., predict <span class="math inline">\(y^{(i)} = 1\)</span> if <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle &gt; 0\)</span> and <span class="math inline">\(y^{(i)} = 0\)</span> otherwise. The loss could be the difference between the predicted value and the true value, i.e., <span class="math inline">\(\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n |y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle|\)</span>. However, this loss is not differentiable, so we cannot use gradient descent to optimize it.</p>
 <p>Attempt #2: We could use the mean squared error loss, i.e., <span class="math inline">\(\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n (y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)^2\)</span>. This loss is differentiable, but it does not work well for classification problems: if we have a large positive value for <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span>, the loss will be large even if <span class="math inline">\(y^{(i)} = 1\)</span>.</p>
 <p>Attempt #3: We can apply the <em>sigmoid function</em> to the output of the linear model to map it to the range <span class="math inline">\((0, 1)\)</span>, i.e., we will predict <span class="math inline">\(f(\mathbf{x}^{(i)}) = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)\)</span>, where <span class="math inline">\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</span> is the sigmoid function. The sigmoid function is a smooth, non-linear function that maps any real number to the range <span class="math inline">\((0, 1)\)</span>. We can then interpret <span class="math inline">\(f(\mathbf{x}^{(i)})\)</span> as the probability that <span class="math inline">\(y^{(i)} = 1\)</span> given the features <span class="math inline">\(\mathbf{x}^{(i)}\)</span>. If we need to report a class label, we can threshold the predicted probability, e.g., predict <span class="math inline">\(y^{(i)} = 1\)</span> if <span class="math inline">\(f(\mathbf{x}^{(i)}) &gt; \frac12\)</span> and <span class="math inline">\(y^{(i)} = 0\)</span> otherwise.</p>
+<center>
+<img src="images/classification_outputs.pdf" width="700">
+</center>
 <p>To train our model, we need a loss function that measures how well our predicted probabilities match the true labels. A common choice is the <em>binary cross-entropy loss</em>, which is defined as <span class="math display">\[\mathcal{L}(\mathbf{w}) = - \sum_{i=1}^n \left[y^{(i)} \log(f(\mathbf{x}^{(i)})) + (1 - y^{(i)}) \log(1 - f(\mathbf{x}^{(i)}))\right].\]</span> This loss function measures the distance (in a sense we’ll explore later in the course) between the predicted probabilities and the true labels. It is differentiable, so we can use gradient descent to optimize it.</p>
-<p>[image here] Comparing the predictions by <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span></p>
-<p>[image here] Comparing the loss when <span class="math inline">\(y=1\)</span> by <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span></p>
+<center>
+<img src="images/classification_loss.pdf" width="700">
+</center>
 </section>
 <section id="optimization" class="level3">
 <h3 class="anchored" data-anchor-id="optimization">Optimization</h3>
@@ -240,8 +244,10 @@ x_j^{(i)} \left[\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle) - y^{(i)}\r
 </section>
 <section id="non-linear-transformations" class="level3">
 <h3 class="anchored" data-anchor-id="non-linear-transformations">Non-linear Transformations</h3>
-<p>Often, our data is not linearly separable, i.e., we cannot draw a straight line to separate the two classes. In this case, we can use non-linear transformations to map the data to a higher-dimensional space, where it <em>is</em> linearly separable. For example, as we saw for linear regression, we can add polynomial features to the data.</p>
-<p>[image here] Circle data that is not linearly separable, and the cone transformation that makes it linearly separable.</p>
+<p>Often, our data is not linearly separable, i.e., we cannot draw a straight line to separate the two classes. In this case, we can use non-linear transformations to map the data to a higher-dimensional space, where it <em>is</em> linearly separable. One approach: As we saw for linear regression, we can add polynomial features to the data. In the image below, we add a new feature <span class="math inline">\(x_1^2 + x_2^2\)</span> to the data, which allows us to separate the two classes with a linear decision boundary in the transformed feature space.</p>
+<center>
+<img src="images/classification_transformation.pdf" width="700">
+</center>
 <p>It is not a priori clear which non-linear transformation will work best for a given dataset. In several lectures, we will explore how to use kernel methods to implicitly map the data to a higher-dimensional space, which captures many of the non-linear transformations we might want to use.</p>
 </section>
 <section id="measuring-error-in-binary-classification" class="level3">
@@ -277,7 +283,7 @@ x_j^{(i)} \left[\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle) - y^{(i)}\r
 \end{bmatrix}
 \end{align*}
 \]</span> Softmax applies the exponential function to each element of the vector, and then normalizes the resulting vector so that the sum of the resulting vector is 1. This ensures that the output is a valid probability distribution, where each probability is between 0 and 1 and the sum of all elements is 1.</p>
-<p>The loss function for multi-class classification is the <em>categorical cross-entropy loss</em>, which is a generalization of the binary cross-entropy loss. <span class="math display">\[
+<p>The loss function for multi-class classification is the <em>cross-entropy loss</em>, which is a generalization of the binary cross-entropy loss. <span class="math display">\[
 \begin{align*}
 \mathcal{L}(\mathbf{w}) &amp;= - \sum_{i=1}^n \sum_{j=1}^k \mathbb{1}[y^{(i)}=j] \log\left(f_j(\mathbf{x}^{(i)})\right),
 \end{align*}

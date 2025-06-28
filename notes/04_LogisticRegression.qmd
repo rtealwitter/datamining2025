@@ -20,19 +20,19 @@ But, we run into an issue: the output of the linear model can take on any real v
 
 We'll explore several attempts to convert our linear model into a binary classifier.
 
-Attempt #1: We could simply threshold the output of the linear model, i.e., predict $y^{(i)} = 1$ if $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle > 0$ and $y^{(i)} = 0$ otherwise. The loss could be the difference between the predicted value and the true value, i.e., $\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n |y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle|^2$. However, this loss is not differentiable, so we cannot use gradient descent to optimize it.
+Attempt #1: We could simply apply a step function to the output of the linear model, i.e., predict $y^{(i)} = 1$ if $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle > 0$ and $y^{(i)} = 0$ otherwise. The loss could be the difference between the predicted value and the true value, i.e., $\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n |y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle|$. However, this loss is not differentiable, so we cannot use gradient descent to optimize it.
 
 Attempt #2: We could use the mean squared error loss, i.e., $\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n (y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)^2$. This loss is differentiable, but it does not work well for classification problems: if we have a large positive value for $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$, the loss will be large even if $y^{(i)} = 1$.
 
 Attempt #3: We can apply the *sigmoid function* to the output of the linear model to map it to the range $(0, 1)$, i.e., we will predict $f(\mathbf{x}^{(i)}) = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)$, where $\sigma(z) = \frac{1}{1 + e^{-z}}$ is the sigmoid function. The sigmoid function is a smooth, non-linear function that maps any real number to the range $(0, 1)$. We can then interpret $f(\mathbf{x}^{(i)})$ as the probability that $y^{(i)} = 1$ given the features $\mathbf{x}^{(i)}$. If we need to report a class label, we can threshold the predicted probability, e.g., predict $y^{(i)} = 1$ if $f(\mathbf{x}^{(i)}) > \frac12$ and $y^{(i)} = 0$ otherwise.
 
+<center><img src="images/classification_outputs.pdf" width="700"></center>
+
 To train our model, we need a loss function that measures how well our predicted probabilities match the true labels. A common choice is the *binary cross-entropy loss*, which is defined as
 $$\mathcal{L}(\mathbf{w}) = - \sum_{i=1}^n \left[y^{(i)} \log(f(\mathbf{x}^{(i)})) + (1 - y^{(i)}) \log(1 - f(\mathbf{x}^{(i)}))\right].$$
 This loss function measures the distance (in a sense we'll explore later in the course) between the predicted probabilities and the true labels. It is differentiable, so we can use gradient descent to optimize it.
 
-[image here] Comparing the predictions by $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$
-
-[image here] Comparing the loss when $y=1$ by $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$
+<center><img src="images/classification_loss.pdf" width="700"></center>
 
 ### Optimization
 
@@ -91,9 +91,10 @@ Instead of exact optimization, we will use gradient descent!
 
 Often, our data is not linearly separable, i.e., we cannot draw a straight line to separate the two classes.
 In this case, we can use non-linear transformations to map the data to a higher-dimensional space, where it *is* linearly separable.
-For example, as we saw for linear regression, we can add polynomial features to the data.
+One approach: As we saw for linear regression, we can add polynomial features to the data.
+In the image below, we add a new feature $x_1^2 + x_2^2$ to the data, which allows us to separate the two classes with a linear decision boundary in the transformed feature space.
 
-[image here] Circle data that is not linearly separable, and the cone transformation that makes it linearly separable.
+<center><img src="images/classification_transformation.pdf" width="700"></center>
 
 It is not a priori clear which non-linear transformation will work best for a given dataset.
 In several lectures, we will explore how to use kernel methods to implicitly map the data to a higher-dimensional space, which captures many of the non-linear transformations we might want to use.
@@ -166,7 +167,7 @@ $$
 Softmax applies the exponential function to each element of the vector, and then normalizes the resulting vector so that the sum of the resulting vector is 1.
 This ensures that the output is a valid probability distribution, where each probability is between 0 and 1 and the sum of all elements is 1.
 
-The loss function for multi-class classification is the *categorical cross-entropy loss*, which is a generalization of the binary cross-entropy loss.
+The loss function for multi-class classification is the *cross-entropy loss*, which is a generalization of the binary cross-entropy loss.
 $$
 \begin{align*}
 \mathcal{L}(\mathbf{w}) &= - \sum_{i=1}^n \sum_{j=1}^k \mathbb{1}[y^{(i)}=j] \log\left(f_j(\mathbf{x}^{(i)})\right),
