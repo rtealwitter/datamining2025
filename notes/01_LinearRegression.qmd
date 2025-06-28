@@ -4,6 +4,7 @@ format:
   html:
     toc: true
     math: true
+    include-after-body: readtime.html
 ---
 
 ## Supervised Learning
