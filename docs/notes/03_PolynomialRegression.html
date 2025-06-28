@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>problems</title>
+<title>Polynomial Regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -157,39 +157,112 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#polynomial-regression" id="toc-polynomial-regression" class="nav-link active" data-scroll-target="#polynomial-regression">Polynomial Regression</a>
+  <ul class="collapse">
+  <li><a href="#generalization-error" id="toc-generalization-error" class="nav-link" data-scroll-target="#generalization-error">Generalization Error</a></li>
+  <li><a href="#regularization" id="toc-regularization" class="nav-link" data-scroll-target="#regularization">Regularization</a></li>
+  </ul></li>
+  <li><a href="#going-forward" id="toc-going-forward" class="nav-link" data-scroll-target="#going-forward">Going Forward</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><strong>Polynomial Regression</strong></h1>
+</div>
 
 
 
+<div class="quarto-title-meta column-page-left">
 
-<section id="problem-ideas" class="level2">
-<h2 class="anchored" data-anchor-id="problem-ideas">Problem Ideas</h2>
-<section id="pagerank" class="level3">
-<h3 class="anchored" data-anchor-id="pagerank">PageRank</h3>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="polynomial-regression" class="level2">
+<h2 class="anchored" data-anchor-id="polynomial-regression">Polynomial Regression</h2>
+<p>Introduce variables that give better fit to the data, manipulate the data to create new features, e.g., polynomial regression.</p>
+<p>Claim: The fit of the regression model can only be improved by adding additional features.</p>
+<p>(Add picture here of polynomial regression with various degrees of polynomial, e.g., linear, quadratic, cubic, etc.)</p>
+<p>In picture, we can tell which gives the right fit</p>
+<p>How do we do this automatically?</p>
+<section id="generalization-error" class="level3">
+<h3 class="anchored" data-anchor-id="generalization-error">Generalization Error</h3>
+<p>Training data versus testing data</p>
+<p>Generalization error</p>
+<p>If we withhold data, this gives us an unbiased estimate of the generalization error: Expectation of performance on random sample, is performance on true data set.</p>
+<p>Can we use data more efficiently? <span class="math inline">\(k\)</span>-fold cross validation</p>
+<p>In practice, we often bias this process by training, testing, updating the model (hyperparameters, architecture, training method), training, testing, updating the model, etc. The repeated use of the test data means our model depends on the test data and eventually overfits to it, even though we are not using the test data to train the model.</p>
 </section>
-<section id="linear-regression" class="level3">
-<h3 class="anchored" data-anchor-id="linear-regression">Linear Regression</h3>
+<section id="regularization" class="level3">
+<h3 class="anchored" data-anchor-id="regularization">Regularization</h3>
+<p>Non-linear models are incredibly powerful models that can approximate any function, given enough data and features. However, this power comes with a cost: non-linear models can be very complex models and can easily overfit the training data. That is, they can learn to memorize, but fail to generalize to unseen data.</p>
+<p>(Redo this figures with polynomial regression)</p>
+<center>
+<img src="images/regression_overfitting.pdf" width="700">
+</center>
+<p>When we believe our data comes from a simpler generating process, it makes sense to use a simpler model. Even when that simpler generating process is not a linear model, we can attempt to find simpler models through <em>regularization</em>. Regularization is a technique that adds a penalty to the loss function to discourage the model from fitting the training data too closely.</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac1n \sum_{i=1}^n (f(\mathbf{x}^{(i)}) - y^{(i)})^2 + \lambda \|\mathbf{w}\|^2_2,
+\end{align*}
+\]</span> where <span class="math inline">\(\lambda\)</span> is a hyperparameter that controls the strength of the penalty and <span class="math inline">\(\|\mathbf{w}\|_2\)</span> is the <span class="math inline">\(\ell-2\)</span> norm of the weights, which is the square root of the sum of the squares of the weights.</p>
+<p>The idea is that we can keep the model “simple” by penalizing large weights, which would otherwise allow the model to achieve large changes in the output for small changes in the input.</p>
+<center>
+<img src="images/regression_regularization.pdf" width="700">
+</center>
+<p>In the plot, we see data generated from a quadratic function. The linear model is too simple and fails to capture the underlying relationship, while the standard neural network is too complex and overfits the training data. The regularized neural network, however, is able to capture the underlying relationship while still being simple enough to generalize to unseen data.</p>
+<p>How to control the strength of the regularization <span class="math inline">\(\lambda\)</span>?</p>
+<p>How do we minimize the regularized loss function for regression?</p>
+<p>We can also use a regularizaiton with <span class="math inline">\(\ell_1\)</span> norm, which penalizes the absolute value of the weights. This is called <em>Lasso</em> regression, and it has the effect of encouraging sparsity in the model, i.e., some weights will be exactly zero. Useful when we have many features, but we believe only a few of them are actually relevant to the prediction.</p>
 </section>
-<section id="gradient-descent" class="level3">
-<h3 class="anchored" data-anchor-id="gradient-descent">Gradient Descent</h3>
 </section>
-<section id="polynomial-regression" class="level3">
-<h3 class="anchored" data-anchor-id="polynomial-regression">Polynomial Regression</h3>
-</section>
-<section id="logistic-regression" class="level3">
-<h3 class="anchored" data-anchor-id="logistic-regression">Logistic Regression</h3>
-<p>Derive cross-entropy loss. Given a distribution <span class="math inline">\(p\)</span>, what is the best way to encode it into bits? Example with two flips of a coin. If the coin is fair, what’s the best way to encode the outcome? If the coin is biased, how does that change the encoding?</p>
-<p>What is the expected number of bits to encode the outcomes?</p>
-<p>Now suppose I don’t know the distribution <span class="math inline">\(p\)</span> exactly, and I instead attempt to approximate it with a distribution <span class="math inline">\(q\)</span>. What is the expected number of bits to encode the outcomes if I used the encoding scheme for <span class="math inline">\(q\)</span> instead of <span class="math inline">\(p\)</span>?</p>
-<p>When we do use cross-entropy as a loss function for classification, we are minimizing the expected number of bits needed to encode the outcomes using the encoding scheme for <span class="math inline">\(q\)</span>. Why do we use the encoding of the approximation <span class="math inline">\(q\)</span> instead of the true distribution <span class="math inline">\(p\)</span> in practice?</p>
+<section id="going-forward" class="level2">
+<h2 class="anchored" data-anchor-id="going-forward">Going Forward</h2>
+<p>Today, we got a taste of how to use gradient descent to optimize non-linear models, particularly neural networks. This is a rich area that has seen incredible recent advancements, particularly in the context of generative AI. In fact, I teach an entire <a href="https://www.rtealwitter.com/deeplearning2025/">course</a> dedicated to deep learning. In this course, however, we will instead focus on the mathematical foundations of machine learning.</p>
+<p>We have so far explored supervised learning in the regression setting, where the labels are real numbers. going forward, we will consider how to handle the case where the labels are categorical, e.g., we want to classify the data into two categories such as “cat” and “dog” or “spam” and “not spam”.</p>
 
 
-</section>
+
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const wordsPerMinute = 200;
+  const text = document.body.innerText;
+  const words = text.trim().split(/\s+/).length;
+  const readingTime = Math.ceil(words / wordsPerMinute);
+
+  const readTimeEl = document.createElement("div");
+  readTimeEl.innerText = `⏱️ ${readingTime} min read`;
+
+  // Style it to appear centered
+  readTimeEl.style.fontSize = "0.9em";
+  readTimeEl.style.margin = "1em auto";
+  readTimeEl.style.textAlign = "left";
+  readTimeEl.style.width = "100%";
+
+  const title = document.querySelector("h1");
+  if (title) {
+    title.parentNode.insertBefore(readTimeEl, title.nextSibling);
+  }
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

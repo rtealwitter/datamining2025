@@ -1,0 +1,168 @@
+---
+title: "**Linear Algebra Review**"
+format:
+  html:
+    toc: true
+    math: true
+    include-after-body: readtime.html
+---
+
+When I first heard about machine *learning*, I imagined a computer that was rewarded every time it gave the right answer. Maybe there were electric carrots and sticks that no one had bothered to tell me about? While I now know as little as I did then about computer hardware, I have learned that machine learning is fundamentally a mathematical process.
+
+Luckily, we've been learning about the very mathematical ideas that make machine learning work for years! We'll review the basics of these concepts here.
+
+### Derivatives
+
+Consider a function ${f}: \mathbb{R} \to \mathbb{R}$.
+The mapping notation means that ${f}$ takes a single real number as input and outputs a single real number.
+In general, mathematicians tell us to be careful about whether we can differentiate a function.
+But, we're computer scientists so we'll risk it for the biscuit.
+
+Let $x \in \mathbb{R}$ be the input to ${f}$.
+The derivative of ${f}$ with respect to its input $x$ is mathematically denoted by $\frac{\partial}{\partial x}[{f}(x)]$.
+
+Formally, the derivative is defined as
+$$
+\frac{\partial}{\partial x}[{f}(x)]
+= \lim_{h \to 0} \frac{{f}(x + h) - {f}(x)}{h}.
+$$
+If we were to plot ${f}$, the derivative at a point $x$ would be the slope of the tangent line to the curve at that point.
+
+Here are several examples of functions and their derivatives that you might remember from calculus.
+
+<table style="width: 100%; border-collapse: collapse; text-align: center;">
+  <tr>
+    <td><b>Function: ${f}(x)$ </b></td>
+    <td><b>Derivative: $\frac{\partial}{\partial x}[{f}(x)]$</b></td>
+  </tr>
+  <tr>
+    <td>$$x^2$$</td>
+    <td>$$2x$$</td>
+  </tr>
+  <tr>
+    <td>$$x^a$$</td>
+    <td>$$a x^{a-1}$$</td>
+  </tr>
+  <tr>
+    <td>$$ax + b$$</td>
+    <td>$$a$$</td>
+  </tr>
+  <tr>
+    <td>$$\ln(x)$$</td>
+    <td>$$\frac{1}{x}$$</td>
+  </tr>
+  <tr>
+    <td>$$e^x$$</td>
+    <td>$$e^x$$</td>
+  </tr>
+</table>
+
+### Chain Rule and Product Rule
+
+While working with a simple basic function is easy, we're not always so lucky.
+Modern machine learning chains many many complicated functions together.
+Fortunately, we will think of these operations modularly.
+
+Let $g: \mathbb{R} \to \mathbb{R}$ be another function.
+Consider the composite function $g({f}(x))$.
+
+By the chain rule, the derivative of $g({f}(x))$ with respect to $x$ is
+$$
+\frac{\partial }{\partial x}[g({f}(x))]
+= \frac{\partial g}{\partial x}({f}(x))
+\frac{\partial}{\partial x}[{f}(x)].
+$$
+
+Often, we will also multiply functions together.
+The product rule tells us that
+$$
+\frac{\partial }{\partial x}[g(x) {f}(x)]
+= g(x) \frac{\partial}{\partial x}[{f}(x)]
++ {f}(x) \frac{\partial}{\partial x}[g(x)].
+$$
+
+### Gradients
+
+In machine learning, we process high-dimensional data so we are interested in functions with multivariate input.
+Consider ${f}: \mathbb{R}^d \to \mathbb{R}$.
+The output of the function is still a real number but the input consists of $d$ real numbers.
+We will use the vector $\mathbf{x} \in \mathbb{R}^d$ to represent all $d$ inputs $x_1, \ldots, x_d$.
+
+Instead of the derivative, we will talk use the partial derivative.
+The partial derivative with respect to $x_i$ is denoted by $\frac{\partial}{\partial x_i}[{f}(\mathbf{x})]$.
+In effect, the partial derivative tells us how ${f}$ changes when we change $x_i$, while keeping all other inputs fixed.
+
+The gradient stores all the partial derivatives in a vector.
+The $i$th entry of this vector is given by the partial derivative of ${f}$ with respect to $x_i$.
+In mathematical notation,
+$$
+\nabla_\mathbf{x} {f} = \left[\begin{smallmatrix} \frac{\partial}{\partial x_1}[{f}(\mathbf{x})] \\ \vdots \\ \frac{\partial}{\partial x_d}[{f}(\mathbf{x})] \\ \end{smallmatrix}\right]
+$$
+
+Just like the derivative in one dimension, the gradient contains information about the slope of ${f}$ with respect to each of the $d$ dimensions in its input.
+
+### Vector and Matrix Multiplication
+
+Vector and matrix multiplication lives at the heart of deep learning.
+In fact, deep learning really started to take off when researchers realized that the Graphical Processing Unit (GPU) could be used to perform gradient updates in addition to the matrix multiplication it was designed to do for gaming.
+
+Consider two vectors $\mathbf{u} \in \mathbb{R}^d$ and $\mathbf{v} \in \mathbb{R}^d$.
+We will use $\mathbf{u} \cdot \mathbf{v} = \sum_{i=1}^d u_i v_i$ to denote the inner product of $\mathbf{u}$ and $\mathbf{v}$.
+We can also write the inner product as $\mathbf{u}^\top \mathbf{v}$, where $\mathbf{u}^\top \in \mathbb{R}^{1\times d}$ is the transpose of $\mathbf{u}$.
+The $\mathcal{\ell}_2$-norm of $\mathbf{v}$ is given by $\|\mathbf{v}\|_2 = \sqrt{\mathbf{v} \cdot \mathbf{v}}$.
+
+Consider two matrices: $\mathbf{A} \in \mathbb{R}^{d \times m}$ and $\mathbf{B} \in \mathbb{R}^{m \times n}$ where $d \neq n$.
+We can only multiply two matrices when their *inner* dimension agrees.
+Because the number of columns in $\mathbf{A}$ is the same as the number of rows in $\mathbf{B}$, we can compute $\mathbf{AB}$.
+However, because the number of columns in $\mathbf{B}$ is not the same as the number of rows in $\mathbf{A}$, the product $\mathbf{BA}$ is not defined.
+
+When we *can* multiply two matrices, the $(i,j)$ entry in $\mathbf{AB}$ is given by the inner product between the $i$th row of $\mathbf{A}$ and the $j$th column of $\mathbf{B}$.
+The resulting dimensions of the matrix product will be the number of rows in $\mathbf{A}$ by the number of columns in $\mathbf{B}$.
+
+### Eigenvalues and Eigenvectors
+
+An eigenvector of a square matrix $\mathbf{A} \in \mathbb{R}^{d \times d}$ is a vector $\mathbf{v} \in \mathbb{R}^d$ such that $\mathbf{Av} = \lambda \mathbf{v}$ for some scalar $\lambda$.
+Let $r$ be the number of eigenvectors of $\mathbf{A}$.
+Then, we can write the eigenvectors as $\mathbf{v}_1, \ldots, \mathbf{v}_r$.
+The eigenvectors are orthonormal, meaning that $\mathbf{v}_i \cdot \mathbf{v}_j = 0$ for $i \neq j$ and $\|\mathbf{v}_i\|_2 = 1$ for all $i$.
+The corresponding eigenvalues are $\lambda_1 \geq \ldots \geq \lambda_r$.
+
+Given these properties, we can write
+$$\mathbf{A} = \mathbf{V} \mathbf{\Lambda} \mathbf{V}^\top$$
+where $\mathbf{V} = [\mathbf{v}_1, \ldots, \mathbf{v}_r] \in \mathbb{R}^{d \times r}$ is the matrix of eigenvectors and $\mathbf{\Lambda} = \text{diag}(\lambda_1, \ldots, \lambda_r) \in \mathbb{R}^{r \times r}$ is the diagonal matrix of eigenvalues.
+This decomposition is known as the *eigenvalue decomposition* of $\mathbf{A}$.
+We can equivalently write the eigenvalue decomposition as
+$$\mathbf{A} = \sum_{i=1}^r \lambda_i \mathbf{v}_i \mathbf{v}_i^\top$$
+where $\mathbf{v}_i \mathbf{v}_i^\top$ is the outer product of the eigenvector $\mathbf{v}_i$ with itself.
+
+We can check that the eigenvalue decomposition is correct by multiplying by each eigenvector.
+Since the eigenvectors are orthonormal, we have $\mathbf{A} \mathbf{v}_i = \lambda_i \mathbf{v}_i$ for each $i$.
+
+### Inverse Matrices
+
+If we have a scalar equation $ax = b$, we can simply solve for $x$ by dividing both sides by $a$.
+In effect, we are applying the inverse of $a$ to $a$ i.e., $\frac1{a} a =1$.
+The same principle applies to matrices.
+The $n \times n$ identity matrix generalizes the scalar identity $1$.
+This identity matrix is denoted by $\mathbf{I}_{n \times n} \in \mathbb{R}^{n \times n}$: the on-diagonal entries $(i,i)$ are 1 while the off-diagonal entries $(i,j)$ for $i\neq j$ are 0.
+
+Consider the matrix equation $\mathbf{Ax} = \mathbf{b}$ where $\mathbf{A} \in \mathbb{R}^{d \times d}$, $\mathbf{x} \in \mathbb{R}^d$, and $\mathbf{b} \in \mathbb{R}^d$.
+(Notice that the inner dimensions of $\mathbf{A}$ and $\mathbf{x}$ agree so their multiplication is well-defined, and the resulting vector is the same dimension as $\mathbf{b}$.)
+
+If we want to solve for $\mathbf{x}$, we can use the matrix inverse.
+For a matrix $\mathbf{A}$, we use $\mathbf{A}^{-1}$ to denote its inverse.
+(When $\mathbf{A}$ does not have full rank, i.e., $r < d$, the inverse is not defined, but we can still use the eigenvalue decomposition to find a pseudo-inverse.)
+The inverse is defined so that $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}$ where $\mathbf{I}_{n \times n}$ is the identity matrix.
+In terms of our eigenvalue decomposition, the inverse of $\mathbf{A}$ is given by
+$$\mathbf{A}^{-1} = \mathbf{V} \mathbf{\Lambda}^{-1} \mathbf{V}^\top$$
+where $\mathbf{\Lambda}^{-1} = \text{diag}(\frac{1}{\lambda_1}, \ldots, \frac{1}{\lambda_r})$ is the diagonal matrix of the inverses of the eigenvalues.
+Equivalently, we can write the inverse as
+$$\mathbf{A}^{-1} = \sum_{i=1}^r \frac{1}{\lambda_i} \mathbf{v}_i \mathbf{v}_i^\top$$
+where $\mathbf{v}_i$ are the eigenvectors of $\mathbf{A}$.
+Given these two equivalent descriptions of $\mathbf{A}^{-1}$, do you see why $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}$?
+
+With the inverse in hand, we can solve for $\mathbf{x}$ by multiplying both sides of the equation by $\mathbf{A}^{-1}$.
+$$
+\mathbf{A}^{-1} \mathbf{Ax} = \mathbf{A}^{-1} \mathbf{b}
+$$
+Since $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}$, we have that $\mathbf{I}_{n \times n} \mathbf{x} = \mathbf{x} = \mathbf{A}^{-1} \mathbf{b}$.

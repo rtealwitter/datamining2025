@@ -1,0 +1,80 @@
+---
+title: "**Polynomial Regression**"
+format:
+  html:
+    toc: true
+    math: true
+    include-after-body: readtime.html
+---
+
+## Polynomial Regression
+
+Introduce variables that give better fit to the data, manipulate the data to create new features, e.g., polynomial regression.
+
+Claim: The fit of the regression model can only be improved by adding additional features.
+
+(Add picture here of polynomial regression with various degrees of polynomial, e.g., linear, quadratic, cubic, etc.)
+
+In picture, we can tell which gives the right fit
+
+How do we do this automatically?
+
+### Generalization Error
+
+Training data versus testing data
+
+Generalization error
+
+If we withhold data, this gives us an unbiased estimate of the generalization error: Expectation of performance on random sample, is performance on true data set.
+
+Can we use data more efficiently? $k$-fold cross validation
+
+In practice, we often bias this process by training, testing, updating the model (hyperparameters, architecture, training method), training, testing, updating the model, etc. The repeated use of the test data means our model depends on the test data and eventually overfits to it, even though we are not using the test data to train the model.
+
+### Regularization
+
+Non-linear models are incredibly powerful models that can approximate any function, given enough data and features.
+However, this power comes with a cost: non-linear models can be very complex models and can easily overfit the training data.
+That is, they can learn to memorize, but fail to generalize to unseen data.
+
+(Redo this figures with polynomial regression)
+
+<center><img src="images/regression_overfitting.pdf" width="700"></center>
+
+When we believe our data comes from a simpler generating process, it makes sense to use a simpler model.
+Even when that simpler generating process is not a linear model, we can attempt to find simpler models through *regularization*.
+Regularization is a technique that adds a penalty to the loss function to discourage the model from fitting the training data too closely.
+
+$$
+\begin{align*}
+\frac1n \sum_{i=1}^n (f(\mathbf{x}^{(i)}) - y^{(i)})^2 + \lambda \|\mathbf{w}\|^2_2,
+\end{align*}
+$$
+where $\lambda$ is a hyperparameter that controls the strength of the penalty and $\|\mathbf{w}\|_2$ is the $\ell-2$ norm of the weights, which is the square root of the sum of the squares of the weights.
+
+
+The idea is that we can keep the model "simple" by penalizing large weights, which would otherwise allow the model to achieve large changes in the output for small changes in the input.
+
+<center><img src="images/regression_regularization.pdf" width="700"></center>
+
+In the plot, we see data generated from a quadratic function.
+The linear model is too simple and fails to capture the underlying relationship, while the standard neural network is too complex and overfits the training data.
+The regularized neural network, however, is able to capture the underlying relationship while still being simple enough to generalize to unseen data.
+
+How to control the strength of the regularization $\lambda$?
+
+How do we minimize the regularized loss function for regression?
+
+We can also use a regularizaiton with $\ell_1$ norm, which penalizes the absolute value of the weights.
+This is called *Lasso* regression, and it has the effect of encouraging sparsity in the model, i.e., some weights will be exactly zero.
+Useful when we have many features, but we believe only a few of them are actually relevant to the prediction.
+
+## Going Forward
+
+Today, we got a taste of how to use gradient descent to optimize non-linear models, particularly neural networks.
+This is a rich area that has seen incredible recent advancements, particularly in the context of generative AI.
+In fact, I teach an entire [course](https://www.rtealwitter.com/deeplearning2025/) dedicated to deep learning.
+In this course, however, we will instead focus on the mathematical foundations of machine learning.
+
+We have so far explored supervised learning in the regression setting, where the labels are real numbers.
+going forward, we will consider how to handle the case where the labels are categorical, e.g., we want to classify the data into two categories such as "cat" and "dog" or "spam" and "not spam".

@@ -42,136 +42,130 @@ output:
     <td>Week</td>
     <td>Tuesday</td>
     <td>Thursday</td>
-    <td>Reading</td>
     <td>Slides</td>
     <td>Assignments</td>
   </tr>
 
   <tr class="section-header">
-    <td colspan="6">Warmup</td>
+    <td colspan="5">Warmup</td>
   </tr>
   <tr>
     <td>Week 1 (8/27 and 8/29)</td>
-    <td>Linear Algebra Review</td>
+    <td><a href="notes/01_LinearAlgebra.qmd">Linear Algebra</a></td>
     <td>PageRank</td>
-    <td><a href="notes/00_PageRank.qmd">Notes</a></td>
     <td></td>
     <td></td>
   </tr>
 
   <tr class="section-header">
-    <td colspan="6">Supervised Learning</td>
+    <td colspan="5">Supervised Learning</td>
   </tr>
   <tr>
     <td>Week 2 (9/2 and 9/4)</td>
-    <td colspan="2">Linear Regression and Optimization</td>
-    <td><a href="notes/01_LinearRegression.html">Notes</a></td>
+    <td><a href="notes/02_LinearRegression.qmd">Linear Regression</a></td>
+    <td><a href="notes/02_LinearRegression.qmd">Optimization</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 3 (9/9 and 9/11)</td>
-    <td colspan="2">Gradient Descent and Polynomial Regression</td>
-    <td><a href="notes/02_GradientDescent.qmd">Notes</a></td>
+    <td><a href="notes/03_GradientDescent.qmd">Gradient Descent</a></td>
+    <td><a href="notes/03_PolynomialRegression.qmd">Polynomial Regression</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 4 (9/16 and 9/18)</td>
-    <td colspan="2">Probability and Logistic Regression</td>
-    <td><a href="notes/03_LogisticRegression.qmd">Notes</a></td>
+    <td><a href="notes/04_Probability.qmd">Probability</a></td>
+    <td><a href="notes/04_LogisticRegression.qmd">Logistic Regression</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 5 (9/23 and 9/25)</td>
-    <td colspan="2">Support Vector Machines and Constrained Optimization</td>
-    <td><a href="notes/04_SupportVectorMachines.qmd">Notes</a></td>
+    <td><a href="notes/05_SupportVectorMachines.qmd">Support Vector Machines</a></td>
+    <td><a href="notes/05_SupportVectorMachines.qmd">Constrained Optimization</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 6 (9/30 and 10/2)</td>
-    <td colspan="2">Kernel Methods and Neural Networks</td>
-    <td></td>
+    <td>Kernel Methods</td>
+    <td>Neural Networks</td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 7 (10/7 and 10/9)</td>
-    <td colspan="2">Decision Trees and Gradient Boosting</td>
-    <td></td>
+    <td>Decision Trees</td>
+    <td>Gradient Boosting</td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 8 (10/14 and 10/16)</td>
-    <td><i>Fall Break (No Class)<i></td>
+    <td><i>Fall Break (No Class)</i></td>
     <td>Autoencoders</td>
-    <td></td>
     <td></td>
     <td></td>
   </tr>
 
   <tr class="section-header">
-    <td colspan="6">Beyond Supervised Learning</td>
+    <td colspan="5">Beyond Supervised Learning</td>
   </tr>
   <tr>
     <td>Week 9 (10/21 and 10/23)</td>
-    <td><i>Midterm Exam<i></td>
+    <td><i>Midterm Exam</i></td>
     <td>Variational Autoencoders</td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 10 (10/28 and 10/30)</td>
-    <td colspan="2">Principal Component Analysis and Semantic Embeddings</td>
-    <td></td>
+    <td>Principal Component Analysis</td>
+    <td>Semantic Embeddings</td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 11 (11/4 and 11/6)</td>
-    <td colspan="2">Reinforcement Learning</td>
-    <td></td>
+    <td>Reinforcement Learning</td>
+    <td>Reinforcement Learning</td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 12 (11/11 and 11/13)</td>
-    <td colspan="2">PAC Learning</td>
-    <td></td>
+    <td>PAC Learning</td>
+    <td>PAC Learning</td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 13 (11/18 and 11/20)</td>
-    <td colspan="2">Active Learning and Interpretability</td>
-    <td></td>
+    <td>Active Learning</td>
+    <td>Interpretability</td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 14 (11/25 and 11/27)</td>
-    <td><i>Final Exam<i></td>
-    <td><i>Thanksgiving (No Class)<i></td>
-    <td></td>
+    <td><i>Final Exam</i></td>
+    <td><i>Thanksgiving (No Class)</i></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 15 (12/2 and 12/4)</td>
-    <td><i>Project Preparation<i></td>
-    <td><i>Project Preparation (No Class)<i></td>
-    <td></td>
+    <td><i>Project Preparation</i></td>
+    <td><i>Project Preparation (No Class)</i></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 16 (12/9 and 12/11)</td>
-    <td><i>Sec. 2 Presents 7-10pm<i></td>
-    <td><i>Sec 1. Presents 2-5pm<i></td>
-    <td></td>
+    <td><i>Sec. 2 Presents 7–10pm</i></td>
+    <td><i>Sec. 1 Presents 2–5pm</i></td>
     <td></td>
     <td></td>
   </tr>

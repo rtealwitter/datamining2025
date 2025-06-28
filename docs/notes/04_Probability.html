@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Kernel Methods and Neural Networks</title>
+<title>Probability</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -157,20 +157,27 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#maximum-a-posteriori-map-estimation" id="toc-maximum-a-posteriori-map-estimation" class="nav-link active" data-scroll-target="#maximum-a-posteriori-map-estimation">Maximum A Posteriori (MAP) Estimation</a></li>
+  <li><a href="#naive-bayes-classifier" id="toc-naive-bayes-classifier" class="nav-link" data-scroll-target="#naive-bayes-classifier">Naive Bayes Classifier</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><strong>Kernel Methods and Neural Networks</strong></h1>
+<h1 class="title"><strong>Probability</strong></h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -182,9 +189,60 @@ window.Quarto = {
 </header>
 
 
+<p>Instead of predicting a continuous value, there are many applications where we want to predict a discrete value. For example, we might want to predict whether an email is spam or not, whether a patient has a disease or not, or whether an image contains a cat or not. In these cases, we can use a <strong>classification</strong> model instead of a regression model.</p>
+<p>We will review some basic concepts of probability that are useful for understanding classification models. We will also introduce Bayes’ Rule, and see how useful it can be for making predictions.</p>
+<p>Let <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> be two events. For example, <span class="math inline">\(A\)</span> could be the event that it rains tomorrow, and <span class="math inline">\(B\)</span> could be the event that I wear a raincoat tomorrow. We will use the following notation:<br>
+• <span class="math inline">\(\Pr(A)\)</span> represents the probability that event <span class="math inline">\(A\)</span> occurs,<br>
+• <span class="math inline">\(\Pr(A \cap B)\)</span> represents the probability that both events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occur,<br>
+• <span class="math inline">\(\Pr(A \cup B)\)</span> represents the probability that either event <span class="math inline">\(A\)</span> or event <span class="math inline">\(B\)</span> occurs,<br>
+• <span class="math inline">\(\Pr(A | B)\)</span> represents the probability that event <span class="math inline">\(A\)</span> occurs given that event <span class="math inline">\(B\)</span> has occurred.</p>
+<p>Let’s see it in a Venn diagram.</p>
+<p>[image here]</p>
+<p>We can reason through several properties of probabilities:</p>
+<p><strong>Probability Range</strong> The probability of an event is always between 0 and 1, inclusive: <span class="math inline">\(0 \leq \Pr(A) \leq 1\)</span>. An event with probability 0 never occurs, while an event with probability 1 is certain to occur.</p>
+<p><strong>Conditional Probabilities</strong> We can write the probability of both events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> occurring in terms of conditional probabilities: <span class="math display">\[\Pr(A \cap B) = \Pr(A | B) \Pr(B) = \Pr(B | A) \Pr(A).\]</span> This means that the probability of both events occurring can be expressed as the product of the probability of one event given the other and the probability of the other event.</p>
+<p><strong>Union of Events</strong> The probability that either event <span class="math inline">\(A\)</span> or event <span class="math inline">\(B\)</span> occurs is given by: <span class="math display">\[\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B).\]</span> This means that the probability of either event occurring is the sum of the probabilities of each event minus the probability of both events occurring together, to avoid double counting.</p>
+<p><strong>Complement Rule</strong> The <em>complement</em> of an event <span class="math inline">\(A\)</span> is the event that <span class="math inline">\(A\)</span> does not occur, denoted as <span class="math inline">\(\neg A\)</span>. Since either <span class="math inline">\(A\)</span> occurs or <span class="math inline">\(\neg A\)</span> occurs, we have that <span class="math inline">\(Pr(A) + \Pr(\neg A) = 1\)</span>. Rearranging this gives us that <span class="math inline">\(\Pr(\neg A) = 1 - \Pr(A)\)</span>.</p>
+<p><strong>Independence</strong> Two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <em>independent</em> if the occurrence of one event does not affect the probability of the other event occurring. In this case, we have that <span class="math inline">\(\Pr(A \cap B) = \Pr(A) \Pr(B)\)</span>. Equivalently, <span class="math inline">\(\Pr(A | B) = \Pr(A)\)</span> and <span class="math inline">\(\Pr(B | A) = \Pr(B)\)</span>, do you see why this follows?</p>
+<p>We will often model random events with <em>random variables</em>. A random variable is a function that maps outcomes to real numbers. For example, we could define a random variable <span class="math inline">\(X\)</span> that takes the outcome of a die roll and maps it to the number on the die. The probability distribution of a random variable describes the probabilities of each possible outcome. In our die example, if we roll a fair six-sided die, the probability distribution of the random variable <span class="math inline">\(X\)</span> is given by <span class="math inline">\(\Pr(X = x) = \frac{1}{6}\)</span> for <span class="math inline">\(x \in \{1, 2, 3, 4, 5, 6\}\)</span>.</p>
+<p><strong>Bayes’ Rule</strong> A particularly useful rule in machine learning is <strong>Bayes’ Rule</strong>, which allows us to more easily compute conditional probabilities. Formally, Bayes’ Rule states that for any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> with <span class="math inline">\(\Pr(B) &gt; 0\)</span>, <span class="math display">\[\Pr(A | B) = \frac{\Pr(B | A) \Pr(A)}{\Pr(B)}.\]</span></p>
+<p>Based on what we have so far learned about probability, can you prove Bayes’ Rule?</p>
+<section id="maximum-a-posteriori-map-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="maximum-a-posteriori-map-estimation">Maximum A Posteriori (MAP) Estimation</h3>
+<p>When we justified the mean squared error loss for regression, we said that it was the maximum likelihood estimate (MLE) of the parameters of a linear model. We can extend this idea to classification models as well. Suppose we have a <em>binary classification</em> problem, where we want to predict whether the random variable <span class="math inline">\(Y=0\)</span> or <span class="math inline">\(Y=1\)</span>. We observe evidence <span class="math inline">\(\mathbf{X} = \mathbf{x}\)</span>, e.g., <span class="math inline">\(\mathbf{X}\)</span> is the random variable that takes on the value of the features of an email, and we want to predict whether the email is spam or not. We will compare the posteriors <span class="math display">\[\Pr(Y = 1 | \mathbf{X} = \mathbf{x})\]</span> and <span class="math display">\[\Pr(Y = 0 | \mathbf{X} = \mathbf{x})\]</span> to determine which class is more likely given the evidence.</p>
+<p>However, it’s not immediately clear how to compute these probabilities. Luckily, we can use Bayes’ Rule to rewrite the posteriors. Without loss of generality, consider the event that <span class="math inline">\(Y = 1\)</span>. Then <span class="math display">\[
+\begin{align*}
+\Pr(Y = 1 | \mathbf{X} = \mathbf{x})
+&amp;= \frac{\Pr(\mathbf{X} = \mathbf{x} | Y = 1) \Pr(Y = 1)}{\Pr(\mathbf{X} = \mathbf{x})} \\
+&amp;= \frac{\textnormal{likelihood} \cdot \textnormal{prior}}{\textnormal{evidence}}
+\end{align*}.
+\]</span></p>
+<p>Let’s get some familiarity through a medical example. Suppose we have a medical test that can detect whether a patient has a particular disease. The disease is rare, affecting only 1% of the population. The test is unfortunately not perfect: it has a false positive rate of 5% and a false negative rate of 10%. Suppose <span class="math inline">\(X=1\)</span> i.e., the test is positive. Is it more likely that the patient has the disease or not?</p>
+<p>In this medical example, we were explicitly given the likelihood of the disease. What can we do when our only information is the labelled data?</p>
+</section>
+<section id="naive-bayes-classifier" class="level3">
+<h3 class="anchored" data-anchor-id="naive-bayes-classifier">Naive Bayes Classifier</h3>
+<p>The <strong>Naive Bayes Classifier</strong> is a simple yet effective classification algorithm that uses Bayes’ Rule to make predictions. The key assumption of the Naive Bayes Classifier is that the features are conditionally independent given the class label. This means that the presence or absence of a feature does not affect the presence or absence of another feature, given the class label.</p>
+<p>Let’s see an example with a spam classifier. Suppose we have a dataset of emails, each labelled as either spam or not spam. We want to predict whether a new email is spam or not based on its features, such as the presence of certain words. In particular, let <span class="math inline">\(\mathbf{X} = (X_1, X_2, \ldots, X_d)\)</span> be the features of the email, where <span class="math inline">\(X_i\)</span> is a binary variable indicating whether the <span class="math inline">\(i\)</span>th word is present in the email. Let <span class="math inline">\(p_i^{(1)} = \Pr(X_i=1 | Y=0)\)</span> be the probability that the <span class="math inline">\(i\)</span>th word is present in a spam email, while <span class="math inline">\(p_i^{(0)} = \Pr(X_i=1 | Y=1)\)</span> be the probability that the <span class="math inline">\(i\)</span>th word is present in a non-spam email. We will use the independence assumption to compute the likelihood of the features given the class label. For example, <span class="math display">\[
+\Pr(\mathbf{X} = (0, 1, 0, 0, 1) | Y = 1) =
+(1-p_1^{(1)}) p_2^{(1)} (1-p_3^{(1)}) (1-p_4^{(1)}) p_5^{(1)}.
+\]</span></p>
+<p>Beyond the likelihood, we also need the prior probability of the class label. This is even easier to compute, e.g., we can simply compute the fraction of spam and non-spam emails in the training set. Then we can use Bayes’ Rule to determine whether the posterior probability of the email being spam is greater than the posterior probability of the email being non-spam.</p>
+<p>More formally, we can use the Naive Bayes Classifier by</p>
+<ol type="1">
+<li><p>Computing <span class="math inline">\(\Pr(Y = 1)\)</span> and <span class="math inline">\(\Pr(Y = 0)\)</span> from the training data.</p></li>
+<li><p>Computing the observed probabilities <span class="math inline">\(\Pr(X_i = 1 | Y = 1)\)</span> and <span class="math inline">\(\Pr(X_i = 1 | Y = 0)\)</span> for each feature <span class="math inline">\(X_i\)</span> from the training data.</p></li>
+<li><p>Computing the likelihoods <span class="math inline">\(\Pr(\mathbf{X} = \mathbf{x} | Y=1)\)</span> and <span class="math inline">\(\Pr(\mathbf{X} = \mathbf{x} | Y=0)\)</span> using the independence assumption e.g., <span class="math display">\[
+\Pr(\mathbf{X} = \mathbf{x} | Y=1) = \prod_{i=1}^d \Pr(X_i = x_i | Y=1).
+\]</span></p></li>
+<li><p>Using Bayes’ Rule to compute the posteriors, and predicting the class label <span class="math inline">\(y \in \{0,1\}\)</span> with the highest posterior probability: <span class="math display">\[
+\Pr(Y = y | \mathbf{X} = \mathbf{x}) = \frac{\Pr(\mathbf{X} = \mathbf{x} | Y=y) \Pr(Y=y)}{\Pr(\mathbf{X} = \mathbf{x})}.
+\]</span></p></li>
+</ol>
 
 
 
+</section>
 
 </main> <!-- /main -->
 <script>

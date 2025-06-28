@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Kernel Methods and Neural Networks</title>
+<title>Linear Algebra Review</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -162,7 +162,12 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#neural-networks" id="toc-neural-networks" class="nav-link active" data-scroll-target="#neural-networks">Neural Networks</a></li>
+  <li><a href="#derivatives" id="toc-derivatives" class="nav-link active" data-scroll-target="#derivatives">Derivatives</a></li>
+  <li><a href="#chain-rule-and-product-rule" id="toc-chain-rule-and-product-rule" class="nav-link" data-scroll-target="#chain-rule-and-product-rule">Chain Rule and Product Rule</a></li>
+  <li><a href="#gradients" id="toc-gradients" class="nav-link" data-scroll-target="#gradients">Gradients</a></li>
+  <li><a href="#vector-and-matrix-multiplication" id="toc-vector-and-matrix-multiplication" class="nav-link" data-scroll-target="#vector-and-matrix-multiplication">Vector and Matrix Multiplication</a></li>
+  <li><a href="#eigenvalues-and-eigenvectors" id="toc-eigenvalues-and-eigenvectors" class="nav-link" data-scroll-target="#eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</a></li>
+  <li><a href="#inverse-matrices" id="toc-inverse-matrices" class="nav-link" data-scroll-target="#inverse-matrices">Inverse Matrices</a></li>
   </ul>
 </nav>
     </div>
@@ -171,7 +176,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><strong>Kernel Methods and Neural Networks</strong></h1>
+<h1 class="title"><strong>Linear Algebra Review</strong></h1>
 </div>
 
 
@@ -188,29 +193,113 @@ window.Quarto = {
 </header>
 
 
-<section id="neural-networks" class="level2">
-<h2 class="anchored" data-anchor-id="neural-networks">Neural Networks</h2>
-<p>We have seen how gradient descent can be used to efficiently optimize linear models, but what if the relationship between the inputs and outputs is not linear? We can still use gradient descent to optimize non-linear models, but we need to expand our model class to include non-linear functions.</p>
-<center>
-<img src="images/regression_vs_network.pdf" width="500">
-</center>
-<p>In the right of the figure, we have a linear model, which uses a linear combination of the inputs to make predictions. We can generalize this approach by repeatedly combining linear models to create a more complex model. In particular, we create several <em>neurons</em>, each of which is a linear model that takes the inputs and produces an output. Each neuron computes a linear combination of the inputs, and then we linearly combine the outputs of the neurons, and so on. The resulting model is a <em>neural network</em>, which combines linear models to create a more complex model.</p>
-<p>We can think of a fully connected layer (all neurons in one layer are connected to all neurons in the next layer) as matrix multiplication, where the matrix <span class="math inline">\(\mathbf{W}^{(\ell)} \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}}\)</span> is the weight matrix and <span class="math inline">\(\mathbf{x} \in \mathbb{R}^{d_\text{in}}\)</span> is the input to the <span class="math inline">\(\ell\)</span>th layer. Then multiplying several weight matrices together gives <span class="math display">\[
-f(\mathbf{x}) = \mathbf{W}^{(k)} \mathbf{W}^{(k-1)} \cdots \mathbf{W}^{(1)} \mathbf{x}
-\]</span> where <span class="math inline">\(k\)</span> is the number of layers in the neural network. But, there’s an issue with this approach: the output is still a linear combination of the inputs, which means that the model is still linear. Put differently, we could just multiply all the weight matrices together to get a single weight matrix <span class="math inline">\(\mathbf{W} = \mathbf{W}_k \mathbf{W}_{k-1} \cdots \mathbf{W}_1\)</span> before ever seeing the input <span class="math inline">\(\mathbf{x}\)</span>. Our solution is to add a <em>non-linear activation function</em> after each layer. Formally, we apply activation functions <span class="math inline">\(\sigma: \mathbb{R} \to \mathbb{R}\)</span> element-wise to the output of each layer. Examples of common activation functions include:</p>
-<ul>
-<li><p><strong>ReLU (Rectified Linear Unit):</strong> <span class="math inline">\(\sigma(x) = \max(0, x)\)</span>, which is a piecewise linear function that is <span class="math inline">\(0\)</span> for negative inputs and linear for positive inputs.</p></li>
-<li><p><strong>Sigmoid:</strong> <span class="math inline">\(\sigma(x) = \frac{1}{1 + e^{-x}}\)</span>, which is a smooth function that maps inputs to the range <span class="math inline">\((0, 1)\)</span>.</p></li>
-<li><p><strong>Tanh (Hyperbolic Tangent):</strong> <span class="math inline">\(\sigma(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}\)</span>, which is another smooth function that maps inputs to the range <span class="math inline">\((-1, 1)\)</span>.</p></li>
-</ul>
-<p>Now we can write the output of the neural network as <span class="math display">\[
-f(\mathbf{x}) = \sigma(\mathbf{W}_k \sigma(\mathbf{W}_{k-1} \cdots \sigma(\mathbf{W}_1 \mathbf{x}))).
-\]</span> Thanks to the non-linear activation functions, the output is no longer a linear combination of the inputs, but rather a complex function that can capture non-linear relationships between the inputs and outputs. Neural networks are so complex, in fact, that we don’t really understand how they work. But we <em>can</em> still apply gradient descent. In summary, we can think of neural networks in following empirical risk minimization formulation:</p>
-<ul>
-<li><p><strong>Model Class:</strong> The model class is the set of neural networks with a given architecture (type of layer, number of layers, number of neurons per layer, and activation function).</p></li>
-<li><p><strong>Loss:</strong> The loss function is the mean squared error loss.</p></li>
-<li><p><strong>Optimizer:</strong> The optimizer is gradient descent.</p></li>
-</ul>
+<p>When I first heard about machine <em>learning</em>, I imagined a computer that was rewarded every time it gave the right answer. Maybe there were electric carrots and sticks that no one had bothered to tell me about? While I now know as little as I did then about computer hardware, I have learned that machine learning is fundamentally a mathematical process.</p>
+<p>Luckily, we’ve been learning about the very mathematical ideas that make machine learning work for years! We’ll review the basics of these concepts here.</p>
+<section id="derivatives" class="level3">
+<h3 class="anchored" data-anchor-id="derivatives">Derivatives</h3>
+<p>Consider a function <span class="math inline">\({f}: \mathbb{R} \to \mathbb{R}\)</span>. The mapping notation means that <span class="math inline">\({f}\)</span> takes a single real number as input and outputs a single real number. In general, mathematicians tell us to be careful about whether we can differentiate a function. But, we’re computer scientists so we’ll risk it for the biscuit.</p>
+<p>Let <span class="math inline">\(x \in \mathbb{R}\)</span> be the input to <span class="math inline">\({f}\)</span>. The derivative of <span class="math inline">\({f}\)</span> with respect to its input <span class="math inline">\(x\)</span> is mathematically denoted by <span class="math inline">\(\frac{\partial}{\partial x}[{f}(x)]\)</span>.</p>
+<p>Formally, the derivative is defined as <span class="math display">\[
+\frac{\partial}{\partial x}[{f}(x)]
+= \lim_{h \to 0} \frac{{f}(x + h) - {f}(x)}{h}.
+\]</span> If we were to plot <span class="math inline">\({f}\)</span>, the derivative at a point <span class="math inline">\(x\)</span> would be the slope of the tangent line to the curve at that point.</p>
+<p>Here are several examples of functions and their derivatives that you might remember from calculus.</p>
+<table style="width: 100%; border-collapse: collapse; text-align: center;">
+<tbody><tr>
+<td>
+<b>Function: <span class="math inline">\({f}(x)\)</span> </b>
+</td>
+<td>
+<b>Derivative: <span class="math inline">\(\frac{\partial}{\partial x}[{f}(x)]\)</span></b>
+</td>
+</tr>
+<tr>
+<td>
+<span class="math display">\[x^2\]</span>
+</td>
+<td>
+<span class="math display">\[2x\]</span>
+</td>
+</tr>
+<tr>
+<td>
+<span class="math display">\[x^a\]</span>
+</td>
+<td>
+<span class="math display">\[a x^{a-1}\]</span>
+</td>
+</tr>
+<tr>
+<td>
+<span class="math display">\[ax + b\]</span>
+</td>
+<td>
+<span class="math display">\[a\]</span>
+</td>
+</tr>
+<tr>
+<td>
+<span class="math display">\[\ln(x)\]</span>
+</td>
+<td>
+<span class="math display">\[\frac{1}{x}\]</span>
+</td>
+</tr>
+<tr>
+<td>
+<span class="math display">\[e^x\]</span>
+</td>
+<td>
+<span class="math display">\[e^x\]</span>
+</td>
+</tr>
+</tbody></table>
+</section>
+<section id="chain-rule-and-product-rule" class="level3">
+<h3 class="anchored" data-anchor-id="chain-rule-and-product-rule">Chain Rule and Product Rule</h3>
+<p>While working with a simple basic function is easy, we’re not always so lucky. Modern machine learning chains many many complicated functions together. Fortunately, we will think of these operations modularly.</p>
+<p>Let <span class="math inline">\(g: \mathbb{R} \to \mathbb{R}\)</span> be another function. Consider the composite function <span class="math inline">\(g({f}(x))\)</span>.</p>
+<p>By the chain rule, the derivative of <span class="math inline">\(g({f}(x))\)</span> with respect to <span class="math inline">\(x\)</span> is <span class="math display">\[
+\frac{\partial }{\partial x}[g({f}(x))]
+= \frac{\partial g}{\partial x}({f}(x))
+\frac{\partial}{\partial x}[{f}(x)].
+\]</span></p>
+<p>Often, we will also multiply functions together. The product rule tells us that <span class="math display">\[
+\frac{\partial }{\partial x}[g(x) {f}(x)]
+= g(x) \frac{\partial}{\partial x}[{f}(x)]
++ {f}(x) \frac{\partial}{\partial x}[g(x)].
+\]</span></p>
+</section>
+<section id="gradients" class="level3">
+<h3 class="anchored" data-anchor-id="gradients">Gradients</h3>
+<p>In machine learning, we process high-dimensional data so we are interested in functions with multivariate input. Consider <span class="math inline">\({f}: \mathbb{R}^d \to \mathbb{R}\)</span>. The output of the function is still a real number but the input consists of <span class="math inline">\(d\)</span> real numbers. We will use the vector <span class="math inline">\(\mathbf{x} \in \mathbb{R}^d\)</span> to represent all <span class="math inline">\(d\)</span> inputs <span class="math inline">\(x_1, \ldots, x_d\)</span>.</p>
+<p>Instead of the derivative, we will talk use the partial derivative. The partial derivative with respect to <span class="math inline">\(x_i\)</span> is denoted by <span class="math inline">\(\frac{\partial}{\partial x_i}[{f}(\mathbf{x})]\)</span>. In effect, the partial derivative tells us how <span class="math inline">\({f}\)</span> changes when we change <span class="math inline">\(x_i\)</span>, while keeping all other inputs fixed.</p>
+<p>The gradient stores all the partial derivatives in a vector. The <span class="math inline">\(i\)</span>th entry of this vector is given by the partial derivative of <span class="math inline">\({f}\)</span> with respect to <span class="math inline">\(x_i\)</span>. In mathematical notation, <span class="math display">\[
+\nabla_\mathbf{x} {f} = \left[\begin{smallmatrix} \frac{\partial}{\partial x_1}[{f}(\mathbf{x})] \\ \vdots \\ \frac{\partial}{\partial x_d}[{f}(\mathbf{x})] \\ \end{smallmatrix}\right]
+\]</span></p>
+<p>Just like the derivative in one dimension, the gradient contains information about the slope of <span class="math inline">\({f}\)</span> with respect to each of the <span class="math inline">\(d\)</span> dimensions in its input.</p>
+</section>
+<section id="vector-and-matrix-multiplication" class="level3">
+<h3 class="anchored" data-anchor-id="vector-and-matrix-multiplication">Vector and Matrix Multiplication</h3>
+<p>Vector and matrix multiplication lives at the heart of deep learning. In fact, deep learning really started to take off when researchers realized that the Graphical Processing Unit (GPU) could be used to perform gradient updates in addition to the matrix multiplication it was designed to do for gaming.</p>
+<p>Consider two vectors <span class="math inline">\(\mathbf{u} \in \mathbb{R}^d\)</span> and <span class="math inline">\(\mathbf{v} \in \mathbb{R}^d\)</span>. We will use <span class="math inline">\(\mathbf{u} \cdot \mathbf{v} = \sum_{i=1}^d u_i v_i\)</span> to denote the inner product of <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\mathbf{v}\)</span>. We can also write the inner product as <span class="math inline">\(\mathbf{u}^\top \mathbf{v}\)</span>, where <span class="math inline">\(\mathbf{u}^\top \in \mathbb{R}^{1\times d}\)</span> is the transpose of <span class="math inline">\(\mathbf{u}\)</span>. The <span class="math inline">\(\mathcal{\ell}_2\)</span>-norm of <span class="math inline">\(\mathbf{v}\)</span> is given by <span class="math inline">\(\|\mathbf{v}\|_2 = \sqrt{\mathbf{v} \cdot \mathbf{v}}\)</span>.</p>
+<p>Consider two matrices: <span class="math inline">\(\mathbf{A} \in \mathbb{R}^{d \times m}\)</span> and <span class="math inline">\(\mathbf{B} \in \mathbb{R}^{m \times n}\)</span> where <span class="math inline">\(d \neq n\)</span>. We can only multiply two matrices when their <em>inner</em> dimension agrees. Because the number of columns in <span class="math inline">\(\mathbf{A}\)</span> is the same as the number of rows in <span class="math inline">\(\mathbf{B}\)</span>, we can compute <span class="math inline">\(\mathbf{AB}\)</span>. However, because the number of columns in <span class="math inline">\(\mathbf{B}\)</span> is not the same as the number of rows in <span class="math inline">\(\mathbf{A}\)</span>, the product <span class="math inline">\(\mathbf{BA}\)</span> is not defined.</p>
+<p>When we <em>can</em> multiply two matrices, the <span class="math inline">\((i,j)\)</span> entry in <span class="math inline">\(\mathbf{AB}\)</span> is given by the inner product between the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\mathbf{A}\)</span> and the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\mathbf{B}\)</span>. The resulting dimensions of the matrix product will be the number of rows in <span class="math inline">\(\mathbf{A}\)</span> by the number of columns in <span class="math inline">\(\mathbf{B}\)</span>.</p>
+</section>
+<section id="eigenvalues-and-eigenvectors" class="level3">
+<h3 class="anchored" data-anchor-id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</h3>
+<p>An eigenvector of a square matrix <span class="math inline">\(\mathbf{A} \in \mathbb{R}^{d \times d}\)</span> is a vector <span class="math inline">\(\mathbf{v} \in \mathbb{R}^d\)</span> such that <span class="math inline">\(\mathbf{Av} = \lambda \mathbf{v}\)</span> for some scalar <span class="math inline">\(\lambda\)</span>. Let <span class="math inline">\(r\)</span> be the number of eigenvectors of <span class="math inline">\(\mathbf{A}\)</span>. Then, we can write the eigenvectors as <span class="math inline">\(\mathbf{v}_1, \ldots, \mathbf{v}_r\)</span>. The eigenvectors are orthonormal, meaning that <span class="math inline">\(\mathbf{v}_i \cdot \mathbf{v}_j = 0\)</span> for <span class="math inline">\(i \neq j\)</span> and <span class="math inline">\(\|\mathbf{v}_i\|_2 = 1\)</span> for all <span class="math inline">\(i\)</span>. The corresponding eigenvalues are <span class="math inline">\(\lambda_1 \geq \ldots \geq \lambda_r\)</span>.</p>
+<p>Given these properties, we can write <span class="math display">\[\mathbf{A} = \mathbf{V} \mathbf{\Lambda} \mathbf{V}^\top\]</span> where <span class="math inline">\(\mathbf{V} = [\mathbf{v}_1, \ldots, \mathbf{v}_r] \in \mathbb{R}^{d \times r}\)</span> is the matrix of eigenvectors and <span class="math inline">\(\mathbf{\Lambda} = \text{diag}(\lambda_1, \ldots, \lambda_r) \in \mathbb{R}^{r \times r}\)</span> is the diagonal matrix of eigenvalues. This decomposition is known as the <em>eigenvalue decomposition</em> of <span class="math inline">\(\mathbf{A}\)</span>. We can equivalently write the eigenvalue decomposition as <span class="math display">\[\mathbf{A} = \sum_{i=1}^r \lambda_i \mathbf{v}_i \mathbf{v}_i^\top\]</span> where <span class="math inline">\(\mathbf{v}_i \mathbf{v}_i^\top\)</span> is the outer product of the eigenvector <span class="math inline">\(\mathbf{v}_i\)</span> with itself.</p>
+<p>We can check that the eigenvalue decomposition is correct by multiplying by each eigenvector. Since the eigenvectors are orthonormal, we have <span class="math inline">\(\mathbf{A} \mathbf{v}_i = \lambda_i \mathbf{v}_i\)</span> for each <span class="math inline">\(i\)</span>.</p>
+</section>
+<section id="inverse-matrices" class="level3">
+<h3 class="anchored" data-anchor-id="inverse-matrices">Inverse Matrices</h3>
+<p>If we have a scalar equation <span class="math inline">\(ax = b\)</span>, we can simply solve for <span class="math inline">\(x\)</span> by dividing both sides by <span class="math inline">\(a\)</span>. In effect, we are applying the inverse of <span class="math inline">\(a\)</span> to <span class="math inline">\(a\)</span> i.e., <span class="math inline">\(\frac1{a} a =1\)</span>. The same principle applies to matrices. The <span class="math inline">\(n \times n\)</span> identity matrix generalizes the scalar identity <span class="math inline">\(1\)</span>. This identity matrix is denoted by <span class="math inline">\(\mathbf{I}_{n \times n} \in \mathbb{R}^{n \times n}\)</span>: the on-diagonal entries <span class="math inline">\((i,i)\)</span> are 1 while the off-diagonal entries <span class="math inline">\((i,j)\)</span> for <span class="math inline">\(i\neq j\)</span> are 0.</p>
+<p>Consider the matrix equation <span class="math inline">\(\mathbf{Ax} = \mathbf{b}\)</span> where <span class="math inline">\(\mathbf{A} \in \mathbb{R}^{d \times d}\)</span>, <span class="math inline">\(\mathbf{x} \in \mathbb{R}^d\)</span>, and <span class="math inline">\(\mathbf{b} \in \mathbb{R}^d\)</span>. (Notice that the inner dimensions of <span class="math inline">\(\mathbf{A}\)</span> and <span class="math inline">\(\mathbf{x}\)</span> agree so their multiplication is well-defined, and the resulting vector is the same dimension as <span class="math inline">\(\mathbf{b}\)</span>.)</p>
+<p>If we want to solve for <span class="math inline">\(\mathbf{x}\)</span>, we can use the matrix inverse. For a matrix <span class="math inline">\(\mathbf{A}\)</span>, we use <span class="math inline">\(\mathbf{A}^{-1}\)</span> to denote its inverse. (When <span class="math inline">\(\mathbf{A}\)</span> does not have full rank, i.e., <span class="math inline">\(r &lt; d\)</span>, the inverse is not defined, but we can still use the eigenvalue decomposition to find a pseudo-inverse.) The inverse is defined so that <span class="math inline">\(\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}\)</span> where <span class="math inline">\(\mathbf{I}_{n \times n}\)</span> is the identity matrix. In terms of our eigenvalue decomposition, the inverse of <span class="math inline">\(\mathbf{A}\)</span> is given by <span class="math display">\[\mathbf{A}^{-1} = \mathbf{V} \mathbf{\Lambda}^{-1} \mathbf{V}^\top\]</span> where <span class="math inline">\(\mathbf{\Lambda}^{-1} = \text{diag}(\frac{1}{\lambda_1}, \ldots, \frac{1}{\lambda_r})\)</span> is the diagonal matrix of the inverses of the eigenvalues. Equivalently, we can write the inverse as <span class="math display">\[\mathbf{A}^{-1} = \sum_{i=1}^r \frac{1}{\lambda_i} \mathbf{v}_i \mathbf{v}_i^\top\]</span> where <span class="math inline">\(\mathbf{v}_i\)</span> are the eigenvectors of <span class="math inline">\(\mathbf{A}\)</span>. Given these two equivalent descriptions of <span class="math inline">\(\mathbf{A}^{-1}\)</span>, do you see why <span class="math inline">\(\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}\)</span>?</p>
+<p>With the inverse in hand, we can solve for <span class="math inline">\(\mathbf{x}\)</span> by multiplying both sides of the equation by <span class="math inline">\(\mathbf{A}^{-1}\)</span>. <span class="math display">\[
+\mathbf{A}^{-1} \mathbf{Ax} = \mathbf{A}^{-1} \mathbf{b}
+\]</span> Since <span class="math inline">\(\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}\)</span>, we have that <span class="math inline">\(\mathbf{I}_{n \times n} \mathbf{x} = \mathbf{x} = \mathbf{A}^{-1} \mathbf{b}\)</span>.</p>
 
 
 

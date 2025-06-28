@@ -1,5 +1,5 @@
 ---
-title: "**Probability and Logistic Regression**"
+title: "**Probability**"
 format:
   html:
     toc: true
@@ -8,8 +8,6 @@ format:
 ---
 
 Instead of predicting a continuous value, there are many applications where we want to predict a discrete value. For example, we might want to predict whether an email is spam or not, whether a patient has a disease or not, or whether an image contains a cat or not. In these cases, we can use a **classification** model instead of a regression model.
-
-## Probability
 
 We will review some basic concepts of probability that are useful for understanding classification models. We will also introduce Bayes' Rule, and see how useful it can be for making predictions.
 
@@ -113,87 +111,3 @@ $$
 $$
 \Pr(Y = y | \mathbf{X} = \mathbf{x}) = \frac{\Pr(\mathbf{X} = \mathbf{x} | Y=y) \Pr(Y=y)}{\Pr(\mathbf{X} = \mathbf{x})}.
 $$
-
-## Logistic Regression
-
-With a little probability, we saw how the Naive Bayes Classifier can be used to make predictions.
-However, the Naive Bayes Classifier makes a strong independence assumption that is often violated in practice.
-As an alternative approach to classification problems, we will see how we can generalize linear regression, with a little non-linearity.
-
-Our setup will be the standard supervised learning setting, where we have labelled data $(\mathbf{x}^{(1)}, y^{(1)}), \ldots, (\mathbf{x}^{(n)}, y^{(n)})$, for $\mathbf{x}^{(i)} \in \mathbb{R}^d$ the feature vector for the $i$th example. 
-However, unlike regression where we predict a continuous value $y^{(i)} \in \mathbb{R}$, we will now predict a binary value $y^{(i)} \in \{0, 1\}$.
-We can use the same linear model as before, i.e., we will predict the output as $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$, where $\mathbf{w} \in \mathbb{R}^d$ is the weight vector.
-But, we run into an issue: the output of the linear model can take on any real value, but we want to predict a binary value.
-
-Attempt #1: We could simply threshold the output of the linear model, i.e., predict $y^{(i)} = 1$ if $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle > 0$ and $y^{(i)} = 0$ otherwise. The loss could be the difference between the predicted value and the true value, i.e., $\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n |y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle|^2$. However, this loss is not differentiable, so we cannot use gradient descent to optimize it.
-
-Attempt #2: We could use the mean squared error loss, i.e., $\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n (y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)^2$. This loss is differentiable, but it does not work well for classification problems: if we have a large positive value for $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$, the loss will be large even if $y^{(i)} = 1$.
-
-Attempt #3: We can apply the *sigmoid function* to the output of the linear model to map it to the range $(0, 1)$, i.e., we will predict $f(\mathbf{x}^{(i)}) = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)$, where $\sigma(z) = \frac{1}{1 + e^{-z}}$ is the sigmoid function. The sigmoid function is a smooth, non-linear function that maps any real number to the range $(0, 1)$. We can then interpret $f(\mathbf{x}^{(i)})$ as the probability that $y^{(i)} = 1$ given the features $\mathbf{x}^{(i)}$. If we need to report a class label, we can threshold the predicted probability, e.g., predict $y^{(i)} = 1$ if $f(\mathbf{x}^{(i)}) > \frac12$ and $y^{(i)} = 0$ otherwise.
-
-To train our model, we need a loss function that measures how well our predicted probabilities match the true labels. A common choice is the *binary cross-entropy loss*, which is defined as
-$$\mathcal{L}(\mathbf{w}) = -\frac{1}{n} \sum_{i=1}^n \left[y^{(i)} \log(f(\mathbf{x}^{(i)})) + (1 - y^{(i)}) \log(1 - f(\mathbf{x}^{(i)}))\right].$$
-This loss function measures the distance (in a sense we'll explore later in the course) between the predicted probabilities and the true labels. It is differentiable, so we can use gradient descent to optimize it.
-
-[image here] Comparing the predictions by $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$
-
-[image here] Comparing the loss when $y=1$ by $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle$
-
-### Non-linear Transformations
-
-Often, our data is not linearly separable, i.e., we cannot draw a straight line to separate the two classes.
-In this case, we can use non-linear transformations to map the data to a higher-dimensional space, where it *is* linearly separable.
-For example, as we saw for linear regression, we can add polynomial features to the data.
-
-[image here] Circle data that is not linearly separable, and the cone transformation that makes it linearly separable.
-
-It is not a priori clear which non-linear transformation will work best for a given dataset.
-In several lectures, we will explore how to use kernel methods to implicitly map the data to a higher-dimensional space, which captures many of the non-linear transformations we might want to use.
-
-### Measuring Error in Classification
-
-The simplest way to measure the error of a classification model is to compute the *error rate*, which is the fraction of examples that are misclassified. For example, if we have $n$ examples and our model misclassifies $k$ of them, the error rate is $\frac{k}{n}$.
-
-However, the error rate does not take into account *which* points are misclassified.
-We will often break down the accuracy of a classification model into four categories:  
-• **True Positives (TP):** The model correctly predicts a positive class.  
-• **True Negatives (TN):** The model correctly predicts a negative class.  
-• **False Positives (FP):** The model incorrectly predicts a positive class when the true class is negative.    
-• **False Negatives (FN):** The model incorrectly predicts a negative class when the true class is positive.
-
-[image here] Venn diagram of true positives, true negatives, false positives, and false negatives.
-
-The raw counts of these four categories can be summarized in a **confusion matrix**. The confusion matrix is a square matrix with dimensions equal to the number of classes, where the rows represent the true classes and the columns represent the predicted classes.
-
-But, these raw counts themselves are not very informative.
-
-We often report the **True Positive Rate (TPR)**, also known as *recall*, which is the fraction of true positives out of all actual positives:
-$\text{TPR} = \frac{\text{TP}}{\text{TP} + \text{FN}}.$
-The TPR measures how well the model identifies positive examples (higher is better).
-
-We also report the **False Positive Rate (FPR)**, which is the fraction of false positives out of all actual negatives:
-$\text{FPR} = \frac{\text{FP}}{\text{FP} + \text{TN}}.$
-The FPR measures how often the model incorrectly identifies negative examples as positive (lower is better).
-
-Finally, we can report the **Precision**, which is the fraction of true positives out of all predicted positives:
-$\text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}.$
-Precision measures how well the model identifies positive examples among all predicted positives (higher is better).
-
-If we have a model that does not achieve the desired TPR or FPR, we have a hidden lever we can pull: the threshold for predicting a positive class.
-By default, we predict a positive class if the predicted probability is greater than $\frac12$.
-But, we can change this threshold to an arbitrary value $\tau \in [0, 1]$.
-Increasing the threshold can only decrease the TPR, since we are less likely to predict a positive class;
-simultaneously, the FPR can only increase, since we are more likely to predict a negative class.
-
-[image here] 2D plots with linearly separable data, with different thresholds $\tau$.
-
-We can visualize the trade-off between TPR and FPR by plotting the **Receiver Operating Characteristic (ROC) curve**. The ROC curve is a plot of the TPR against the FPR for different threshold values $\tau$.
-Because a higher TPR is better and a lower FPR is better, we want the ROC curve to be as close to the top-left corner as possible.
-The area under the ROC curve (AUC) is a single number that summarizes the performance of the model across all threshold values.
-A model with an AUC of 1 is perfect, while a model with an AUC of 0.5 is no better than random guessing.
-
-[image here] ROC curve with different thresholds $\tau$.
-
-### Multiple Classes
-
-### Optimization

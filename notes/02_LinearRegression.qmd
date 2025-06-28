@@ -274,6 +274,6 @@ We saw (and you will prove) that the exact solution to linear regression is give
 This requires building the matrix $\mathbf{X}^\top \mathbf{X}$, which takes $O(nd^2)$ time, and then inverting it, which takes $O(d^3)$.
 When we have a large number of data points $n$ and/or a large number of features $d$, this can be prohibitively expensive.
 
-**function Class Misspecification**
+**Function Class Misspecification**
 We have assumed that the data has a linear relationship (or close to linear relationship) with the labels.
 What happens when this is not true? That is, even the best linear function gives a poor approximation?

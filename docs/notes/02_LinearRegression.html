@@ -368,7 +368,7 @@ y= \langle \mathbf{w}^*, \mathbf{x} \rangle + \eta.
 <h2 class="anchored" data-anchor-id="looking-forward">Looking Forward</h2>
 <p>While we have seen the benefits of exactly optimizing linear regression functions, there are several limitations that we will address.</p>
 <p><strong>Computational Complexity</strong> We saw (and you will prove) that the exact solution to linear regression is given by <span class="math inline">\(\mathbf{w}^* = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}\)</span>. This requires building the matrix <span class="math inline">\(\mathbf{X}^\top \mathbf{X}\)</span>, which takes <span class="math inline">\(O(nd^2)\)</span> time, and then inverting it, which takes <span class="math inline">\(O(d^3)\)</span>. When we have a large number of data points <span class="math inline">\(n\)</span> and/or a large number of features <span class="math inline">\(d\)</span>, this can be prohibitively expensive.</p>
-<p><strong>function Class Misspecification</strong> We have assumed that the data has a linear relationship (or close to linear relationship) with the labels. What happens when this is not true? That is, even the best linear function gives a poor approximation?</p>
+<p><strong>Function Class Misspecification</strong> We have assumed that the data has a linear relationship (or close to linear relationship) with the labels. What happens when this is not true? That is, even the best linear function gives a poor approximation?</p>
 
 
 
