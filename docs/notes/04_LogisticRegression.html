@@ -258,16 +258,23 @@ x_j^{(i)} \left[\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle) - y^{(i)}\r
 • <strong>True Negatives (TN):</strong> The model correctly predicts a negative class.<br>
 • <strong>False Positives (FP):</strong> The model incorrectly predicts a positive class when the true class is negative.<br>
 • <strong>False Negatives (FN):</strong> The model incorrectly predicts a negative class when the true class is positive.</p>
-<p>[image here] Venn diagram of true positives, true negatives, false positives, and false negatives.</p>
+<center>
+<img src="images/classification_venn.pdf" width="700">
+</center>
 <p>The raw counts of these four categories can be summarized in a <strong>confusion matrix</strong>. The confusion matrix is a square matrix with dimensions equal to the number of classes, where the rows represent the true classes and the columns represent the predicted classes.</p>
 <p>But, these raw counts themselves are not very informative.</p>
 <p>We often report the <strong>True Positive Rate (TPR)</strong>, also known as <em>recall</em>, which is the fraction of true positives out of all actual positives: <span class="math inline">\(\text{TPR} = \frac{\text{TP}}{\text{TP} + \text{FN}}.\)</span> The TPR measures how well the model identifies positive examples (higher is better).</p>
 <p>We also report the <strong>False Positive Rate (FPR)</strong>, which is the fraction of false positives out of all actual negatives: <span class="math inline">\(\text{FPR} = \frac{\text{FP}}{\text{FP} + \text{TN}}.\)</span> The FPR measures how often the model incorrectly identifies negative examples as positive (lower is better).</p>
 <p>Finally, we can report the <strong>Precision</strong>, which is the fraction of true positives out of all predicted positives: <span class="math inline">\(\text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}.\)</span> Precision measures how well the model identifies positive examples among all predicted positives (higher is better).</p>
 <p>If we have a model that does not achieve the desired TPR or FPR, we have a hidden lever we can pull: the threshold for predicting a positive class. By default, we predict a positive class if the predicted probability is greater than <span class="math inline">\(\frac12\)</span>. But, we can change this threshold to an arbitrary value <span class="math inline">\(\tau \in [0, 1]\)</span>. Increasing the threshold can only decrease the TPR, since we are less likely to predict a positive class; simultaneously, the FPR can only increase, since we are more likely to predict a negative class.</p>
-<p>[image here] 2D plots with linearly separable data, with different thresholds <span class="math inline">\(\tau\)</span>.</p>
+[image here] 2D plots with linearly separable data, with different thresholds <span class="math inline">\(\tau\)</span>.
+<center>
+<img src="images/classification_boundaries.pdf" width="700">
+</center>
 <p>We can visualize the trade-off between TPR and FPR by plotting the <strong>Receiver Operating Characteristic (ROC) curve</strong>. The ROC curve is a plot of the TPR against the FPR for different threshold values <span class="math inline">\(\tau\)</span>. Because a higher TPR is better and a lower FPR is better, we want the ROC curve to be as close to the top-left corner as possible. The area under the ROC curve (AUC) is a single number that summarizes the performance of the model across all threshold values. A model with an AUC of 1 is perfect, while a model with an AUC of 0.5 is no better than random guessing.</p>
-<p>[image here] ROC curve with different thresholds <span class="math inline">\(\tau\)</span>.</p>
+<center>
+<img src="images/classification_roc.pdf" width="700">
+</center>
 </section>
 <section id="multiple-classes" class="level3">
 <h3 class="anchored" data-anchor-id="multiple-classes">Multiple Classes</h3>

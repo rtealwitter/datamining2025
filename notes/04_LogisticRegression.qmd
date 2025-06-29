@@ -110,7 +110,7 @@ We will often break down the accuracy of a classification model into four catego
 • **False Positives (FP):** The model incorrectly predicts a positive class when the true class is negative.    
 • **False Negatives (FN):** The model incorrectly predicts a negative class when the true class is positive.
 
-[image here] Venn diagram of true positives, true negatives, false positives, and false negatives.
+<center><img src="images/classification_venn.pdf" width="700"></center>
 
 The raw counts of these four categories can be summarized in a **confusion matrix**. The confusion matrix is a square matrix with dimensions equal to the number of classes, where the rows represent the true classes and the columns represent the predicted classes.
 
@@ -135,13 +135,14 @@ Increasing the threshold can only decrease the TPR, since we are less likely to 
 simultaneously, the FPR can only increase, since we are more likely to predict a negative class.
 
 [image here] 2D plots with linearly separable data, with different thresholds $\tau$.
+<center><img src="images/classification_boundaries.pdf" width="700"></center>
 
 We can visualize the trade-off between TPR and FPR by plotting the **Receiver Operating Characteristic (ROC) curve**. The ROC curve is a plot of the TPR against the FPR for different threshold values $\tau$.
 Because a higher TPR is better and a lower FPR is better, we want the ROC curve to be as close to the top-left corner as possible.
 The area under the ROC curve (AUC) is a single number that summarizes the performance of the model across all threshold values.
 A model with an AUC of 1 is perfect, while a model with an AUC of 0.5 is no better than random guessing.
 
-[image here] ROC curve with different thresholds $\tau$.
+<center><img src="images/classification_roc.pdf" width="700"></center>
 
 ### Multiple Classes
 
