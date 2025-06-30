@@ -1,5 +1,5 @@
 ---
-title: "**Support Vector Machines and Convex Optimization**"
+title: "**Support Vector Machines and Constrained Optimization**"
 format:
   html:
     toc: true
@@ -7,19 +7,119 @@ format:
     include-after-body: readtime.html
 ---
 
+We have so far explored the Naive Bayes classifier and logistic regression for solving classification tasks. In this section, we will learn about another tool called support vector machines (SVMs).
+While the final algorithm will be similar to logistic regression, SVMs approach the problem from a different perspective.
+As we'll soon discover, both logistic regression and SVMs have their own strengths and weaknesses.
+Plus, we'll get to see some fun math along the way!
 
-Nice link: https://www.cs.cmu.edu/~aarti/Class/10701_Spring21/Lecs/svm_dual_kernel_inked.pdf
+### Support Vector Machines
 
-## Classification
+Consider a binary classification problem with data points $\mathbf{x}^{(i)}$ and labels $y^{(i)} \in \{-1, 1\}$.
+(We previously used $y^{(i)} \in \{0, 1\}$, but this is just a relabeling for convenience.)
+We want to find a hyperplane that separates the two classes.
+For the majority of our discussion, we will assume that the data is linearly separable, meaning there exists a hyperplane that can perfectly separate the two classes.
 
-## Support Vector Machines
+[image here] linearly separable data
+
+When there is such a separating hyperplane, there are often infinitely many that we can choose from.
+The question at the heart of support vector machines is: which hyperplane should we choose?
+
+[image here] three possible separating hyperplanes
+
+As we've seen in the past, it is not too difficult to find a model that perfectly fits our training data; the real challenge is to find a model that generalizes well to unseen data.
+In the context of classification, we may expect that a model that separates the two classes with the largest 'margin of error' will generalize better than one that is very close to the data points.
+With this in mind, Vladimir Vapnik and Alexey Chervonenkis proposed the idea of support vector machines, which aim to find the hyperplane that maximizes the margin between the two classes.
+
+[image here] hyperplane, parallel margin hyperplanes, vector labelled
+
+Let's consider a particular hyperplane, defined by the normal vector $\mathbf{w}$ and bias $b$.
+The equation of the hyperplane is given by:
+$$
+\begin{align}
+\langle \mathbf{w}, \mathbf{x} \rangle - b = 0.
+\end{align}
+$$
+
+We will define $\mathbf{w}$ and $b$ so that $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \geq 1$ for all points $\mathbf{x}^{(i)}$ in the positive class ($y^{(i)} = 1$) and $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \leq -1$ for all points in the negative class ($y^{(i)} = -1$).
+As we can see in the figure above, such a hyperplane will always exist if the data is linearly separable.
+How can we find the hyperplane that maximizes the margin?
+
+### Computing the Margin
+
+For a given $\mathbf{w}$ and $b$, we can see that the margin is the distance between the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = 1$ and the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = -1$.
+Let's calculate this distance.
+Consider a point $\mathbf{z}_1$ on the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = 1$.
+Let $\mathbf{z}_2$ be the point on the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = -1$ that is *closest* to $\mathbf{z}_1$.
+Because $\mathbf{z}_1$ and $\mathbf{z}_2$ are the closest points to each other on the two hyperplanes, the line connecting them is perpendicular to both hyperplanes.
+(Otherwise, we could move along the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = -1$ to find a point $\mathbf{z}_2'$ that is closer to $\mathbf{z}_1$ than $\mathbf{z}_2$, contradicting our assumption that $\mathbf{z}_2$ is the closest point.)
+Formally, we can write:
+$$
+\mathbf{z}_1 - \mathbf{z}_2 = \lambda \bar{\mathbf{w}}
+$$
+for some scaling $\lambda \in \mathbb{R}$, where $\bar{\mathbf{w}}$ is the unit normal vector $\frac{\mathbf{w}}{\|\mathbf{w}\|_2}$.
+We are interested in the length of this vector $\lambda$.
+By our observation above, we can write $\mathbf{z}_1 =  \lambda \bar{\mathbf{w}} + \mathbf{z}_2$.
+Then, plugging in $\mathbf{z}_1$ into the hyperplane equation $\langle \mathbf{w}, \mathbf{z}_1 \rangle - b = 1$, we have:
+$$
+\begin{align}
+1 &= \langle \mathbf{w}, \lambda \bar{\mathbf{w}} + \mathbf{z}_2 \rangle - b
+\\ &= \langle \mathbf{w}, \lambda \bar{\mathbf{w}} \rangle + \langle \mathbf{w}, \mathbf{z}_2 \rangle - b
+\\ &= \lambda \langle \mathbf{w}, \bar{\mathbf{w}} \rangle - 1
+\\ &= \frac{\lambda}{\| \mathbf{w} \|_2} \| \mathbf{w} \|_2^2 - 1.
+\end{align}
+$$
+Rearranging, we have that $\lambda = \frac2{\| \mathbf{w} \|_2}$.
+For a given $\mathbf{w}$ and $b$, we now know how to compute the margin. Let's now find the $\mathbf{w}$ and $b$ with the largest margin.
+
+### Constrained Optimization
+
+We can formalize our goal as a constrained optimization problem:
+We want to find the hyperplane that maximizes the margin, subject to the constraints that all points in the positive class are on one side of the hyperplane and all points in the negative class are on the other side.
+
+Observe that maximizing the margin is equivalent to minimizing the *inverse* of the margin, which, by our calculation above, is equivalent to minimizing $\frac12 \| \mathbf{w} \|_2$.
+Further, notice that we can simplify our constraints:
+$\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \geq 1 \text{ for } y^{(i)} = 1$
+and $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \leq -1 \text{ for } y^{(i)} = -1$
+is equivalent to $ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1$ for all $i$.
+(This is why we relabelled the classes so that $y^{(i)} \in \{-1, 1\}$.)
+We can now write our optimization problem as follows:
+$$
+\begin{align}
+\min_{\mathbf{w}, b} \frac12 \| \mathbf{w} \|_2^2 \textnormal{ such that }
+ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \forall i.
+\end{align}
+$$
+
+The points $\mathbf{x}^{(i)}$ that lie on the hyperplane i.e., those for which $ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) = 1$ are called the *support vectors*.
+Let $\mathcal{S}$ be the set of indices of the support vectors.
+
+The problem above is known as an example of a *constrained optimization problem*.
+More specifically, it is a *quadratic programming* problem:
+we have a quadratic objective function (the term $\frac12 \| \mathbf{w} \|_2^2$ is quadratic in $\mathbf{w}$) and linear constraints (the constraints are linear in $\mathbf{w}$ and $b$).
+Constrained optimization problems in general, and quadratic programming in particular, are a rich area of study in optimization, and there are many techniques to solve them.
+However, the time complexity of these techniques will depend on the number of variables in $\mathbf{w}$.
+For data in high dimensions (e.g., the transformed data after we add features to make the classes linearly separable), the time complexity can be quite high.
+In the next section, we will see how to find the *dual* of this problem, which can allow us to solve it more efficiently.
+
+Before we do, let's see why the hyperplane is called a *support vector machine*.
+
+**Claim**: The optimal hyperplane $\mathbf{w}^\star$ is a linear combination of the support vectors:
+$$
+\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)}$$
+$$
+for some coefficients $\beta_i \in \mathbb{R}$.
+
+Suppose for contradiction that $\mathbf{w}^\star$ is not a linear combination of the support vectors.
+That is, $\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)} + \mathbf{v}$ for some vector $\mathbf{v}$ that is orthogonal to all support vectors.
+We will construct a new hyperplane $\mathbf{w}' = \mathbf{w}^\star - \epsilon \mathbf{v}$ for some small $\epsilon > 0$, so that each point is still correctly classified, and the margin is larger than that of $\mathbf{w}^\star$.
+
 
 ### Hard Margin
 
 $$
 \begin{align}
 \min_{\mathbf{w}, b} \| \mathbf{w} \|^2 \textnormal{ such that }
-1 - y_i(\mathbf{w}^\top \mathbf{x}^{(i)} - b) \leq 0 \text{ } \forall i
+1 -  y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} - b) \leq 0 \text{ } \forall i
 \end{align}
 $$
 
@@ -45,3 +145,5 @@ $$
 \langle \phi(\mathbf{x}^{(i)}), \phi(\mathbf{x}^{(j)}) \rangle = K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \left( \mathbf{x}^{(i)} \cdot \mathbf{x}^{(j)} \right)^p
 \end{align}
 
+
+Nice link: https://www.cs.cmu.edu/~aarti/Class/10701_Spring21/Lecs/svm_dual_kernel_inked.pdf

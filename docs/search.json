@@ -9,30 +9,16 @@
   {
     "objectID": "notes/05_SupportVectorMachines.html",
     "href": "notes/05_SupportVectorMachines.html",
-    "title": "Support Vector Machines and Convex Optimization",
+    "title": "Support Vector Machines and Constrained Optimization",
     "section": "",
-    "text": "Nice link: https://www.cs.cmu.edu/~aarti/Class/10701_Spring21/Lecs/svm_dual_kernel_inked.pdf"
-  },
-  {
-    "objectID": "notes/05_SupportVectorMachines.html#classification",
-    "href": "notes/05_SupportVectorMachines.html#classification",
-    "title": "Support Vector Machines and Convex Optimization",
-    "section": "Classification",
-    "text": "Classification"
-  },
-  {
-    "objectID": "notes/05_SupportVectorMachines.html#support-vector-machines",
-    "href": "notes/05_SupportVectorMachines.html#support-vector-machines",
-    "title": "Support Vector Machines and Convex Optimization",
-    "section": "Support Vector Machines",
-    "text": "Support Vector Machines\n\nHard Margin\n\\[\n\\begin{align}\n\\min_{\\mathbf{w}, b} \\| \\mathbf{w} \\|^2 \\textnormal{ such that }\n1 - y_i(\\mathbf{w}^\\top \\mathbf{x}^{(i)} - b) \\leq 0 \\text{ } \\forall i\n\\end{align}\n\\]\n\n\nSoft Margin\nAdd slack variables \\(\\xi_i\\) to allow for some misclassification:"
+    "text": "We have so far explored the Naive Bayes classifier and logistic regression for solving classification tasks. In this section, we will learn about another tool called support vector machines (SVMs). While the final algorithm will be similar to logistic regression, SVMs approach the problem from a different perspective. As we’ll soon discover, both logistic regression and SVMs have their own strengths and weaknesses. Plus, we’ll get to see some fun math along the way!"
   },
   {
     "objectID": "notes/05_SupportVectorMachines.html#convex-optimization",
     "href": "notes/05_SupportVectorMachines.html#convex-optimization",
-    "title": "Support Vector Machines and Convex Optimization",
+    "title": "Support Vector Machines and Constrained Optimization",
     "section": "Convex Optimization",
-    "text": "Convex Optimization\nOptimizing an objective in a constrained problem is challenging, we’ll attempt to convert it into an unconstrained problem by putting the constraint in the objective\nOur first attempt: We could add a term to the objective which is infinity if any of the constraints are satisfied and 0 otherwise. This would certainly yield the same solution: every constraint must be satisfied (so the objective is finite), and we have the minimum objective when the constraint is satisfied. The issue is that solving this problem is difficult because the objective is not continuous: a slight violation of the constraints results in a jump to infinity.\n\nKernel Trick\nConsider polynomial features of power \\(p\\): There are \\(d^p\\) such features, so representing the data in this way is not feasible for large \\(d\\). Instead, we can use the kernel trick to compute the inner product in this space without explicitly computing the features. $$ \\[\\begin{align}\n\\langle \\phi(\\mathbf{x}^{(i)}), \\phi(\\mathbf{x}^{(j)}) \\rangle = K(\\mathbf{x}^{(i)}, \\mathbf{x}^{(j)}) = \\left( \\mathbf{x}^{(i)} \\cdot \\mathbf{x}^{(j)} \\right)^p\n\\end{align}\\]"
+    "text": "Convex Optimization\nOptimizing an objective in a constrained problem is challenging, we’ll attempt to convert it into an unconstrained problem by putting the constraint in the objective\nOur first attempt: We could add a term to the objective which is infinity if any of the constraints are satisfied and 0 otherwise. This would certainly yield the same solution: every constraint must be satisfied (so the objective is finite), and we have the minimum objective when the constraint is satisfied. The issue is that solving this problem is difficult because the objective is not continuous: a slight violation of the constraints results in a jump to infinity.\n\nKernel Trick\nConsider polynomial features of power \\(p\\): There are \\(d^p\\) such features, so representing the data in this way is not feasible for large \\(d\\). Instead, we can use the kernel trick to compute the inner product in this space without explicitly computing the features. $$ \\[\\begin{align}\n\\langle \\phi(\\mathbf{x}^{(i)}), \\phi(\\mathbf{x}^{(j)}) \\rangle = K(\\mathbf{x}^{(i)}, \\mathbf{x}^{(j)}) = \\left( \\mathbf{x}^{(i)} \\cdot \\mathbf{x}^{(j)} \\right)^p\n\\end{align}\\]\nNice link: https://www.cs.cmu.edu/~aarti/Class/10701_Spring21/Lecs/svm_dual_kernel_inked.pdf"
   },
   {
     "objectID": "notes/03_GradientDescent.html",
