@@ -105,16 +105,70 @@ Before we do, let's see why the hyperplane is called a *support vector machine*.
 
 **Claim**: The optimal hyperplane $\mathbf{w}^\star$ is a linear combination of the support vectors:
 $$
-\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)}$$
+\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)}
 $$
 for some coefficients $\beta_i \in \mathbb{R}$.
 
+**Proof**:
 Suppose for contradiction that $\mathbf{w}^\star$ is not a linear combination of the support vectors.
 That is, $\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)} + \mathbf{v}$ for some vector $\mathbf{v}$ that is orthogonal to all support vectors.
 We will construct a new hyperplane $\mathbf{w}' = \mathbf{w}^\star - \epsilon \mathbf{v}$ for some small $\epsilon > 0$, so that each point is still correctly classified, and the margin is larger than that of $\mathbf{w}^\star$.
 
+Let's check that the new hyperplane $\mathbf{w}'$ still correctly classifies all points.
+First, for any support vector $\mathbf{x}^{(i)}$, we have 
+$$
+\langle \mathbf{w}', \mathbf{x}^{(i)} \rangle = \langle \mathbf{w}^\star - \epsilon \mathbf{v}, \mathbf{x}^{(i)} \rangle = \langle \mathbf{w}^\star, \mathbf{x}^{(i)} \rangle
+$$
+since $\mathbf{v}$ is orthogonal to all support vectors.
+By assumption, $\mathbf{w}^\star$ satisfies $y^{(i)}(\langle \mathbf{w}^\star, \mathbf{x}^{(i)} \rangle - b) = 1$.
+Second, for any non-support vector $\mathbf{x}^{(j)}$, we have 
+$$
+\langle \mathbf{w}', \mathbf{x}^{(j)} \rangle = \langle \mathbf{w}^\star - \epsilon \mathbf{v}, \mathbf{x}^{(j)} \rangle = \langle \mathbf{w}^\star, \mathbf{x}^{(j)} \rangle - \epsilon \langle \mathbf{v}, \mathbf{x}^{(j)} \rangle.
+$$
+Since $\mathbf{x}^{(j)}$ is not a support vector, we have $y^{(j)} (\langle \mathbf{v}, \mathbf{x}^{(j)} \rangle - b) > 1$.
+Because this inequality is strict, we can choose $\epsilon$ small enough so that $y^{(j)}(\langle \mathbf{w}', \mathbf{x}^{(j)} \rangle - b) = y^{(j)}(\langle \mathbf{w}^\star, \mathbf{x}^{(j)} \rangle - b - \epsilon \langle \mathbf{v}, \mathbf{x}^{(j)} \rangle) > 1$.
 
-### Hard Margin
+Next, let's check that the margin of $\mathbf{w}'$ is larger than that of $\mathbf{w}^\star$.
+Since $\mathbf{v}$ is orthogonal to all support vectors, we can write:
+$$
+\begin{align}
+\| \mathbf{w}' \|_2^2 
+&= \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} - (1-\epsilon) \mathbf{v} \|_2^2 \\
+&= \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + (1-\epsilon)^2 \| \mathbf{v} \|_2^2 \\
+&< \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + \| \mathbf{v} \|_2^2 = \| \mathbf{w}^\star \|_2^2.
+\end{align}
+$$
+Since the length of the normal vector $\mathbf{w}$ is inversely proportional to the margin, we have that the margin of $\mathbf{w}'$ is larger than that of $\mathbf{w}^\star$, a contradiction!
+
+### The Dual Problem
+
+We have derived a quadratic programming problem, which we'll call the *primal problem*.
+
+$$
+\begin{align}
+\min_{\mathbf{w}, b} \frac12 \| \mathbf{w} \|_2^2 \textnormal{ such that }
+ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \forall i \in \mathcal{S}.
+\end{align}
+$$
+
+The challenge in directly solving the primal is that the number of variables in $\mathbf{w}$ is equal to the number of features, which can be very large especially if we apply feature transformations to the data.
+Fortunately, we can turn the *primal* into a *dual problem*, that, roughly speaking, converts each constraint into a variable, and each variable into a constraint.
+Notice that this is particularly useful because we only need the constraints for the support vectors, which could be much fewer than the total number of data points $n$.
+
+Let's begin with the *Lagrangian* of the primal problem.
+$$
+\begin{align}
+\min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \frac12 \| \mathbf{w} \|_2^2 - \sum_{i \in \mathcal{S}} \alpha_i \left( y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) - 1 \right)
+\end{align}
+$$
+where $\alpha \in \mathbb{R}^{|\mathcal{S}|}_+$ is a vector of non-negative real numbers.
+Let's see why the Lagrangian is equivalent to the primal problem:
+The constraint set in the primal problem is 
+
+
+### Kernel Trick
+
+### Soft Margin
 
 $$
 \begin{align}

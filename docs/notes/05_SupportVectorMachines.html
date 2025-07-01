@@ -165,11 +165,13 @@ window.Quarto = {
   <li><a href="#support-vector-machines" id="toc-support-vector-machines" class="nav-link active" data-scroll-target="#support-vector-machines">Support Vector Machines</a></li>
   <li><a href="#computing-the-margin" id="toc-computing-the-margin" class="nav-link" data-scroll-target="#computing-the-margin">Computing the Margin</a></li>
   <li><a href="#constrained-optimization" id="toc-constrained-optimization" class="nav-link" data-scroll-target="#constrained-optimization">Constrained Optimization</a></li>
-  <li><a href="#hard-margin" id="toc-hard-margin" class="nav-link" data-scroll-target="#hard-margin">Hard Margin</a></li>
+  <li><a href="#the-dual-problem" id="toc-the-dual-problem" class="nav-link" data-scroll-target="#the-dual-problem">The Dual Problem</a></li>
+  <li><a href="#kernel-trick" id="toc-kernel-trick" class="nav-link" data-scroll-target="#kernel-trick">Kernel Trick</a></li>
   <li><a href="#soft-margin" id="toc-soft-margin" class="nav-link" data-scroll-target="#soft-margin">Soft Margin</a></li>
+  <li><a href="#soft-margin-1" id="toc-soft-margin-1" class="nav-link" data-scroll-target="#soft-margin-1">Soft Margin</a></li>
   <li><a href="#convex-optimization" id="toc-convex-optimization" class="nav-link" data-scroll-target="#convex-optimization">Convex Optimization</a>
   <ul class="collapse">
-  <li><a href="#kernel-trick" id="toc-kernel-trick" class="nav-link" data-scroll-target="#kernel-trick">Kernel Trick</a></li>
+  <li><a href="#kernel-trick-1" id="toc-kernel-trick-1" class="nav-link" data-scroll-target="#kernel-trick-1">Kernel Trick</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -238,11 +240,44 @@ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \foral
 <p>The problem above is known as an example of a <em>constrained optimization problem</em>. More specifically, it is a <em>quadratic programming</em> problem: we have a quadratic objective function (the term <span class="math inline">\(\frac12 \| \mathbf{w} \|_2^2\)</span> is quadratic in <span class="math inline">\(\mathbf{w}\)</span>) and linear constraints (the constraints are linear in <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>). Constrained optimization problems in general, and quadratic programming in particular, are a rich area of study in optimization, and there are many techniques to solve them. However, the time complexity of these techniques will depend on the number of variables in <span class="math inline">\(\mathbf{w}\)</span>. For data in high dimensions (e.g., the transformed data after we add features to make the classes linearly separable), the time complexity can be quite high. In the next section, we will see how to find the <em>dual</em> of this problem, which can allow us to solve it more efficiently.</p>
 <p>Before we do, let’s see why the hyperplane is called a <em>support vector machine</em>.</p>
 <p><strong>Claim</strong>: The optimal hyperplane <span class="math inline">\(\mathbf{w}^\star\)</span> is a linear combination of the support vectors: <span class="math display">\[
-\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)}\]</span> $$ for some coefficients <span class="math inline">\(\beta_i \in \mathbb{R}\)</span>.</p>
-<p>Suppose for contradiction that <span class="math inline">\(\mathbf{w}^\star\)</span> is not a linear combination of the support vectors. That is, <span class="math inline">\(\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)} + \mathbf{v}\)</span> for some vector <span class="math inline">\(\mathbf{v}\)</span> that is orthogonal to all support vectors. We will construct a new hyperplane <span class="math inline">\(\mathbf{w}' = \mathbf{w}^\star - \epsilon \mathbf{v}\)</span> for some small <span class="math inline">\(\epsilon &gt; 0\)</span>, so that each point is still correctly classified, and the margin is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>.</p>
+\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)}
+\]</span> for some coefficients <span class="math inline">\(\beta_i \in \mathbb{R}\)</span>.</p>
+<p><strong>Proof</strong>: Suppose for contradiction that <span class="math inline">\(\mathbf{w}^\star\)</span> is not a linear combination of the support vectors. That is, <span class="math inline">\(\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)} + \mathbf{v}\)</span> for some vector <span class="math inline">\(\mathbf{v}\)</span> that is orthogonal to all support vectors. We will construct a new hyperplane <span class="math inline">\(\mathbf{w}' = \mathbf{w}^\star - \epsilon \mathbf{v}\)</span> for some small <span class="math inline">\(\epsilon &gt; 0\)</span>, so that each point is still correctly classified, and the margin is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>.</p>
+<p>Let’s check that the new hyperplane <span class="math inline">\(\mathbf{w}'\)</span> still correctly classifies all points. First, for any support vector <span class="math inline">\(\mathbf{x}^{(i)}\)</span>, we have <span class="math display">\[
+\langle \mathbf{w}', \mathbf{x}^{(i)} \rangle = \langle \mathbf{w}^\star - \epsilon \mathbf{v}, \mathbf{x}^{(i)} \rangle = \langle \mathbf{w}^\star, \mathbf{x}^{(i)} \rangle
+\]</span> since <span class="math inline">\(\mathbf{v}\)</span> is orthogonal to all support vectors. By assumption, <span class="math inline">\(\mathbf{w}^\star\)</span> satisfies <span class="math inline">\(y^{(i)}(\langle \mathbf{w}^\star, \mathbf{x}^{(i)} \rangle - b) = 1\)</span>. Second, for any non-support vector <span class="math inline">\(\mathbf{x}^{(j)}\)</span>, we have <span class="math display">\[
+\langle \mathbf{w}', \mathbf{x}^{(j)} \rangle = \langle \mathbf{w}^\star - \epsilon \mathbf{v}, \mathbf{x}^{(j)} \rangle = \langle \mathbf{w}^\star, \mathbf{x}^{(j)} \rangle - \epsilon \langle \mathbf{v}, \mathbf{x}^{(j)} \rangle.
+\]</span> Since <span class="math inline">\(\mathbf{x}^{(j)}\)</span> is not a support vector, we have <span class="math inline">\(y^{(j)} (\langle \mathbf{v}, \mathbf{x}^{(j)} \rangle - b) &gt; 1\)</span>. Because this inequality is strict, we can choose <span class="math inline">\(\epsilon\)</span> small enough so that <span class="math inline">\(y^{(j)}(\langle \mathbf{w}', \mathbf{x}^{(j)} \rangle - b) = y^{(j)}(\langle \mathbf{w}^\star, \mathbf{x}^{(j)} \rangle - b - \epsilon \langle \mathbf{v}, \mathbf{x}^{(j)} \rangle) &gt; 1\)</span>.</p>
+<p>Next, let’s check that the margin of <span class="math inline">\(\mathbf{w}'\)</span> is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>. Since <span class="math inline">\(\mathbf{v}\)</span> is orthogonal to all support vectors, we can write: <span class="math display">\[
+\begin{align}
+\| \mathbf{w}' \|_2^2
+&amp;= \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} - (1-\epsilon) \mathbf{v} \|_2^2 \\
+&amp;= \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + (1-\epsilon)^2 \| \mathbf{v} \|_2^2 \\
+&amp;&lt; \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + \| \mathbf{v} \|_2^2 = \| \mathbf{w}^\star \|_2^2.
+\end{align}
+\]</span> Since the length of the normal vector <span class="math inline">\(\mathbf{w}\)</span> is inversely proportional to the margin, we have that the margin of <span class="math inline">\(\mathbf{w}'\)</span> is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>, a contradiction!</p>
 </section>
-<section id="hard-margin" class="level3">
-<h3 class="anchored" data-anchor-id="hard-margin">Hard Margin</h3>
+<section id="the-dual-problem" class="level3">
+<h3 class="anchored" data-anchor-id="the-dual-problem">The Dual Problem</h3>
+<p>We have derived a quadratic programming problem, which we’ll call the <em>primal problem</em>.</p>
+<p><span class="math display">\[
+\begin{align}
+\min_{\mathbf{w}, b} \frac12 \| \mathbf{w} \|_2^2 \textnormal{ such that }
+y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \forall i \in \mathcal{S}.
+\end{align}
+\]</span></p>
+<p>The challenge in directly solving the primal is that the number of variables in <span class="math inline">\(\mathbf{w}\)</span> is equal to the number of features, which can be very large especially if we apply feature transformations to the data. Fortunately, we can turn the <em>primal</em> into a <em>dual problem</em>, that, roughly speaking, converts each constraint into a variable, and each variable into a constraint. Notice that this is particularly useful because we only need the constraints for the support vectors, which could be much fewer than the total number of data points <span class="math inline">\(n\)</span>.</p>
+<p>Let’s begin with the <em>Lagrangian</em> of the primal problem. <span class="math display">\[
+\begin{align}
+\min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \frac12 \| \mathbf{w} \|_2^2 - \sum_{i \in \mathcal{S}} \alpha_i \left( y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) - 1 \right)
+\end{align}
+\]</span> where <span class="math inline">\(\alpha \in \mathbb{R}^{|\mathcal{S}|}_+\)</span> is a vector of non-negative real numbers. Let’s see why the Lagrangian is equivalent to the primal problem: The constraint set in the primal problem is</p>
+</section>
+<section id="kernel-trick" class="level3">
+<h3 class="anchored" data-anchor-id="kernel-trick">Kernel Trick</h3>
+</section>
+<section id="soft-margin" class="level3">
+<h3 class="anchored" data-anchor-id="soft-margin">Soft Margin</h3>
 <p><span class="math display">\[
 \begin{align}
 \min_{\mathbf{w}, b} \| \mathbf{w} \|^2 \textnormal{ such that }
@@ -250,16 +285,16 @@ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \foral
 \end{align}
 \]</span></p>
 </section>
-<section id="soft-margin" class="level3">
-<h3 class="anchored" data-anchor-id="soft-margin">Soft Margin</h3>
+<section id="soft-margin-1" class="level3">
+<h3 class="anchored" data-anchor-id="soft-margin-1">Soft Margin</h3>
 <p>Add slack variables <span class="math inline">\(\xi_i\)</span> to allow for some misclassification:</p>
 </section>
 <section id="convex-optimization" class="level2">
 <h2 class="anchored" data-anchor-id="convex-optimization">Convex Optimization</h2>
 <p>Optimizing an objective in a constrained problem is challenging, we’ll attempt to convert it into an unconstrained problem by putting the constraint in the objective</p>
 <p>Our first attempt: We could add a term to the objective which is infinity if any of the constraints are satisfied and 0 otherwise. This would certainly yield the same solution: every constraint must be satisfied (so the objective is finite), and we have the minimum objective when the constraint is satisfied. The issue is that solving this problem is difficult because the objective is not continuous: a slight violation of the constraints results in a jump to infinity.</p>
-<section id="kernel-trick" class="level3">
-<h3 class="anchored" data-anchor-id="kernel-trick">Kernel Trick</h3>
+<section id="kernel-trick-1" class="level3">
+<h3 class="anchored" data-anchor-id="kernel-trick-1">Kernel Trick</h3>
 <p>Consider polynomial features of power <span class="math inline">\(p\)</span>: There are <span class="math inline">\(d^p\)</span> such features, so representing the data in this way is not feasible for large <span class="math inline">\(d\)</span>. Instead, we can use the kernel trick to compute the inner product in this space without explicitly computing the features. $$ <span class="math display">\[\begin{align}
 \langle \phi(\mathbf{x}^{(i)}), \phi(\mathbf{x}^{(j)}) \rangle = K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \left( \mathbf{x}^{(i)} \cdot \mathbf{x}^{(j)} \right)^p
 \end{align}\]</span></p>
