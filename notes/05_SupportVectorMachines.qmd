@@ -90,7 +90,7 @@ $$
 \end{align}
 $$
 
-The points $\mathbf{x}^{(i)}$ that lie on the hyperplane i.e., those for which $ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) = 1$ are called the *support vectors*.
+The points $\mathbf{x}^{(i)}$ that lie on the hyperplane i.e., those for which $y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) = 1$ are called the *support vectors*.
 Let $\mathcal{S}$ be the set of indices of the support vectors.
 
 The problem above is known as an example of a *constrained optimization problem*.
@@ -142,7 +142,7 @@ Since the length of the normal vector $\mathbf{w}$ is inversely proportional to 
 
 ### The Dual Problem
 
-We have derived a quadratic programming problem, which we'll call the *primal problem*.
+We have derived a quadratic programming problem, which we'll call the *primal problem*:
 
 $$
 \begin{align}
@@ -151,22 +151,110 @@ $$
 \end{align}
 $$
 
+In the version above, we only include the constraints for the support vectors $\mathcal{S}$.
+Notice that this is sufficient because the remaining points are correctly classified by the hyperplane defined by the support vectors.
+
 The challenge in directly solving the primal is that the number of variables in $\mathbf{w}$ is equal to the number of features, which can be very large especially if we apply feature transformations to the data.
 Fortunately, we can turn the *primal* into a *dual problem*, that, roughly speaking, converts each constraint into a variable, and each variable into a constraint.
 Notice that this is particularly useful because we only need the constraints for the support vectors, which could be much fewer than the total number of data points $n$.
 
-Let's begin with the *Lagrangian* of the primal problem.
+Let's begin with the *Lagrangian* of the primal problem:
 $$
 \begin{align}
 \min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \frac12 \| \mathbf{w} \|_2^2 - \sum_{i \in \mathcal{S}} \alpha_i \left( y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) - 1 \right)
+= \min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha}),
 \end{align}
 $$
-where $\alpha \in \mathbb{R}^{|\mathcal{S}|}_+$ is a vector of non-negative real numbers.
+where $\boldsymbol{\alpha} \in \mathbb{R}^{|\mathcal{S}|}_+$ is a vector of non-negative real numbers.
 Let's see why the Lagrangian is equivalent to the primal problem:
-The constraint set in the primal problem is 
+For a particular $\mathbf{w}$ and $b$, the constraints in the primal problem must be satisfied by the Lagrangian, otherwise there is some $i$ such that $y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) < 1$ and we can arbitrarily increase the Lagrangian objective by increasing $\alpha_i$.
+Among these $\mathbf{w}$ and $b$ that satisfy the constraints, the Lagrangian objective is minimized when $\frac12 \|\mathbf{w}\|_2^2$ is as small as possible, which is equivalent to minimizing the objective of the primal problem.
 
+So we've seen that the Lagrangian is equivalent to the primal problem.
+Now, it is useful because we can reason about which $\mathbf{w}$ and $b$ minimize.
+Notice that the Lagrangian is a *convex* function in $\mathbf{w}$ and $b$, hence it has a unique minimum where the gradient with respect to $\mathbf{w}$ and $b$ is zero.
+Taking the gradient with respect to $\mathbf{w}$ and $b$, and setting it to zero, we have:
+$$
+\begin{align}
+\nabla_{\mathbf{w}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
+&= \mathbf{w} - \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)} = 0
+\\\nabla_{b} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
+&= \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} = 0.
+\end{align}
+$$
+Then we have $\mathbf{w} = \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)}$.
+Notice that this implies the claim we made earlier: the optimal hyperplane $\mathbf{w}^\star$ is a linear combination of the support vectors, with coefficients $\alpha_i y^{(i)}$.
+Further, we have that $\sum_{i \in \mathcal{S}} \alpha_i y^{(i)} = 0$.
+We can plug these two equations into the Lagrangian to obtain 
+$$
+\begin{align}
+\mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
+&=
+\frac12 \left( \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)} \right)^2
+- \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} {\mathbf{x}^{(i)}}^\top \sum_{j \in \mathcal{S}} \alpha_j y^{(j)} \mathbf{x}^{(j)} 
++ b \sum_{i \in \mathcal{S}} \alpha_i y^{(i)}
++ \sum_{i \in \mathcal{S}} \alpha_i
+\\&=
+- \frac12 \sum_{i, j \in \mathcal{S}} \alpha_i \alpha_j y^{(i)} y^{(j)} \langle \mathbf{x}^{(i)}, \mathbf{x}^{(j)} \rangle
++ \sum_{i \in \mathcal{S}} \alpha_i.
+\end{align}
+$$
+Finally, the dual problem is given by
+$$
+\begin{align}
+\max_{\boldsymbol{\alpha}} \sum_{i \in \mathcal{S}} \alpha_i - \frac12 \sum_{i, j \in \mathcal{S}} \alpha_i \alpha_j y^{(i)} y^{(j)} \langle \mathbf{x}^{(i)}, \mathbf{x}^{(j)} \rangle
+\text{ such that } \alpha_i \geq 0 \text{ and } \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} = 0.
+\end{align}
+$$
 
 ### Kernel Trick
+
+We have framed support vector machines as a tool that requires linearly separable data.
+However, we often need to apply a transformation $\psi: \mathbb{R}^d \to \mathbb{R}^D$ to the data to make it linearly separable.
+For most kernels, $D$ is very large, and explicitly computing the transformation $\psi(\mathbf{x}^{(i)})$ is infeasible.
+Fortunately, we can use the *kernel trick* to compute the inner product without explicitly computing the transformation.
+The kernel trick allows us to define a kernel function $K: \mathbb{R^d} \times \mathbb{R}^d \to \mathbb{R}$ such that
+$$
+\begin{align}
+K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \langle \psi(\mathbf{x}^{(i)}), \psi(\mathbf{x}^{(j)}) \rangle.
+\end{align}
+$$
+
+For many years, I was confused about why the kernel trick works. Doesn't computing the inner product require us to apply the transformation $\psi$?
+
+Let's see two examples:
+
+**Polynomial Kernel**: Consider the polynomial kernel $K(\mathbf{x}, \mathbf{x}') = (\langle \mathbf{x}, \mathbf{x}' \rangle + 1)^p$ for $p \in \mathbb{N}$.
+The explicit transformation $\psi$ when $p=2$ and $d=3$ is given by:
+$$
+\psi(\mathbf{x}) = \begin{bmatrix}
+1 \\
+\sqrt{2} x_1 \\
+\sqrt{2} x_2 \\
+\sqrt{2} x_3 \\
+x_1^2 \\
+x_2^2 \\
+x_3^2 \\
+\sqrt{2} x_1 x_2 \\
+\sqrt{2} x_1 x_3 \\
+\sqrt{2} x_2 x_3 \\
+\end{bmatrix}
+$$
+However, we can efficiently compute the inner product without explicitly computing $\psi$ since
+$$
+\begin{align}
+K(\mathbf{x}, \mathbf{w}) &= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
+\\&= (1 + x_1 x_1' + x_2 x_2' + x_3 x_3')^2
+\\&= 1 + 2x_1 x_1' + 2x_2 x_2' + 2x_3 x_3' + x_1^2 x_1'^2 + x_2^2 x_2'^2 
+\\+& x_3^2 x_3'^2 + 2x_1 x_2 x_1' x_2' + 2x_1 x_3 x_1' x_3' + 2x_2 x_3 x_2' x_3'
+\\&= \langle \psi(\mathbf{x}), \psi(\mathbf{x}') \rangle.
+\end{align}
+$$
+
+
+**Gaussian Kernel**: Consider the Gaussian kernel $K(\mathbf{x}, \mathbf{x}') = e^{-\frac{\|\mathbf{x} - \mathbf{x}'\|_2^2}{2\sigma^2}}$ for some $\sigma > 0$.
+As shown on [Wikipedia](https://en.wikipedia.org/wiki/Radial_basis_function_kernel), the Gaussian kernel can be expressed as an infinite series.
+Instead of explicitly computing the transformation $\psi$, we can compute the kernel in $O(d)$ time by computing the inner product $\langle \mathbf{x}, \mathbf{x}' \rangle$ and then applying the exponential function with a scaling.
 
 ### Soft Margin
 
@@ -176,8 +264,6 @@ $$
 1 -  y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} - b) \leq 0 \text{ } \forall i
 \end{align}
 $$
-
-### Soft Margin
 
 Add slack variables $\xi_i$ to allow for some misclassification:
 
@@ -196,7 +282,7 @@ There are $d^p$ such features, so representing the data in this way is not feasi
 Instead, we can use the kernel trick to compute the inner product in this space without explicitly computing the features.
 $$
 \begin{align}
-\langle \phi(\mathbf{x}^{(i)}), \phi(\mathbf{x}^{(j)}) \rangle = K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \left( \mathbf{x}^{(i)} \cdot \mathbf{x}^{(j)} \right)^p
+\langle \psi(\mathbf{x}^{(i)}), \psi(\mathbf{x}^{(j)}) \rangle = K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \left( \mathbf{x}^{(i)} \cdot \mathbf{x}^{(j)} \right)^p
 \end{align}
 
 
