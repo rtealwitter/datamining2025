@@ -168,11 +168,6 @@ window.Quarto = {
   <li><a href="#the-dual-problem" id="toc-the-dual-problem" class="nav-link" data-scroll-target="#the-dual-problem">The Dual Problem</a></li>
   <li><a href="#kernel-trick" id="toc-kernel-trick" class="nav-link" data-scroll-target="#kernel-trick">Kernel Trick</a></li>
   <li><a href="#soft-margin" id="toc-soft-margin" class="nav-link" data-scroll-target="#soft-margin">Soft Margin</a></li>
-  <li><a href="#soft-margin-1" id="toc-soft-margin-1" class="nav-link" data-scroll-target="#soft-margin-1">Soft Margin</a></li>
-  <li><a href="#convex-optimization" id="toc-convex-optimization" class="nav-link" data-scroll-target="#convex-optimization">Convex Optimization</a>
-  <ul class="collapse">
-  <li><a href="#kernel-trick-1" id="toc-kernel-trick-1" class="nav-link" data-scroll-target="#kernel-trick-1">Kernel Trick</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -216,7 +211,9 @@ window.Quarto = {
 </section>
 <section id="computing-the-margin" class="level3">
 <h3 class="anchored" data-anchor-id="computing-the-margin">Computing the Margin</h3>
-<p>For a given <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, we can see that the margin is the distance between the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = 1\)</span> and the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span>. Let’s calculate this distance. Consider a point <span class="math inline">\(\mathbf{z}_1\)</span> on the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = 1\)</span>. Let <span class="math inline">\(\mathbf{z}_2\)</span> be the point on the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span> that is <em>closest</em> to <span class="math inline">\(\mathbf{z}_1\)</span>. Because <span class="math inline">\(\mathbf{z}_1\)</span> and <span class="math inline">\(\mathbf{z}_2\)</span> are the closest points to each other on the two hyperplanes, the line connecting them is perpendicular to both hyperplanes. (Otherwise, we could move along the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span> to find a point <span class="math inline">\(\mathbf{z}_2'\)</span> that is closer to <span class="math inline">\(\mathbf{z}_1\)</span> than <span class="math inline">\(\mathbf{z}_2\)</span>, contradicting our assumption that <span class="math inline">\(\mathbf{z}_2\)</span> is the closest point.) Formally, we can write: <span class="math display">\[
+<p>For a given <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, we can see that the margin is the distance between the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = 1\)</span> and the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span>. Let’s calculate this distance.</p>
+<p>[image here] margin between two parallel hyperplanes, label with <span class="math inline">\(\mathbf{z}_1\)</span> and <span class="math inline">\(\mathbf{z}_2\)</span></p>
+<p>Consider a point <span class="math inline">\(\mathbf{z}_1\)</span> on the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = 1\)</span>. Let <span class="math inline">\(\mathbf{z}_2\)</span> be the point on the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span> that is <em>closest</em> to <span class="math inline">\(\mathbf{z}_1\)</span>. Because <span class="math inline">\(\mathbf{z}_1\)</span> and <span class="math inline">\(\mathbf{z}_2\)</span> are the closest points to each other on the two hyperplanes, the line connecting them is perpendicular to both hyperplanes. (Otherwise, we could move along the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span> to find a point <span class="math inline">\(\mathbf{z}_2'\)</span> that is closer to <span class="math inline">\(\mathbf{z}_1\)</span> than <span class="math inline">\(\mathbf{z}_2\)</span>, contradicting our assumption that <span class="math inline">\(\mathbf{z}_2\)</span> is the closest point.) Formally, we can write: <span class="math display">\[
 \mathbf{z}_1 - \mathbf{z}_2 = \lambda \bar{\mathbf{w}}
 \]</span> for some scaling <span class="math inline">\(\lambda \in \mathbb{R}\)</span>, where <span class="math inline">\(\bar{\mathbf{w}}\)</span> is the unit normal vector <span class="math inline">\(\frac{\mathbf{w}}{\|\mathbf{w}\|_2}\)</span>. We are interested in the length of this vector <span class="math inline">\(\lambda\)</span>. By our observation above, we can write <span class="math inline">\(\mathbf{z}_1 =  \lambda \bar{\mathbf{w}} + \mathbf{z}_2\)</span>. Then, plugging in <span class="math inline">\(\mathbf{z}_1\)</span> into the hyperplane equation <span class="math inline">\(\langle \mathbf{w}, \mathbf{z}_1 \rangle - b = 1\)</span>, we have: <span class="math display">\[
 \begin{align}
@@ -237,6 +234,7 @@ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \foral
 \end{align}
 \]</span></p>
 <p>The points <span class="math inline">\(\mathbf{x}^{(i)}\)</span> that lie on the hyperplane i.e., those for which <span class="math inline">\(y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) = 1\)</span> are called the <em>support vectors</em>. Let <span class="math inline">\(\mathcal{S}\)</span> be the set of indices of the support vectors.</p>
+<p>[image here] support vectors</p>
 <p>The problem above is known as an example of a <em>constrained optimization problem</em>. More specifically, it is a <em>quadratic programming</em> problem: we have a quadratic objective function (the term <span class="math inline">\(\frac12 \| \mathbf{w} \|_2^2\)</span> is quadratic in <span class="math inline">\(\mathbf{w}\)</span>) and linear constraints (the constraints are linear in <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>). Constrained optimization problems in general, and quadratic programming in particular, are a rich area of study in optimization, and there are many techniques to solve them. However, the time complexity of these techniques will depend on the number of variables in <span class="math inline">\(\mathbf{w}\)</span>. For data in high dimensions (e.g., the transformed data after we add features to make the classes linearly separable), the time complexity can be quite high. In the next section, we will see how to find the <em>dual</em> of this problem, which can allow us to solve it more efficiently.</p>
 <p>Before we do, let’s see why the hyperplane is called a <em>support vector machine</em>.</p>
 <p><strong>Claim</strong>: The optimal hyperplane <span class="math inline">\(\mathbf{w}^\star\)</span> is a linear combination of the support vectors: <span class="math display">\[
@@ -274,7 +272,11 @@ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \foral
 = \min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha}),
 \end{align}
 \]</span> where <span class="math inline">\(\boldsymbol{\alpha} \in \mathbb{R}^{|\mathcal{S}|}_+\)</span> is a vector of non-negative real numbers. Let’s see why the Lagrangian is equivalent to the primal problem: For a particular <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, the constraints in the primal problem must be satisfied by the Lagrangian, otherwise there is some <span class="math inline">\(i\)</span> such that <span class="math inline">\(y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) &lt; 1\)</span> and we can arbitrarily increase the Lagrangian objective by increasing <span class="math inline">\(\alpha_i\)</span>. Among these <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span> that satisfy the constraints, the Lagrangian objective is minimized when <span class="math inline">\(\frac12 \|\mathbf{w}\|_2^2\)</span> is as small as possible, which is equivalent to minimizing the objective of the primal problem.</p>
-<p>So we’ve seen that the Lagrangian is equivalent to the primal problem. Now, it is useful because we can reason about which <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span> minimize. Notice that the Lagrangian is a <em>convex</em> function in <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, hence it has a unique minimum where the gradient with respect to <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span> is zero. Taking the gradient with respect to <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, and setting it to zero, we have: <span class="math display">\[
+<p>The Lagrangian is useful because we can more easily reason about the optimal <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>. Notice that the Lagrangian is a <em>convex</em> function in <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, and a <em>concave</em> function in <span class="math inline">\(\boldsymbol{\alpha}\)</span>. Further, as long as the data is linearly separable, we can always come up with a <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span> such that the constraints are satisfied, namely with <span class="math inline">\(\boldsymbol{\alpha} = 0\)</span>. Together, by <a href="https://en.wikipedia.org/wiki/Slater%27s_condition">Slater’s condition</a>, we can apply the <a href="https://en.wikipedia.org/wiki/Minimax_theorem">minimax theorem</a> to exchange the order of the minimization and maximization. That is, <span class="math display">\[
+\min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
+= \max_{\boldsymbol{\alpha}} \min_{\mathbf{w}, b} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha}).
+\]</span></p>
+<p>Let’s fix a <span class="math inline">\(\boldsymbol{\alpha}\)</span> and minimize the Lagrangian with respect to <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>. Taking the gradient with respect to <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, and setting it to zero, we have: <span class="math display">\[
 \begin{align}
 \nabla_{\mathbf{w}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
 &amp;= \mathbf{w} - \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)} = 0
@@ -322,7 +324,7 @@ x_3^2 \\
 \sqrt{2} x_1 x_3 \\
 \sqrt{2} x_2 x_3 \\
 \end{bmatrix}
-\]</span> However, we can efficiently compute the inner product without explicitly computing <span class="math inline">\(\psi\)</span> since <span class="math display">\[
+\]</span> However, we can efficiently compute the inner product without explicitly computing <span class="math inline">\(\psi\)</span>. For example, <span class="math display">\[
 \begin{align}
 K(\mathbf{x}, \mathbf{w}) &amp;= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
 \\&amp;= (1 + x_1 x_1' + x_2 x_2' + x_3 x_3')^2
@@ -331,35 +333,25 @@ K(\mathbf{x}, \mathbf{w}) &amp;= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
 \\&amp;= \langle \psi(\mathbf{x}), \psi(\mathbf{x}') \rangle.
 \end{align}
 \]</span></p>
-<p><strong>Gaussian Kernel</strong>: Consider the Gaussian kernel <span class="math inline">\(K(\mathbf{x}, \mathbf{x}') = e^{-\frac{\|\mathbf{x} - \mathbf{x}'\|_2^2}{2\sigma^2}}\)</span> for some <span class="math inline">\(\sigma &gt; 0\)</span>. As shown on <a href="https://en.wikipedia.org/wiki/Radial_basis_function_kernel">Wikipedia</a>, the Gaussian kernel can be expressed as an infinite series. Instead of explicitly computing the transformation <span class="math inline">\(\psi\)</span>, we can compute the kernel in <span class="math inline">\(O(d)\)</span> time by computing the inner product <span class="math inline">\(\langle \mathbf{x}, \mathbf{x}' \rangle\)</span> and then applying the exponential function with a scaling.</p>
+<p><strong>Gaussian Kernel</strong>: Consider the Gaussian kernel <span class="math inline">\(K(\mathbf{x}, \mathbf{x}') = e^{-\frac{\|\mathbf{x} - \mathbf{x}'\|_2^2}{2\sigma^2}}\)</span> for some <span class="math inline">\(\sigma &gt; 0\)</span>. As shown <a href="https://en.wikipedia.org/wiki/Radial_basis_function_kernel">here</a>, the Gaussian kernel can be expressed as an infinite series. Instead of explicitly computing the transformation <span class="math inline">\(\psi\)</span>, we can compute the kernel in <span class="math inline">\(O(d)\)</span> time by computing the inner product <span class="math inline">\(\langle \mathbf{x}, \mathbf{x}' \rangle\)</span>, and then applying the exponential function with a scaling.</p>
 </section>
 <section id="soft-margin" class="level3">
 <h3 class="anchored" data-anchor-id="soft-margin">Soft Margin</h3>
+<p>We have so far assumed that the data is linearly separable. However, in practice, we may have noisy data or outliers that make it impossible to find a hyperplane that perfectly separates the two classes. To address this, we can modify our optimization problem to allow for some misclassification. We can do this by introducing slack variables <span class="math inline">\(\xi_i \geq 0\)</span> for each data point, which allow us to ‘slack’ the constraints. The modified optimization problem is given by:</p>
 <p><span class="math display">\[
 \begin{align}
-\min_{\mathbf{w}, b} \| \mathbf{w} \|^2 \textnormal{ such that }
-1 -  y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} - b) \leq 0 \text{ } \forall i
+\min_{\mathbf{w}, b} \| \mathbf{w} \|^2 + C \sum_{i=1}^n \xi_i
+\text{ such that }
+y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 - \xi_i \text{ for all } i,
+\text{ and } \xi_i \geq 0 \text{ for all } i.
 \end{align}
 \]</span></p>
-</section>
-<section id="soft-margin-1" class="level3">
-<h3 class="anchored" data-anchor-id="soft-margin-1">Soft Margin</h3>
-<p>Add slack variables <span class="math inline">\(\xi_i\)</span> to allow for some misclassification:</p>
-</section>
-<section id="convex-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="convex-optimization">Convex Optimization</h2>
-<p>Optimizing an objective in a constrained problem is challenging, we’ll attempt to convert it into an unconstrained problem by putting the constraint in the objective</p>
-<p>Our first attempt: We could add a term to the objective which is infinity if any of the constraints are satisfied and 0 otherwise. This would certainly yield the same solution: every constraint must be satisfied (so the objective is finite), and we have the minimum objective when the constraint is satisfied. The issue is that solving this problem is difficult because the objective is not continuous: a slight violation of the constraints results in a jump to infinity.</p>
-<section id="kernel-trick-1" class="level3">
-<h3 class="anchored" data-anchor-id="kernel-trick-1">Kernel Trick</h3>
-<p>Consider polynomial features of power <span class="math inline">\(p\)</span>: There are <span class="math inline">\(d^p\)</span> such features, so representing the data in this way is not feasible for large <span class="math inline">\(d\)</span>. Instead, we can use the kernel trick to compute the inner product in this space without explicitly computing the features. $$ <span class="math display">\[\begin{align}
-\langle \psi(\mathbf{x}^{(i)}), \psi(\mathbf{x}^{(j)}) \rangle = K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \left( \mathbf{x}^{(i)} \cdot \mathbf{x}^{(j)} \right)^p
-\end{align}\]</span></p>
-<p>Nice link: https://www.cs.cmu.edu/~aarti/Class/10701_Spring21/Lecs/svm_dual_kernel_inked.pdf</p>
+<p>[image here] soft margin SVM</p>
+<p>The optimal choice of each slack variable satisfies <span class="math inline">\(\xi_i = \max(0, 1 - y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b))\)</span>. The parameter <span class="math inline">\(C &gt; 0\)</span> controls the trade-off between maximizing the margin and minimizing the misclassification. Notice that this is equivalent to minimizing the hinge loss, with a <span class="math inline">\(\ell_2\)</span> regularization term.</p>
+<p>[image here] compare hinge loss and logistic loss</p>
 
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

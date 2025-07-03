@@ -48,6 +48,9 @@ How can we find the hyperplane that maximizes the margin?
 
 For a given $\mathbf{w}$ and $b$, we can see that the margin is the distance between the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = 1$ and the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = -1$.
 Let's calculate this distance.
+
+[image here] margin between two parallel hyperplanes, label with $\mathbf{z}_1$ and $\mathbf{z}_2$
+
 Consider a point $\mathbf{z}_1$ on the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = 1$.
 Let $\mathbf{z}_2$ be the point on the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = -1$ that is *closest* to $\mathbf{z}_1$.
 Because $\mathbf{z}_1$ and $\mathbf{z}_2$ are the closest points to each other on the two hyperplanes, the line connecting them is perpendicular to both hyperplanes.
@@ -92,6 +95,8 @@ $$
 
 The points $\mathbf{x}^{(i)}$ that lie on the hyperplane i.e., those for which $y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) = 1$ are called the *support vectors*.
 Let $\mathcal{S}$ be the set of indices of the support vectors.
+
+[image here] support vectors
 
 The problem above is known as an example of a *constrained optimization problem*.
 More specifically, it is a *quadratic programming* problem:
@@ -170,9 +175,17 @@ Let's see why the Lagrangian is equivalent to the primal problem:
 For a particular $\mathbf{w}$ and $b$, the constraints in the primal problem must be satisfied by the Lagrangian, otherwise there is some $i$ such that $y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) < 1$ and we can arbitrarily increase the Lagrangian objective by increasing $\alpha_i$.
 Among these $\mathbf{w}$ and $b$ that satisfy the constraints, the Lagrangian objective is minimized when $\frac12 \|\mathbf{w}\|_2^2$ is as small as possible, which is equivalent to minimizing the objective of the primal problem.
 
-So we've seen that the Lagrangian is equivalent to the primal problem.
-Now, it is useful because we can reason about which $\mathbf{w}$ and $b$ minimize.
-Notice that the Lagrangian is a *convex* function in $\mathbf{w}$ and $b$, hence it has a unique minimum where the gradient with respect to $\mathbf{w}$ and $b$ is zero.
+The Lagrangian is useful because we can more easily reason about the optimal $\mathbf{w}$ and $b$.
+Notice that the Lagrangian is a *convex* function in $\mathbf{w}$ and $b$, and a *concave* function in $\boldsymbol{\alpha}$.
+Further, as long as the data is linearly separable, we can always come up with a $\mathbf{w}$ and $b$ such that the constraints are satisfied, namely with $\boldsymbol{\alpha} = 0$.
+Together, by [Slater's condition](https://en.wikipedia.org/wiki/Slater%27s_condition), we can apply the [minimax theorem](https://en.wikipedia.org/wiki/Minimax_theorem) to exchange the order of the minimization and maximization.
+That is,
+$$
+\min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
+= \max_{\boldsymbol{\alpha}} \min_{\mathbf{w}, b} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha}).
+$$
+
+Let's fix a $\boldsymbol{\alpha}$ and minimize the Lagrangian with respect to $\mathbf{w}$ and $b$.
 Taking the gradient with respect to $\mathbf{w}$ and $b$, and setting it to zero, we have:
 $$
 \begin{align}
@@ -240,7 +253,7 @@ x_3^2 \\
 \sqrt{2} x_2 x_3 \\
 \end{bmatrix}
 $$
-However, we can efficiently compute the inner product without explicitly computing $\psi$ since
+However, we can efficiently compute the inner product without explicitly computing $\psi$. For example,
 $$
 \begin{align}
 K(\mathbf{x}, \mathbf{w}) &= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
@@ -253,37 +266,30 @@ $$
 
 
 **Gaussian Kernel**: Consider the Gaussian kernel $K(\mathbf{x}, \mathbf{x}') = e^{-\frac{\|\mathbf{x} - \mathbf{x}'\|_2^2}{2\sigma^2}}$ for some $\sigma > 0$.
-As shown on [Wikipedia](https://en.wikipedia.org/wiki/Radial_basis_function_kernel), the Gaussian kernel can be expressed as an infinite series.
-Instead of explicitly computing the transformation $\psi$, we can compute the kernel in $O(d)$ time by computing the inner product $\langle \mathbf{x}, \mathbf{x}' \rangle$ and then applying the exponential function with a scaling.
+As shown [here](https://en.wikipedia.org/wiki/Radial_basis_function_kernel), the Gaussian kernel can be expressed as an infinite series.
+Instead of explicitly computing the transformation $\psi$, we can compute the kernel in $O(d)$ time by computing the inner product $\langle \mathbf{x}, \mathbf{x}' \rangle$, and then applying the exponential function with a scaling.
 
 ### Soft Margin
 
+We have so far assumed that the data is linearly separable.
+However, in practice, we may have noisy data or outliers that make it impossible to find a hyperplane that perfectly separates the two classes.
+To address this, we can modify our optimization problem to allow for some misclassification.
+We can do this by introducing slack variables $\xi_i \geq 0$ for each data point, which allow us to 'slack' the constraints.
+The modified optimization problem is given by:
+
 $$
 \begin{align}
-\min_{\mathbf{w}, b} \| \mathbf{w} \|^2 \textnormal{ such that }
-1 -  y^{(i)}(\mathbf{w}^\top \mathbf{x}^{(i)} - b) \leq 0 \text{ } \forall i
+\min_{\mathbf{w}, b} \| \mathbf{w} \|^2 + C \sum_{i=1}^n \xi_i
+\text{ such that }
+y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 - \xi_i \text{ for all } i,
+\text{ and } \xi_i \geq 0 \text{ for all } i.
 \end{align}
 $$
 
-Add slack variables $\xi_i$ to allow for some misclassification:
+[image here] soft margin SVM
 
-## Convex Optimization
+The optimal choice of each slack variable satisfies $\xi_i = \max(0, 1 - y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b))$.
+The parameter $C > 0$ controls the trade-off between maximizing the margin and minimizing the misclassification.
+Notice that this is equivalent to minimizing the hinge loss, with a $\ell_2$ regularization term.
 
-Optimizing an objective in a constrained problem is challenging, we'll attempt to convert it into an unconstrained problem by putting the constraint in the objective
-
-Our first attempt: We could add a term to the objective which is infinity if any of the constraints are satisfied and 0 otherwise.
-This would certainly yield the same solution: every constraint must be satisfied (so the objective is finite), and we have the minimum objective when the constraint is satisfied.
-The issue is that solving this problem is difficult because the objective is not continuous: a slight violation of the constraints results in a jump to infinity.
-
-### Kernel Trick
-
-Consider polynomial features of power $p$:
-There are $d^p$ such features, so representing the data in this way is not feasible for large $d$.
-Instead, we can use the kernel trick to compute the inner product in this space without explicitly computing the features.
-$$
-\begin{align}
-\langle \psi(\mathbf{x}^{(i)}), \psi(\mathbf{x}^{(j)}) \rangle = K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \left( \mathbf{x}^{(i)} \cdot \mathbf{x}^{(j)} \right)^p
-\end{align}
-
-
-Nice link: https://www.cs.cmu.edu/~aarti/Class/10701_Spring21/Lecs/svm_dual_kernel_inked.pdf
+[image here] compare hinge loss and logistic loss
