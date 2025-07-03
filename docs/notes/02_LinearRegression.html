@@ -229,7 +229,7 @@ window.Quarto = {
 <p>As its name suggests, linear regression uses a linear function to process the input into an approximation of the output. Let <span class="math inline">\(w \in \mathbb{R}\)</span> be a weight parameter. The linear function (for one-dimensional inputs) is given by <span class="math inline">\(f(x) = wx\)</span>.</p>
 <p>Unlike many machine learning functions, we can visualize the linear function since it is given by a line. In the plot, we have the <span class="math inline">\(n=10\)</span> data points plotted in two dimensions. There is one linear function <span class="math inline">\(f(x) = 2x\)</span> that closely approximates the data and another linear function <span class="math inline">\(f(x)=\frac12 x\)</span> that poorly approximates the data.</p>
 <center>
-<img src="images/regression_1d.pdf" width="700">
+<img src="images/regression_1d.pdf" class="responsive-img">
 </center>
 <p>Our goal is to learn how to find a linear function that fits the data well. Before we can do this, though, we will need to define what it means for a function to “fit the data well”.</p>
 </section>
@@ -240,7 +240,7 @@ window.Quarto = {
 <p><span class="math inline">\(\mathcal{L}(w) = \frac1{n} \sum_{i=1}^n (f(x^{(i)}) - y^{(i)})^2.\)</span></p>
 <p>Here, we use the mean squared error loss, which is the average squared difference between the prediction and the true output over the dataset. Unlike the absolute value function, the squared function is differentiable everywhere. In addition, the squared error disproportionately penalizes predictions that are far from the true labels, a property that may be desirable when we want <em>all</em> of our predictions to be reasonably accurate.</p>
 <center>
-<img src="images/regression_losses.pdf" width="700">
+<img src="images/regression_losses.pdf" class="responsive-img">
 </center>
 <p>The plot above compares the squared function to the absolute value function. While both are <span class="math inline">\(0\)</span> if and only if their input is <span class="math inline">\(0\)</span>, the squared function is differentiable everywhere and penalizes large errors more.</p>
 </section>

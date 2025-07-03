@@ -3,7 +3,7 @@ title: "**Gradient Descent and Polynomial Regression**"
 format:
   html:
     toc: true
-    math: true
+    math: mathjax
     include-after-body: readtime.html
 ---
 

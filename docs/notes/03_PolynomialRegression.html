@@ -213,7 +213,7 @@ window.Quarto = {
 <p>Non-linear models are incredibly powerful models that can approximate any function, given enough data and features. However, this power comes with a cost: non-linear models can be very complex models and can easily overfit the training data. That is, they can learn to memorize, but fail to generalize to unseen data.</p>
 <p>(Redo this figures with polynomial regression)</p>
 <center>
-<img src="images/regression_overfitting.pdf" width="700">
+<img src="images/regression_overfitting.pdf" class="responsive-img">
 </center>
 <p>When we believe our data comes from a simpler generating process, it makes sense to use a simpler model. Even when that simpler generating process is not a linear model, we can attempt to find simpler models through <em>regularization</em>. Regularization is a technique that adds a penalty to the loss function to discourage the model from fitting the training data too closely.</p>
 <p><span class="math display">\[
@@ -223,7 +223,7 @@ window.Quarto = {
 \]</span> where <span class="math inline">\(\lambda\)</span> is a hyperparameter that controls the strength of the penalty and <span class="math inline">\(\|\mathbf{w}\|_2\)</span> is the <span class="math inline">\(\ell-2\)</span> norm of the weights, which is the square root of the sum of the squares of the weights.</p>
 <p>The idea is that we can keep the model “simple” by penalizing large weights, which would otherwise allow the model to achieve large changes in the output for small changes in the input.</p>
 <center>
-<img src="images/regression_regularization.pdf" width="700">
+<img src="images/regression_regularization.pdf" class="responsive-img">
 </center>
 <p>In the plot, we see data generated from a quadratic function. The linear model is too simple and fails to capture the underlying relationship, while the standard neural network is too complex and overfits the training data. The regularized neural network, however, is able to capture the underlying relationship while still being simple enough to generalize to unseen data.</p>
 <p>How to control the strength of the regularization <span class="math inline">\(\lambda\)</span>?</p>

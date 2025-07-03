@@ -3,7 +3,7 @@ title: "**Linear Regression and Optimization**"
 format:
   html:
     toc: true
-    math: true
+    math: mathjax
     include-after-body: readtime.html
 ---
 
@@ -55,7 +55,7 @@ Unlike many machine learning functions, we can visualize the linear function sin
 In the plot, we have the $n=10$ data points plotted in two dimensions.
 There is one linear function $f(x) = 2x$ that closely approximates the data and another linear function $f(x)=\frac12 x$ that poorly approximates the data.
 
-<center><img src="images/regression_1d.pdf" width="700"></center>
+<center><img src="images/regression_1d.pdf" class="responsive-img"></center>
 
 Our goal is to learn how to find a linear function that fits the data well. Before we can do this, though, we will need to define what it means for a function to "fit the data well".
 
@@ -76,7 +76,7 @@ Here, we use the mean squared error loss, which is the average squared differenc
 Unlike the absolute value function, the squared function is differentiable everywhere.
 In addition, the squared error disproportionately penalizes predictions that are far from the true labels, a property that may be desirable when we want *all* of our predictions to be reasonably accurate.
 
-<center><img src="images/regression_losses.pdf" width="700"></center>
+<center><img src="images/regression_losses.pdf" class="responsive-img"></center>
 
 The plot above compares the squared function to the absolute value function.
 While both are $0$ if and only if their input is $0$, the squared function is differentiable everywhere and penalizes large errors more.

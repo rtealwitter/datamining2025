@@ -3,7 +3,7 @@ title: "**Support Vector Machines and Constrained Optimization**"
 format:
   html:
     toc: true
-    math: true
+    math: mathjax
     include-after-body: readtime.html
 ---
 
@@ -281,8 +281,7 @@ $$
 \begin{align}
 \min_{\mathbf{w}, b} \| \mathbf{w} \|^2 + C \sum_{i=1}^n \xi_i
 \text{ such that }
-y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 - \xi_i \text{ for all } i,
-\text{ and } \xi_i \geq 0 \text{ for all } i.
+y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 - \xi_i \text{ and } \xi_i \geq 0 \text{ for all } i.
 \end{align}
 $$
 

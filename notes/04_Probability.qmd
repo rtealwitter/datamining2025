@@ -3,7 +3,7 @@ title: "**Probability**"
 format:
   html:
     toc: true
-    math: true
+    math: mathjax
     include-after-body: readtime.html
 ---
 
@@ -18,7 +18,7 @@ We will use the following notation:
 • $\Pr(A \cap B)$ represents the probability that both events $A$ and $B$ occur,  
 • $\Pr(A | B)$ represents the probability that event $A$ occurs given that event $B$ has occurred.
 
-<center><img src="images/classification_probability.pdf" width="700"></center>
+<center><img src="images/classification_probability.pdf" class="responsive-img"></center>
 
 We can reason through several properties of probabilities:
 

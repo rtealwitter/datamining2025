@@ -3,7 +3,7 @@ title: "**Polynomial Regression**"
 format:
   html:
     toc: true
-    math: true
+    math: mathjax
     include-after-body: readtime.html
 ---
 
@@ -39,7 +39,7 @@ That is, they can learn to memorize, but fail to generalize to unseen data.
 
 (Redo this figures with polynomial regression)
 
-<center><img src="images/regression_overfitting.pdf" width="700"></center>
+<center><img src="images/regression_overfitting.pdf" class="responsive-img"></center>
 
 When we believe our data comes from a simpler generating process, it makes sense to use a simpler model.
 Even when that simpler generating process is not a linear model, we can attempt to find simpler models through *regularization*.
@@ -55,7 +55,7 @@ where $\lambda$ is a hyperparameter that controls the strength of the penalty an
 
 The idea is that we can keep the model "simple" by penalizing large weights, which would otherwise allow the model to achieve large changes in the output for small changes in the input.
 
-<center><img src="images/regression_regularization.pdf" width="700"></center>
+<center><img src="images/regression_regularization.pdf" class="responsive-img"></center>
 
 In the plot, we see data generated from a quadratic function.
 The linear model is too simple and fails to capture the underlying relationship, while the standard neural network is too complex and overfits the training data.
