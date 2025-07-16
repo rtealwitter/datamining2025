@@ -19,18 +19,18 @@ Consider a binary classification problem with data points $\mathbf{x}^{(i)}$ and
 We want to find a hyperplane that separates the two classes.
 For the majority of our discussion, we will assume that the data is linearly separable, meaning there exists a hyperplane that can perfectly separate the two classes.
 
-[image here] linearly separable data
+<center><img src="images/svm_data.pdf" class="responsive-img"></center>
 
 When there is such a separating hyperplane, there are often infinitely many that we can choose from.
 The question at the heart of support vector machines is: which hyperplane should we choose?
 
-[image here] three possible separating hyperplanes
+<center><img src="images/svm_possible_lines.pdf" class="responsive-img"></center>
 
 As we've seen in the past, it is not too difficult to find a model that perfectly fits our training data; the real challenge is to find a model that generalizes well to unseen data.
 In the context of classification, we may expect that a model that separates the two classes with the largest 'margin of error' will generalize better than one that is very close to the data points.
 With this in mind, Vladimir Vapnik and Alexey Chervonenkis proposed the idea of support vector machines, which aim to find the hyperplane that maximizes the margin between the two classes.
 
-[image here] hyperplane, parallel margin hyperplanes, vector labelled
+<center><img src="images/svm_definition.pdf" class="responsive-img"></center>
 
 Let's consider a particular hyperplane, defined by the normal vector $\mathbf{w}$ and bias $b$.
 The equation of the hyperplane is given by:
@@ -49,7 +49,7 @@ How can we find the hyperplane that maximizes the margin?
 For a given $\mathbf{w}$ and $b$, we can see that the margin is the distance between the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = 1$ and the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = -1$.
 Let's calculate this distance.
 
-[image here] margin between two parallel hyperplanes, label with $\mathbf{z}_1$ and $\mathbf{z}_2$
+<center><img src="images/svm_margin.pdf" class="responsive-img"></center>
 
 Consider a point $\mathbf{z}_1$ on the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = 1$.
 Let $\mathbf{z}_2$ be the point on the hyperplane $\langle \mathbf{w}, \mathbf{x} \rangle - b = -1$ that is *closest* to $\mathbf{z}_1$.
@@ -96,7 +96,7 @@ $$
 The points $\mathbf{x}^{(i)}$ that lie on the hyperplane i.e., those for which $y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) = 1$ are called the *support vectors*.
 Let $\mathcal{S}$ be the set of indices of the support vectors.
 
-[image here] support vectors
+<center><img src="images/svm_supports.pdf" class="responsive-img"></center>
 
 The problem above is known as an example of a *constrained optimization problem*.
 More specifically, it is a *quadratic programming* problem:
@@ -274,7 +274,7 @@ Instead of explicitly computing the transformation $\psi$, we can compute the ke
 We have so far assumed that the data is linearly separable.
 However, in practice, we may have noisy data or outliers that make it impossible to find a hyperplane that perfectly separates the two classes.
 To address this, we can modify our optimization problem to allow for some misclassification.
-We can do this by introducing slack variables $\xi_i \geq 0$ for each data point, which allow us to 'slack' the constraints.
+We can do this by introducing slack variables $\xi_i \geq 0$ for each data point, which allow us to 'relax' the constraints.
 The modified optimization problem is given by:
 
 $$
@@ -285,10 +285,10 @@ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 - \xi_i \text{ 
 \end{align}
 $$
 
-[image here] soft margin SVM
+<center><img src="images/svm_soft.pdf" class="responsive-img"></center>
 
 The optimal choice of each slack variable satisfies $\xi_i = \max(0, 1 - y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b))$.
 The parameter $C > 0$ controls the trade-off between maximizing the margin and minimizing the misclassification.
 Notice that this is equivalent to minimizing the hinge loss, with a $\ell_2$ regularization term.
 
-[image here] compare hinge loss and logistic loss
+<center><img src="images/svm_loss.pdf" class="responsive-img"></center>
