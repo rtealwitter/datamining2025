@@ -26,13 +26,13 @@ Attempt #2: We could use the mean squared error loss, i.e., $\mathcal{L}(\mathbf
 
 Attempt #3: We can apply the *sigmoid function* to the output of the linear model to map it to the range $(0, 1)$, i.e., we will predict $f(\mathbf{x}^{(i)}) = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)$, where $\sigma(z) = \frac{1}{1 + e^{-z}}$ is the sigmoid function. The sigmoid function is a smooth, non-linear function that maps any real number to the range $(0, 1)$. We can then interpret $f(\mathbf{x}^{(i)})$ as the probability that $y^{(i)} = 1$ given the features $\mathbf{x}^{(i)}$. If we need to report a class label, we can threshold the predicted probability, e.g., predict $y^{(i)} = 1$ if $f(\mathbf{x}^{(i)}) > \frac12$ and $y^{(i)} = 0$ otherwise.
 
-<center><img src="images/classification_outputs.pdf" class="responsive-img"></center>
+<center><img src="images/classification_outputs.svg" class="responsive-img"></center>
 
 To train our model, we need a loss function that measures how well our predicted probabilities match the true labels. A common choice is the *binary cross-entropy loss*, which is defined as
 $$\mathcal{L}(\mathbf{w}) = - \sum_{i=1}^n \left[y^{(i)} \log(f(\mathbf{x}^{(i)})) + (1 - y^{(i)}) \log(1 - f(\mathbf{x}^{(i)}))\right].$$
 This loss function measures the distance (in a sense we'll explore later in the course) between the predicted probabilities and the true labels. It is differentiable, so we can use gradient descent to optimize it.
 
-<center><img src="images/classification_loss.pdf" class="responsive-img"></center>
+<center><img src="images/classification_loss.svg" class="responsive-img"></center>
 
 ### Optimization
 
@@ -94,7 +94,7 @@ In this case, we can use non-linear transformations to map the data to a higher-
 One approach: As we saw for linear regression, we can add polynomial features to the data.
 In the image below, we add a new feature $x_1^2 + x_2^2$ to the data, which allows us to separate the two classes with a linear decision boundary in the transformed feature space.
 
-<center><img src="images/classification_transformation.pdf" class="responsive-img"></center>
+<center><img src="images/classification_transformation.svg" class="responsive-img"></center>
 
 It is not a priori clear which non-linear transformation will work best for a given dataset.
 In several lectures, we will explore how to use kernel methods to implicitly map the data to a higher-dimensional space, which captures many of the non-linear transformations we might want to use.
@@ -110,7 +110,7 @@ We will often break down the accuracy of a classification model into four catego
 • **False Positives (FP):** The model incorrectly predicts a positive class when the true class is negative.    
 • **False Negatives (FN):** The model incorrectly predicts a negative class when the true class is positive.
 
-<center><img src="images/classification_venn.pdf" class="responsive-img"></center>
+<center><img src="images/classification_venn.svg" class="responsive-img"></center>
 
 The raw counts of these four categories can be summarized in a **confusion matrix**. The confusion matrix is a square matrix with dimensions equal to the number of classes, where the rows represent the true classes and the columns represent the predicted classes.
 
@@ -135,14 +135,14 @@ Increasing the threshold can only decrease the TPR, since we are less likely to 
 simultaneously, the FPR can only increase, since we are more likely to predict a negative class.
 
 [image here] 2D plots with linearly separable data, with different thresholds $\tau$.
-<center><img src="images/classification_boundaries.pdf" class="responsive-img"></center>
+<center><img src="images/classification_boundaries.svg" class="responsive-img"></center>
 
 We can visualize the trade-off between TPR and FPR by plotting the **Receiver Operating Characteristic (ROC) curve**. The ROC curve is a plot of the TPR against the FPR for different threshold values $\tau$.
 Because a higher TPR is better and a lower FPR is better, we want the ROC curve to be as close to the top-left corner as possible.
 The area under the ROC curve (AUC) is a single number that summarizes the performance of the model across all threshold values.
 A model with an AUC of 1 is perfect, while a model with an AUC of 0.5 is no better than random guessing.
 
-<center><img src="images/classification_roc.pdf" class="responsive-img"></center>
+<center><img src="images/classification_roc.svg" class="responsive-img"></center>
 
 ### Multiple Classes
 

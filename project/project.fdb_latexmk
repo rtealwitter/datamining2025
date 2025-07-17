@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1736966992 "/Users/rtealwitter/Github/deeplearning2025/project/project.tex" "project.pdf" "project" 1736966993 0
+["pdflatex"] 1736966992 "/Users/rtealwitter/Github/deeplearning2025/project/project.tex" "project.svg" "project" 1736966993 0
   "/Users/rtealwitter/Github/deeplearning2025/project/project.tex" 1736966991 2622 467e0f908886ce899b46a9134fa3d8ef ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -91,5 +91,5 @@
   "project.aux"
   "project.log"
   "project.out"
-  "project.pdf"
+  "project.svg"
   (rewritten before read)

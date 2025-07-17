@@ -198,7 +198,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="gradient-descent">Gradient Descent</h3>
 <p>The mean squared error of a linear model is particularly well-behaved because it is <em>convex</em> i.e., there is a single minimum. Previously, we computed the parameters where the gradient is 0, which, by convexity, immediately gave us the single optimal point. However, we could instead use a more relaxed approach; rather than jumping immediately to the best parameters, we can iterate towards better parameters by taking steps towards lower loss.</p>
 <center>
-<img src="images/regression_descent.pdf" width="500">
+<img src="images/regression_descent.svg" class="responsive-img">
 </center>
 <p>Gradient descent is an iterative method for moving in the direction of steepest <em>descent</em>. Concretely, the process produces a sequence of parameters <span class="math inline">\(\mathbf{w}^{(1)}, \mathbf{w}^{(2)}, \ldots\)</span>. At each step, we compute the direction of steepest <em>ascent</em> i.e., the gradient of the loss function with respect to each parameter. The gradient quantifies how the loss function responds as we tweak each parameter. If the partial derivative is positive (increasing the parameter increases the loss), then we will want to decrease the parameter. Analogously, if the partial derivative is negative (increasing the parameter decreases the loss), then we will want to increase the parameter. In both cases, we are moving in the direction away from the gradient. Hence, we reach the next parameter vector by subtracting the gradient from the current parameter vector: <span class="math display">\[
 \begin{align*}
@@ -240,7 +240,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="adaptive-step-sizes">Adaptive Step Sizes</h3>
 <p>The step size <span class="math inline">\(\alpha\)</span> is a crucial hyperparameter in gradient descent. If <span style="color:red;font-size:14px"><span class="math inline">\(\alpha\)</span></span> is too small, then the algorithm will take a long time to converge because it will take small steps towards the minimum. If <span style="color:red;font-size:20px"><span class="math inline">\(\alpha\)</span></span> is too large, then the algorithm may overshoot the minimum and diverge by repeatedly moving in the right direction but by too much. Instead, we want to choose a step size <span style="color:green"><span class="math inline">\(\alpha\)</span></span> that is just right, allowing us to make progress towards the minimum without overshooting.</p>
 <center>
-<img src="images/regression_steps.pdf" width="500">
+<img src="images/regression_steps.svg" class="responsive-img">
 </center>
 <p>There are several strategies for choosing the step size:</p>
 <ul>
@@ -256,7 +256,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="momentum">Momentum</h3>
 <p>The idea of gradient descent is to converge to a local minimum of the loss function, but things can go wrong even if we have the right step size: The gradient may not point in the direction of the minima if, for example, the loss function is not symmetric. The plot illustrates this issue for a convex loss function on two parameters <span class="math inline">\({w}_1\)</span> and <span class="math inline">\({w}_2\)</span>, where the loss function is given by level sets. In the plot, a standard gradient descent approach takes many steps but the directions cancel out, resulting in a zig-zag pattern that slows convergence.</p>
 <center>
-<img src="images/regression_momentum.pdf" width="600">
+<img src="images/regression_momentum.svg" class="responsive-img">
 </center>
 <p>Our solution is to keep track of the direction we have been moving in and use that to inform our next step. This idea, called <em>momentum</em>, retains a running average of the gradients, which allows us to smooth out the direction of the steps. We can think of momentum as a ball rolling down a hill, even when the ball is pushed left or right, it will continue to roll downwards. An implementation of momentum is as follows: <span class="math display">\[
 \begin{align}

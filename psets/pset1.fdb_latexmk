@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1736282568 "/Users/rtealwitter/Github/deeplearning2025/psets/pset1.tex" "pset1.pdf" "pset1" 1736282569 0
+["pdflatex"] 1736282568 "/Users/rtealwitter/Github/deeplearning2025/psets/pset1.tex" "pset1.svg" "pset1" 1736282569 0
   "/Users/rtealwitter/Github/deeplearning2025/psets/pset1.tex" 1736282567 6115 e8c5aa9d5e92ca82d57e859094894cc1 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -109,5 +109,5 @@
   "pset1.aux"
   "pset1.log"
   "pset1.out"
-  "pset1.pdf"
+  "pset1.svg"
   (rewritten before read)

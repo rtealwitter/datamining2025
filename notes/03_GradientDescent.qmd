@@ -24,7 +24,7 @@ The mean squared error of a linear model is particularly well-behaved because it
 Previously, we computed the parameters where the gradient is 0, which, by convexity, immediately gave us the single optimal point.
 However, we could instead use a more relaxed approach; rather than jumping immediately to the best parameters, we can iterate towards better parameters by taking steps towards lower loss.
 
-<center><img src="images/regression_descent.pdf" width="500"></center>
+<center><img src="images/regression_descent.svg" class="responsive-img"></center>
 
 Gradient descent is an iterative method for moving in the direction of steepest *descent*.
 Concretely, the process produces a sequence of parameters $\mathbf{w}^{(1)}, \mathbf{w}^{(2)}, \ldots$.
@@ -117,7 +117,7 @@ Instead, we want to choose a step size
 <span style="color:green">$\alpha$</span>
 that is just right, allowing us to make progress towards the minimum without overshooting.
 
-<center><img src="images/regression_steps.pdf" width="500"></center>
+<center><img src="images/regression_steps.svg" class="responsive-img"></center>
 
 There are several strategies for choosing the step size:
 
@@ -140,7 +140,7 @@ The gradient may not point in the direction of the minima if, for example, the l
 The plot illustrates this issue for a convex loss function on two parameters ${w}_1$ and ${w}_2$, where the loss function is given by level sets.
 In the plot, a standard gradient descent approach takes many steps but the directions cancel out, resulting in a zig-zag pattern that slows convergence.
 
-<center><img src="images/regression_momentum.pdf" width="600"></center>
+<center><img src="images/regression_momentum.svg" class="responsive-img"></center>
 
 Our solution is to keep track of the direction we have been moving in and use that to inform our next step.
 This idea, called *momentum*, retains a running average of the gradients, which allows us to smooth out the direction of the steps.

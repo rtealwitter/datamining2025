@@ -201,11 +201,11 @@ window.Quarto = {
 <p>Attempt #2: We could use the mean squared error loss, i.e., <span class="math inline">\(\mathcal{L}(\mathbf{w}) = \sum_{i=1}^n (y^{(i)} - \langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)^2\)</span>. This loss is differentiable, but it does not work well for classification problems: if we have a large positive value for <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span>, the loss will be large even if <span class="math inline">\(y^{(i)} = 1\)</span>.</p>
 <p>Attempt #3: We can apply the <em>sigmoid function</em> to the output of the linear model to map it to the range <span class="math inline">\((0, 1)\)</span>, i.e., we will predict <span class="math inline">\(f(\mathbf{x}^{(i)}) = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)\)</span>, where <span class="math inline">\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</span> is the sigmoid function. The sigmoid function is a smooth, non-linear function that maps any real number to the range <span class="math inline">\((0, 1)\)</span>. We can then interpret <span class="math inline">\(f(\mathbf{x}^{(i)})\)</span> as the probability that <span class="math inline">\(y^{(i)} = 1\)</span> given the features <span class="math inline">\(\mathbf{x}^{(i)}\)</span>. If we need to report a class label, we can threshold the predicted probability, e.g., predict <span class="math inline">\(y^{(i)} = 1\)</span> if <span class="math inline">\(f(\mathbf{x}^{(i)}) &gt; \frac12\)</span> and <span class="math inline">\(y^{(i)} = 0\)</span> otherwise.</p>
 <center>
-<img src="images/classification_outputs.pdf" class="responsive-img">
+<img src="images/classification_outputs.svg" class="responsive-img">
 </center>
 <p>To train our model, we need a loss function that measures how well our predicted probabilities match the true labels. A common choice is the <em>binary cross-entropy loss</em>, which is defined as <span class="math display">\[\mathcal{L}(\mathbf{w}) = - \sum_{i=1}^n \left[y^{(i)} \log(f(\mathbf{x}^{(i)})) + (1 - y^{(i)}) \log(1 - f(\mathbf{x}^{(i)}))\right].\]</span> This loss function measures the distance (in a sense we’ll explore later in the course) between the predicted probabilities and the true labels. It is differentiable, so we can use gradient descent to optimize it.</p>
 <center>
-<img src="images/classification_loss.pdf" class="responsive-img">
+<img src="images/classification_loss.svg" class="responsive-img">
 </center>
 </section>
 <section id="optimization" class="level3">
@@ -246,7 +246,7 @@ x_j^{(i)} \left[\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle) - y^{(i)}\r
 <h3 class="anchored" data-anchor-id="non-linear-transformations">Non-linear Transformations</h3>
 <p>Often, our data is not linearly separable, i.e., we cannot draw a straight line to separate the two classes. In this case, we can use non-linear transformations to map the data to a higher-dimensional space, where it <em>is</em> linearly separable. One approach: As we saw for linear regression, we can add polynomial features to the data. In the image below, we add a new feature <span class="math inline">\(x_1^2 + x_2^2\)</span> to the data, which allows us to separate the two classes with a linear decision boundary in the transformed feature space.</p>
 <center>
-<img src="images/classification_transformation.pdf" class="responsive-img">
+<img src="images/classification_transformation.svg" class="responsive-img">
 </center>
 <p>It is not a priori clear which non-linear transformation will work best for a given dataset. In several lectures, we will explore how to use kernel methods to implicitly map the data to a higher-dimensional space, which captures many of the non-linear transformations we might want to use.</p>
 </section>
@@ -259,7 +259,7 @@ x_j^{(i)} \left[\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle) - y^{(i)}\r
 • <strong>False Positives (FP):</strong> The model incorrectly predicts a positive class when the true class is negative.<br>
 • <strong>False Negatives (FN):</strong> The model incorrectly predicts a negative class when the true class is positive.</p>
 <center>
-<img src="images/classification_venn.pdf" class="responsive-img">
+<img src="images/classification_venn.svg" class="responsive-img">
 </center>
 <p>The raw counts of these four categories can be summarized in a <strong>confusion matrix</strong>. The confusion matrix is a square matrix with dimensions equal to the number of classes, where the rows represent the true classes and the columns represent the predicted classes.</p>
 <p>But, these raw counts themselves are not very informative.</p>
@@ -269,11 +269,11 @@ x_j^{(i)} \left[\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle) - y^{(i)}\r
 <p>If we have a model that does not achieve the desired TPR or FPR, we have a hidden lever we can pull: the threshold for predicting a positive class. By default, we predict a positive class if the predicted probability is greater than <span class="math inline">\(\frac12\)</span>. But, we can change this threshold to an arbitrary value <span class="math inline">\(\tau \in [0, 1]\)</span>. Increasing the threshold can only decrease the TPR, since we are less likely to predict a positive class; simultaneously, the FPR can only increase, since we are more likely to predict a negative class.</p>
 [image here] 2D plots with linearly separable data, with different thresholds <span class="math inline">\(\tau\)</span>.
 <center>
-<img src="images/classification_boundaries.pdf" class="responsive-img">
+<img src="images/classification_boundaries.svg" class="responsive-img">
 </center>
 <p>We can visualize the trade-off between TPR and FPR by plotting the <strong>Receiver Operating Characteristic (ROC) curve</strong>. The ROC curve is a plot of the TPR against the FPR for different threshold values <span class="math inline">\(\tau\)</span>. Because a higher TPR is better and a lower FPR is better, we want the ROC curve to be as close to the top-left corner as possible. The area under the ROC curve (AUC) is a single number that summarizes the performance of the model across all threshold values. A model with an AUC of 1 is perfect, while a model with an AUC of 0.5 is no better than random guessing.</p>
 <center>
-<img src="images/classification_roc.pdf" class="responsive-img">
+<img src="images/classification_roc.svg" class="responsive-img">
 </center>
 </section>
 <section id="multiple-classes" class="level3">

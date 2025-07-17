@@ -55,7 +55,7 @@ Unlike many machine learning functions, we can visualize the linear function sin
 In the plot, we have the $n=10$ data points plotted in two dimensions.
 There is one linear function $f(x) = 2x$ that closely approximates the data and another linear function $f(x)=\frac12 x$ that poorly approximates the data.
 
-<center><img src="images/regression_1d.pdf" class="responsive-img"></center>
+<center><img src="images/regression_1d.svg" class="responsive-img"></center>
 
 Our goal is to learn how to find a linear function that fits the data well. Before we can do this, though, we will need to define what it means for a function to "fit the data well".
 
@@ -76,7 +76,7 @@ Here, we use the mean squared error loss, which is the average squared differenc
 Unlike the absolute value function, the squared function is differentiable everywhere.
 In addition, the squared error disproportionately penalizes predictions that are far from the true labels, a property that may be desirable when we want *all* of our predictions to be reasonably accurate.
 
-<center><img src="images/regression_losses.pdf" class="responsive-img"></center>
+<center><img src="images/regression_losses.svg" class="responsive-img"></center>
 
 The plot above compares the squared function to the absolute value function.
 While both are $0$ if and only if their input is $0$, the squared function is differentiable everywhere and penalizes large errors more.
@@ -129,7 +129,7 @@ Then the function is given by $f(x) = \langle \mathbf{w}, \mathbf{x} \rangle$.
 Instead of using a *line* to fit the data, we use a *hyperplane*.
 While visualizing the function is difficult in high dimensions, we can still see the function when $d=2$.
 
-<center><img src="images/regression_2d.pdf" width="600"></center>
+<center><img src="images/regression_2d.svg" class="responsive-img"></center>
 
 In the plot above, we have $n=10$ data points in 3 dimensions.
 There is one linear function $\mathbf{w} = \begin{bmatrix} 2 \\ \frac12 \end{bmatrix}$ that closely approximates the data and another linear function $\mathbf{w} = \begin{bmatrix} \frac12 \\ 0 \end{bmatrix}$ that poorly approximates the data.

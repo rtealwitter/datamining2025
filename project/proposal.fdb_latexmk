@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1736966999 "/Users/rtealwitter/Github/deeplearning2025/project/proposal.tex" "proposal.pdf" "proposal" 1736966999 0
+["pdflatex"] 1736966999 "/Users/rtealwitter/Github/deeplearning2025/project/proposal.tex" "proposal.svg" "proposal" 1736966999 0
   "/Users/rtealwitter/Github/deeplearning2025/project/proposal.tex" 1736966999 1763 65077fd16b23815396c1b70291e0fca2 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -91,5 +91,5 @@
   "proposal.aux"
   "proposal.log"
   "proposal.out"
-  "proposal.pdf"
+  "proposal.svg"
   (rewritten before read)

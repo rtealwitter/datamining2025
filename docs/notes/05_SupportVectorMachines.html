@@ -198,15 +198,15 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="support-vector-machines">Support Vector Machines</h3>
 <p>Consider a binary classification problem with data points <span class="math inline">\(\mathbf{x}^{(i)}\)</span> and labels <span class="math inline">\(y^{(i)} \in \{-1, 1\}\)</span>. (We previously used <span class="math inline">\(y^{(i)} \in \{0, 1\}\)</span>, but this is just a relabeling for convenience.) We want to find a hyperplane that separates the two classes. For the majority of our discussion, we will assume that the data is linearly separable, meaning there exists a hyperplane that can perfectly separate the two classes.</p>
 <center>
-<img src="images/svm_data.pdf" class="responsive-img">
+<img src="images/svm_data.svg" class="responsive-img">
 </center>
 <p>When there is such a separating hyperplane, there are often infinitely many that we can choose from. The question at the heart of support vector machines is: which hyperplane should we choose?</p>
 <center>
-<img src="images/svm_possible_lines.pdf" class="responsive-img">
+<img src="images/svm_possible_lines.svg" class="responsive-img">
 </center>
 <p>As we’ve seen in the past, it is not too difficult to find a model that perfectly fits our training data; the real challenge is to find a model that generalizes well to unseen data. In the context of classification, we may expect that a model that separates the two classes with the largest ‘margin of error’ will generalize better than one that is very close to the data points. With this in mind, Vladimir Vapnik and Alexey Chervonenkis proposed the idea of support vector machines, which aim to find the hyperplane that maximizes the margin between the two classes.</p>
 <center>
-<img src="images/svm_definition.pdf" class="responsive-img">
+<img src="images/svm_definition.svg" class="responsive-img">
 </center>
 <p>Let’s consider a particular hyperplane, defined by the normal vector <span class="math inline">\(\mathbf{w}\)</span> and bias <span class="math inline">\(b\)</span>. The equation of the hyperplane is given by: <span class="math display">\[
 \begin{align}
@@ -219,7 +219,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="computing-the-margin">Computing the Margin</h3>
 <p>For a given <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, we can see that the margin is the distance between the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = 1\)</span> and the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span>. Let’s calculate this distance.</p>
 <center>
-<img src="images/svm_margin.pdf" class="responsive-img">
+<img src="images/svm_margin.svg" class="responsive-img">
 </center>
 <p>Consider a point <span class="math inline">\(\mathbf{z}_1\)</span> on the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = 1\)</span>. Let <span class="math inline">\(\mathbf{z}_2\)</span> be the point on the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span> that is <em>closest</em> to <span class="math inline">\(\mathbf{z}_1\)</span>. Because <span class="math inline">\(\mathbf{z}_1\)</span> and <span class="math inline">\(\mathbf{z}_2\)</span> are the closest points to each other on the two hyperplanes, the line connecting them is perpendicular to both hyperplanes. (Otherwise, we could move along the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span> to find a point <span class="math inline">\(\mathbf{z}_2'\)</span> that is closer to <span class="math inline">\(\mathbf{z}_1\)</span> than <span class="math inline">\(\mathbf{z}_2\)</span>, contradicting our assumption that <span class="math inline">\(\mathbf{z}_2\)</span> is the closest point.) Formally, we can write: <span class="math display">\[
 \mathbf{z}_1 - \mathbf{z}_2 = \lambda \bar{\mathbf{w}}
@@ -243,7 +243,7 @@ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \foral
 \]</span></p>
 <p>The points <span class="math inline">\(\mathbf{x}^{(i)}\)</span> that lie on the hyperplane i.e., those for which <span class="math inline">\(y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) = 1\)</span> are called the <em>support vectors</em>. Let <span class="math inline">\(\mathcal{S}\)</span> be the set of indices of the support vectors.</p>
 <center>
-<img src="images/svm_supports.pdf" class="responsive-img">
+<img src="images/svm_supports.svg" class="responsive-img">
 </center>
 <p>The problem above is known as an example of a <em>constrained optimization problem</em>. More specifically, it is a <em>quadratic programming</em> problem: we have a quadratic objective function (the term <span class="math inline">\(\frac12 \| \mathbf{w} \|_2^2\)</span> is quadratic in <span class="math inline">\(\mathbf{w}\)</span>) and linear constraints (the constraints are linear in <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>). Constrained optimization problems in general, and quadratic programming in particular, are a rich area of study in optimization, and there are many techniques to solve them. However, the time complexity of these techniques will depend on the number of variables in <span class="math inline">\(\mathbf{w}\)</span>. For data in high dimensions (e.g., the transformed data after we add features to make the classes linearly separable), the time complexity can be quite high. In the next section, we will see how to find the <em>dual</em> of this problem, which can allow us to solve it more efficiently.</p>
 <p>Before we do, let’s see why the hyperplane is called a <em>support vector machine</em>.</p>
@@ -356,11 +356,11 @@ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 - \xi_i \text{ 
 \end{align}
 \]</span></p>
 <center>
-<img src="images/svm_soft.pdf" class="responsive-img">
+<img src="images/svm_soft.svg" class="responsive-img">
 </center>
 <p>The optimal choice of each slack variable satisfies <span class="math inline">\(\xi_i = \max(0, 1 - y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b))\)</span>. The parameter <span class="math inline">\(C &gt; 0\)</span> controls the trade-off between maximizing the margin and minimizing the misclassification. Notice that this is equivalent to minimizing the hinge loss, with a <span class="math inline">\(\ell_2\)</span> regularization term.</p>
 <center>
-<img src="images/svm_loss.pdf" class="responsive-img">
+<img src="images/svm_loss.svg" class="responsive-img">
 </center>
 
 
