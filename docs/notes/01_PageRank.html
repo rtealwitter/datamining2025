@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Linear Algebra Review</title>
+<title>PageRank (The Power Method)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -162,11 +162,8 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#derivatives" id="toc-derivatives" class="nav-link active" data-scroll-target="#derivatives">Derivatives</a></li>
-  <li><a href="#chain-rule-and-product-rule" id="toc-chain-rule-and-product-rule" class="nav-link" data-scroll-target="#chain-rule-and-product-rule">Chain Rule and Product Rule</a></li>
-  <li><a href="#gradients" id="toc-gradients" class="nav-link" data-scroll-target="#gradients">Gradients</a></li>
-  <li><a href="#vector-and-matrix-multiplication" id="toc-vector-and-matrix-multiplication" class="nav-link" data-scroll-target="#vector-and-matrix-multiplication">Vector and Matrix Multiplication</a></li>
-  <li><a href="#eigenvalues-and-eigenvectors" id="toc-eigenvalues-and-eigenvectors" class="nav-link" data-scroll-target="#eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</a></li>
+  <li><a href="#pagerank" id="toc-pagerank" class="nav-link active" data-scroll-target="#pagerank">PageRank</a></li>
+  <li><a href="#power-method" id="toc-power-method" class="nav-link" data-scroll-target="#power-method">Power Method</a></li>
   </ul>
 </nav>
     </div>
@@ -175,7 +172,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><strong>Linear Algebra Review</strong></h1>
+<h1 class="title"><strong>PageRank (The Power Method)</strong></h1>
 </div>
 
 
@@ -192,129 +189,52 @@ window.Quarto = {
 </header>
 
 
-<p>When I first heard about machine <em>learning</em>, I imagined a computer that was rewarded every time it gave the right answer. Maybe there were electric carrots and sticks that no one had bothered to tell me about? While I now know as little as I did then about computer hardware, I have learned that machine learning is fundamentally a mathematical process.</p>
-<p>Luckily, we’ve been learning about the very mathematical ideas that make machine learning work for years! We’ll review the basics of these concepts here.</p>
-<section id="derivatives" class="level3">
-<h3 class="anchored" data-anchor-id="derivatives">Derivatives</h3>
-<p>Consider a function <span class="math inline">\({f}: \mathbb{R} \to \mathbb{R}\)</span>. The mapping notation means that <span class="math inline">\({f}\)</span> takes a single real number as input and outputs a single real number. In general, mathematicians tell us to be careful about whether we can differentiate a function. But, we’re computer scientists so we’ll risk it for the biscuit.</p>
-<p>Let <span class="math inline">\(x \in \mathbb{R}\)</span> be the input to <span class="math inline">\({f}\)</span>. The derivative of <span class="math inline">\({f}\)</span> with respect to its input <span class="math inline">\(x\)</span> is mathematically denoted by <span class="math inline">\(\frac{\partial}{\partial x}[{f}(x)]\)</span>.</p>
-<p>Formally, the derivative is defined as <span class="math display">\[
-\frac{\partial}{\partial x}[{f}(x)]
-= \lim_{h \to 0} \frac{{f}(x + h) - {f}(x)}{h}.
-\]</span> If we were to plot <span class="math inline">\({f}\)</span>, the derivative at a point <span class="math inline">\(x\)</span> would be the slope of the tangent line to the curve at that point.</p>
-<p>Here are several examples of functions and their derivatives that you might remember from calculus.</p>
-<table style="width: 100%; border-collapse: collapse; text-align: center;">
-<tbody><tr>
-<td>
-<b>Function: <span class="math inline">\({f}(x)\)</span> </b>
-</td>
-<td>
-<b>Derivative: <span class="math inline">\(\frac{\partial}{\partial x}[{f}(x)]\)</span></b>
-</td>
-</tr>
-<tr>
-<td>
-<span class="math display">\[x^2\]</span>
-</td>
-<td>
-<span class="math display">\[2x\]</span>
-</td>
-</tr>
-<tr>
-<td>
-<span class="math display">\[x^a\]</span>
-</td>
-<td>
-<span class="math display">\[a x^{a-1}\]</span>
-</td>
-</tr>
-<tr>
-<td>
-<span class="math display">\[ax + b\]</span>
-</td>
-<td>
-<span class="math display">\[a\]</span>
-</td>
-</tr>
-<tr>
-<td>
-<span class="math display">\[\ln(x)\]</span>
-</td>
-<td>
-<span class="math display">\[\frac{1}{x}\]</span>
-</td>
-</tr>
-<tr>
-<td>
-<span class="math display">\[e^x\]</span>
-</td>
-<td>
-<span class="math display">\[e^x\]</span>
-</td>
-</tr>
-</tbody></table>
-</section>
-<section id="chain-rule-and-product-rule" class="level3">
-<h3 class="anchored" data-anchor-id="chain-rule-and-product-rule">Chain Rule and Product Rule</h3>
-<p>While working with a simple basic function is easy, we’re not always so lucky. Modern machine learning chains many many complicated functions together. Fortunately, we will think of these operations modularly.</p>
-<p>Let <span class="math inline">\(g: \mathbb{R} \to \mathbb{R}\)</span> be another function. Consider the composite function <span class="math inline">\(g({f}(x))\)</span>.</p>
-<p>By the chain rule, the derivative of <span class="math inline">\(g({f}(x))\)</span> with respect to <span class="math inline">\(x\)</span> is <span class="math display">\[
-\frac{\partial }{\partial x}[g({f}(x))]
-= \frac{\partial g}{\partial x}({f}(x))
-\frac{\partial}{\partial x}[{f}(x)].
-\]</span></p>
-<p>Often, we will also multiply functions together. The product rule tells us that <span class="math display">\[
-\frac{\partial }{\partial x}[g(x) {f}(x)]
-= g(x) \frac{\partial}{\partial x}[{f}(x)]
-+ {f}(x) \frac{\partial}{\partial x}[g(x)].
-\]</span></p>
-</section>
-<section id="gradients" class="level3">
-<h3 class="anchored" data-anchor-id="gradients">Gradients</h3>
-<p>In machine learning, we process high-dimensional data so we are interested in functions with multivariate input. Consider <span class="math inline">\({f}: \mathbb{R}^d \to \mathbb{R}\)</span>. The output of the function is still a real number but the input consists of <span class="math inline">\(d\)</span> real numbers. We will use the vector <span class="math inline">\(\mathbf{x} \in \mathbb{R}^d\)</span> to represent all <span class="math inline">\(d\)</span> inputs <span class="math inline">\(x_1, \ldots, x_d\)</span>.</p>
-<p>Instead of the derivative, we will talk use the partial derivative. The partial derivative with respect to <span class="math inline">\(x_i\)</span> is denoted by <span class="math inline">\(\frac{\partial}{\partial x_i}[{f}(\mathbf{x})]\)</span>. In effect, the partial derivative tells us how <span class="math inline">\({f}\)</span> changes when we change <span class="math inline">\(x_i\)</span>, while keeping all other inputs fixed.</p>
-<p>The gradient stores all the partial derivatives in a vector. The <span class="math inline">\(i\)</span>th entry of this vector is given by the partial derivative of <span class="math inline">\({f}\)</span> with respect to <span class="math inline">\(x_i\)</span>. In mathematical notation, <span class="math display">\[
-\nabla_\mathbf{x} {f} = \left[\begin{smallmatrix} \frac{\partial}{\partial x_1}[{f}(\mathbf{x})] \\ \vdots \\ \frac{\partial}{\partial x_d}[{f}(\mathbf{x})] \\ \end{smallmatrix}\right]
-\]</span></p>
-<p>Just like the derivative in one dimension, the gradient contains information about the slope of <span class="math inline">\({f}\)</span> with respect to each of the <span class="math inline">\(d\)</span> dimensions in its input.</p>
-</section>
-<section id="vector-and-matrix-multiplication" class="level3">
-<h3 class="anchored" data-anchor-id="vector-and-matrix-multiplication">Vector and Matrix Multiplication</h3>
-<p>Vector and matrix multiplication lives at the heart of machine learning. In fact, neural networks only really started to take off when researchers realized that the Graphical Processing Unit (GPU) could be used to perform gradient updates in addition to the matrix multiplication it was designed to do for gaming.</p>
-<p>Consider two vectors <span class="math inline">\(\mathbf{u} \in \mathbb{R}^d\)</span> and <span class="math inline">\(\mathbf{v} \in \mathbb{R}^d\)</span>. We will use <span class="math inline">\(\mathbf{u} \cdot \mathbf{v} = \sum_{i=1}^d u_i v_i\)</span> to denote the inner product of <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\mathbf{v}\)</span>. We can also write the inner product as <span class="math inline">\(\mathbf{u}^\top \mathbf{v}\)</span>, where <span class="math inline">\(\mathbf{u}^\top \in \mathbb{R}^{1\times d}\)</span> is the transpose of <span class="math inline">\(\mathbf{u}\)</span>. The <span class="math inline">\(\mathcal{\ell}_2\)</span>-norm of <span class="math inline">\(\mathbf{v}\)</span> is given by <span class="math inline">\(\|\mathbf{v}\|_2 = \sqrt{\mathbf{v} \cdot \mathbf{v}}\)</span>.</p>
-<p>Consider two matrices: <span class="math inline">\(\mathbf{A} \in \mathbb{R}^{d \times m}\)</span> and <span class="math inline">\(\mathbf{B} \in \mathbb{R}^{m \times n}\)</span> where <span class="math inline">\(d \neq n\)</span>. We can only multiply two matrices when their <em>inner</em> dimension agrees. Because the number of columns in <span class="math inline">\(\mathbf{A}\)</span> is the same as the number of rows in <span class="math inline">\(\mathbf{B}\)</span>, we can compute <span class="math inline">\(\mathbf{AB}\)</span>. However, because the number of columns in <span class="math inline">\(\mathbf{B}\)</span> is not the same as the number of rows in <span class="math inline">\(\mathbf{A}\)</span>, the product <span class="math inline">\(\mathbf{BA}\)</span> is not defined.</p>
-<p>When we <em>can</em> multiply two matrices, the <span class="math inline">\((i,j)\)</span> entry in <span class="math inline">\(\mathbf{AB}\)</span> is given by the inner product between the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\mathbf{A}\)</span> and the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\mathbf{B}\)</span>. In mathematical notation, we write <span class="math display">\[
-[\mathbf{AB}]_{i,j} = \sum_{k=1}^m [\mathbf{A}]_{i,k} [\mathbf{B}]_{k,j}.
-\]</span> The resulting dimensions of the matrix product will be the number of rows in <span class="math inline">\(\mathbf{A}\)</span> by the number of columns in <span class="math inline">\(\mathbf{B}\)</span>.</p>
+<p>Behind the real world impact of the machine learning algorithms we will study this semester, there is a rich mathematical foundation. Today, we will see how the eigenvalue decomposition of a matrix (that we learned about in the previous lecture) can be used to solve a real-world problem: finding the most important pages on the internet. This algorithm is known as PageRank, and it was the key technology that powered Google in its early days.</p>
+<p>There are lots of webpages on the internet, and they are all interconnected by hyperlinks. Some pages, like wikipedia.org (website A) and mayoclinic.org (website B), are clearly important and authoritative. Other pages, like tealscats.com (website C), are less important. When we search for a topic, we’d like to return the most relevant pages, <em>sorted</em> by their importance.</p>
+<p>Of course, we could manually rank the pages, but that would be tedious, and way less fun. Instead, we will use the structure of the internet to determine which pages are most important. Consider a <em>graph</em> representation of the internet, where each page is a node and each hyperlink is a directed edge from one node to another.</p>
 <center>
-<img src="images/linalg_matmul0.svg" class="responsive-img">
+<img src="images/linalg_graph.svg" class="responsive-img">
 </center>
-<p>Beyond this inner product matrix multiplication that we are used to from linear algebra, there is also an <em>outer product</em> way to multiply two matrices. Consider the index <span class="math inline">\(k \in \{1, \ldots, m\}\)</span>. Let <span class="math inline">\([\mathbf{A}]_{,k}\)</span> denote the <span class="math inline">\(k\)</span>th column of <span class="math inline">\(\mathbf{A}\)</span> and <span class="math inline">\([\mathbf{B}]_{k,}\)</span> denote the <span class="math inline">\(k\)</span>th row of <span class="math inline">\(\mathbf{B}\)</span>. We can write the matrix product as a sum of outer products for each <span class="math inline">\(k\)</span>: <span class="math display">\[
-\mathbf{AB} = \sum_{k=1}^m [\mathbf{A}]_{,k} [\mathbf{B}]_{k,}.
-\]</span> By checking the <span class="math inline">\((i,j)\)</span> entry of the outer product, we see that the outer product definition is equivalent to the inner product matrix multiplication. We will soon see that this outer product definition is a surprisingly useful way to think about matrix multiplication.</p>
-<center>
-<img src="images/linalg_matmul1.svg" class="responsive-img">
-</center>
+<p>We roughly expect that important pages will have many incoming links (e.g., lots of people link to Wikipedia). Not only that, but we also expect that these links come from other important pages (e.g., even authoritative pages like Mayo Clinic link to Wikipedia).</p>
+<section id="pagerank" class="level3">
+<h3 class="anchored" data-anchor-id="pagerank">PageRank</h3>
+<p>With these ideas in mind, let’s define an iterative process for refining our ranks of the pages. At first, we will assign each page the same <em>rank</em>, say <span class="math inline">\(1/n\)</span> where <span class="math inline">\(n\)</span> is the number of pages. Let <span class="math inline">\(\mathbf{p}^{(0)} \in \mathbb{R}^n\)</span> be the initial rank vector, where <span class="math inline">\(\mathbf{p}^{(0)}_i = 1/n\)</span> for each page <span class="math inline">\(i\)</span>. We will then iteratively update the rank vector so that the new rank of each page depends on how many pages link to it, and their ranks. We will use the following update rule: <span class="math display">\[
+p_i^{(t+1)} = \sum_{j: j \text{ links to } i } \frac{p_j^{(t)}}{d_j},
+\]</span> where <span class="math inline">\(d_j\)</span> is the out-degree of page <span class="math inline">\(j\)</span>, i.e., the number of pages that page <span class="math inline">\(j\)</span> links to. Why do we divide by <span class="math inline">\(d_j\)</span>? If we didn’t, then a page with many outgoing links would dominate the rank of the pages it links to.</p>
+<p>Notice that the new rank is a linear combination of the previous ranks. In the language of linear algebra, we are taking the dot product between the previous rank vector <span class="math inline">\(\mathbf{p}^{(t)}\)</span> and a vector that only depends on the structure of the graph. For page <span class="math inline">\(i\)</span>, call this vector <span class="math inline">\([\mathbf{A}]_{i,} \in \mathbb{R}^n\)</span> where <span class="math display">\[
+\mathbf{A}_{i,j} = \begin{cases}
+\frac{1}{d_j} &amp; \text{if } j \text{ links to } i \\
+0 &amp; \text{otherwise.}
+\end{cases}
+\]</span> When we consider the entire rank vector, we can write the update rule as <span class="math display">\[
+\mathbf{p}^{(t+1)} = \mathbf{A} \mathbf{p}^{(t)},
+\]</span> where <span class="math inline">\(\mathbf{A} \in \mathbb{R}^{n \times n}\)</span> is the matrix whose <span class="math inline">\(i\)</span>th row is <span class="math inline">\(\mathbf{A}_i\)</span>. One useful observation is that each <em>column</em> of <span class="math inline">\(\mathbf{A}\)</span> sums to 1, i.e., <span class="math inline">\(\sum_{i=1}^n \mathbf{A}_{i,j} = \sum_{i: j \text{ links to i }} \frac1{d_j} = \frac{d_j}{d_j} = 1\)</span> for each <span class="math inline">\(j\)</span>. This means that <span class="math inline">\(\mathbf{p}^{(t+1)}\)</span> will have the same sum as <span class="math inline">\(\mathbf{p}^{(t)}\)</span> i.e., <span class="math display">\[
+\sum_{i=1}^n p_i^{(t+1)} = \sum_{i=1}^n \left( \sum_{j=1}^n \mathbf{A}_{i,j} p_j^{(t)} \right) = \sum_{j=1}^n p_j^{(t)} \sum_{i=1}^n \mathbf{A}_{i,j} = \sum_{j=1}^n p_j^{(t)}.
+\]</span> Since we initialize <span class="math inline">\(\mathbf{p}^{(0)}\)</span> to have sum 1, we can see that <span class="math inline">\(\mathbf{p}^{(t)}\)</span> will always have sum 1. This enables us to interpret the rank vector <span class="math inline">\(\mathbf{p}^{(t)}\)</span> as a probability distribution over the pages. In particular, <span class="math inline">\(p_i^{(t)}\)</span> is the probability that a random user will land on page <span class="math inline">\(i\)</span> after <span class="math inline">\(t\)</span> iterations of following links, when starting from a uniform distribution over all the pages.</p>
+<p>But now, we have a problem. Suppose a webpage has no outgoing links. Then, all the probability coming into that page will be stuck. To avoid this, we will add a small amount of probability to each page at every iteration, which effectively simulates a random user who jumps to a random page with some small probability. Let <span class="math inline">\(\alpha \in (0,1)\)</span> be close to 1, and define the new rank update rule as <span class="math display">\[
+\mathbf{p}^{(t+1)} = \alpha \mathbf{A} \mathbf{p}^{(t)} + (1-\alpha) \mathbf{1} \frac{1}{n}.
+\]</span> So, even if a page traps all the probability it receives, we will still add a small amount of probability to every page.</p>
 </section>
-<section id="eigenvalues-and-eigenvectors" class="level3">
-<h3 class="anchored" data-anchor-id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</h3>
-<p>The primary challenge when dealing with matrices is that our favorite operations on scalar real numbers do not always work on matrices. For example, it’s not obvious how to divide one matrix by another, or how to take the square root of a matrix. Eigenvalues and eigenvectors provide a way to decompose matrices into simpler components that we can work with in more familiar ways.</p>
-<p>As we may remember from linear algebra, an eigenvector of a square matrix <span class="math inline">\(\mathbf{A} \in \mathbb{R}^{d \times d}\)</span> is a vector <span class="math inline">\(\mathbf{v} \in \mathbb{R}^d\)</span> such that <span class="math inline">\(\mathbf{Av} = \lambda \mathbf{v}\)</span> for some scalar <span class="math inline">\(\lambda\)</span>. Let <span class="math inline">\(r\)</span> be the <em>rank</em>, i.e., the number of eigenvectors of <span class="math inline">\(\mathbf{A}\)</span>. Then, we can write the eigenvectors as <span class="math inline">\(\mathbf{v}_1, \ldots, \mathbf{v}_r\)</span>, with corresponding eigenvalues <span class="math inline">\(\lambda_1 \geq \ldots \geq \lambda_r\)</span>. The eigenvectors are orthonormal, meaning that <span class="math inline">\(\mathbf{v}_i \cdot \mathbf{v}_j = 0\)</span> for <span class="math inline">\(i \neq j\)</span> and <span class="math inline">\(\|\mathbf{v}_i\|_2 = 1\)</span> for all <span class="math inline">\(i\)</span>.</p>
-<p>Given these properties, we can write <span class="math display">\[\mathbf{A} = \mathbf{V} \mathbf{\Lambda} \mathbf{V}^\top\]</span> where <span class="math inline">\(\mathbf{V} = [\mathbf{v}_1, \ldots, \mathbf{v}_r] \in \mathbb{R}^{d \times r}\)</span> is the matrix of eigenvectors and <span class="math inline">\(\mathbf{\Lambda} = \text{diag}(\lambda_1, \ldots, \lambda_r) \in \mathbb{R}^{r \times r}\)</span> is the diagonal matrix of eigenvalues. This decomposition is known as the <em>eigenvalue decomposition</em> of <span class="math inline">\(\mathbf{A}\)</span>.</p>
-<center>
-<img src="images/linalg_eigs.svg" class="responsive-img">
-</center>
-<p>Using our outer product definition of matrix multiplication, we can equivalently write the eigenvalue decomposition as <span class="math display">\[\mathbf{A} = \sum_{i=1}^r \lambda_i \mathbf{v}_i \mathbf{v}_i^\top\]</span> where <span class="math inline">\(\mathbf{v}_i \mathbf{v}_i^\top\)</span> is the outer product of the eigenvector <span class="math inline">\(\mathbf{v}_i\)</span> with itself. We can check that the eigenvalue decomposition is correct by multiplying by each eigenvector. Since the eigenvectors are orthonormal, we have <span class="math inline">\(\mathbf{A} \mathbf{v}_i = \lambda_i \mathbf{v}_i\)</span> for each <span class="math inline">\(i\)</span>.</p>
-<p>Let’s see the power of the eigenvalue decomposition in the context of matrix inversion. If we have a scalar equation <span class="math inline">\(ax = b\)</span>, we can simply solve for <span class="math inline">\(x\)</span> by dividing both sides by <span class="math inline">\(a\)</span>. In effect, we are applying the inverse of <span class="math inline">\(a\)</span> to <span class="math inline">\(a\)</span> i.e., <span class="math inline">\(\frac1{a} a =1\)</span>. The same principle applies to matrices. The <span class="math inline">\(n \times n\)</span> identity matrix generalizes the scalar identity <span class="math inline">\(1\)</span>. This identity matrix is denoted by <span class="math inline">\(\mathbf{I}_{n \times n} \in \mathbb{R}^{n \times n}\)</span>: the on-diagonal entries <span class="math inline">\((i,i)\)</span> are 1 while the off-diagonal entries <span class="math inline">\((i,j)\)</span> for <span class="math inline">\(i\neq j\)</span> are 0.</p>
-<p>For a matrix <span class="math inline">\(\mathbf{A} \in \mathbb{R}^{n \times n}\)</span>, we use <span class="math inline">\(\mathbf{A}^{-1}\)</span> to denote its inverse. (When <span class="math inline">\(\mathbf{A}\)</span> does not have full rank, i.e., <span class="math inline">\(r &lt; d\)</span>, the inverse is not defined, but we can still use the eigenvalue decomposition to find a pseudo-inverse.) The inverse is defined so that <span class="math inline">\(\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}\)</span> where <span class="math inline">\(\mathbf{I}_{n \times n}\)</span> is the identity matrix. In terms of our eigenvalue decomposition, the inverse of <span class="math inline">\(\mathbf{A}\)</span> is given by <span class="math display">\[\mathbf{A}^{-1} = \mathbf{V} \mathbf{\Lambda}^{-1} \mathbf{V}^\top\]</span> where <span class="math inline">\(\mathbf{\Lambda}^{-1} = \text{diag}(\frac{1}{\lambda_1}, \ldots, \frac{1}{\lambda_r})\)</span> is the diagonal matrix of the inverses of the eigenvalues. To see this, note that: <span class="math display">\[
-\mathbf{A}^{-1} \mathbf{A} = \left(\mathbf{V} \mathbf{\Lambda}^{-1} \mathbf{V}^\top\right) \left(\mathbf{V} \mathbf{\Lambda} \mathbf{V}^\top\right)
-= \mathbf{V} \mathbf{\Lambda}^{-1} \mathbf{\Lambda} \mathbf{V}^\top
-= \mathbf{V} \mathbf{I}_{r \times r} \mathbf{V}^\top
-= \mathbf{V} \mathbf{V}^\top
-= \mathbf{I}_{n \times n},
-\]</span> where we repeatedly used the fact that <span class="math inline">\(\mathbf{V}^\top \mathbf{V} = \mathbf{I}_{r \times r}\)</span> because the eigenvectors are orthonormal.</p>
-<p>In our outer product form, we can write the inverse as <span class="math display">\[\mathbf{A}^{-1} = \sum_{i=1}^r \frac{1}{\lambda_i} \mathbf{v}_i \mathbf{v}_i^\top\]</span> where <span class="math inline">\(\mathbf{v}_i\)</span> are the eigenvectors of <span class="math inline">\(\mathbf{A}\)</span>. Can you more easily see why <span class="math inline">\(\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}\)</span>?</p>
-<p>Going forward, we will apply the linear algebra tools we learned today to understand machine learning algorithms. The first algorithm we will study is PageRank, which, hiding behind the scenes, simply uses the eigenvalue decomposition to find the most important pages on the internet.</p>
+<section id="power-method" class="level3">
+<h3 class="anchored" data-anchor-id="power-method">Power Method</h3>
+<p>Our final update rule is slightly inelegant because it has two terms: one that depends on the previous rank vector and one that does not. But, we can rewrite it as a single matrix multiplication. Let <span class="math inline">\(\mathbf{1} \in \mathbb{R}^n\)</span> be the vector of all ones. Recall that <span class="math inline">\(\sum_{i=1}^n p_i^{(t)} = 1 = \mathbf{1}^\top \mathbf{p}^{(t)}\)</span>. Then, we can rewrite the update rule as <span class="math display">\[
+\mathbf{p}^{(t+1)} = \alpha \mathbf{A} \mathbf{p}^{(t)} + (1-\alpha) \frac{1}{n} \mathbf{1} \mathbf{1}^\top \mathbf{p}^{(t)} = \left( \alpha \mathbf{A} + (1-\alpha) \frac{1}{n} \mathbf{1} \mathbf{1}^\top \right) \mathbf{p}^{(t)},
+\]</span> where we used that <span class="math inline">\(\mathbf{1}^\top \mathbf{p}^{(t)} = 1\)</span>.</p>
+<p>Define the matrix <span class="math inline">\(\mathbf{M} = \alpha \mathbf{A} + (1-\alpha) \frac{1}{n} \mathbf{1} \mathbf{1}^\top\)</span>. The update rule can now be written as <span class="math display">\[
+\mathbf{p}^{(t+1)} = \mathbf{M} \mathbf{p}^{(t)} = \mathbf{M}^2 \mathbf{p}^{(t-1)}
+= \mathbf{M}^t \mathbf{p}^{(0)}.
+\]</span></p>
+<p>Let <span class="math inline">\(\mathbf{M} = \sum_{i=1}^r  \mathbf{v}_i \lambda_i \mathbf{v}_i^\top\)</span> be the eigenvalue decomposition of <span class="math inline">\(\mathbf{M}\)</span>, where <span class="math inline">\(\lambda_1 \geq \ldots \geq \lambda_r\)</span> are the eigenvalues and <span class="math inline">\(\mathbf{v}_1, \ldots, \mathbf{v}_r\)</span> are the corresponding eigenvectors. When we repeatedly multiply by <span class="math inline">\(\mathbf{M}\)</span>, the orthonormal property of the eigenvectors gives us a surprisingly simple result: <span class="math display">\[
+\mathbf{M}^2 = \sum_{i=1}^r \mathbf{v}_i \lambda_i \mathbf{v}_i^\top
+\sum_{j=1}^r \mathbf{v}_j \lambda_j \mathbf{v}_j^\top
+= \sum_{i=1}^r \mathbf{v}_i \lambda_i \mathbf{v}_i^\top \mathbf{v}_i \lambda_i \mathbf{v}_i^\top = \sum_{i=1}^r \lambda_i^2 \mathbf{v}_i \mathbf{v}_i^\top.
+\]</span> Here, we used that <span class="math inline">\(\mathbf{v}_i^\top \mathbf{v}_j = 0\)</span> for <span class="math inline">\(i \neq j\)</span> and <span class="math inline">\(1\)</span> if <span class="math inline">\(i=j\)</span>. In general, <span class="math inline">\(\mathbf{M}^t = \sum_{i=1}^r \lambda_i^t \mathbf{v}_i \mathbf{v}_i^\top\)</span>.</p>
+<p>Returning to the page rank vector, we can write <span class="math display">\[
+\mathbf{p}^{(t)} = \mathbf{M}^t \mathbf{p}^{(0)} = \sum_{i=1}^r \lambda_i^t \mathbf{v}_i \mathbf{v}_i^\top \mathbf{p}^{(0)}.
+= \lambda_1^t \sum_{i=1}^r \left( \frac{\lambda_i}{\lambda_1} \right)^t \mathbf{v}_i \mathbf{v}_i^\top \mathbf{p}^{(0)}.
+\]</span> When <span class="math inline">\(\lambda_1 &gt; \lambda_2\)</span>, the term <span class="math inline">\(\left( \frac{\lambda_i}{\lambda_1} \right)^t\)</span> will go to 0 for all <span class="math inline">\(i \geq 2\)</span> as <span class="math inline">\(t\)</span> increases. As long as <span class="math inline">\(\mathbf{v}_1^\top \mathbf{p}^{(0)}\)</span> is a small constant, the first term will dominate the sum, and <span class="math display">\[
+\lim_{t \to \infty} \mathbf{p}^{(t)} = \lambda_1 \mathbf{v}_1 \left(\mathbf{v}_1^\top \mathbf{p}^{(0)}\right).
+\]</span> In summary, the page rank that Google uses to measure the importance of a page is simply a multiple of the first eigenvector of the matrix <span class="math inline">\(\mathbf{M}\)</span>. Repeatedly multiplying matrices is known as the <em>power method</em>, and results in the dominant eigenvector of a matrix.</p>
 
 
 

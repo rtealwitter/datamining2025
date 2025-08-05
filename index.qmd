@@ -52,7 +52,7 @@ output:
   <tr>
     <td>Week 1 (8/27 and 8/29)</td>
     <td><a href="notes/01_LinearAlgebra.qmd">Linear Algebra</a></td>
-    <td>PageRank</td>
+    <td><a href="notes/01_PageRank.qmd">PageRank</a></td>
     <td></td>
     <td></td>
   </tr>
