@@ -220,55 +220,6 @@ $$
 \end{align}
 $$
 
-### Kernel Trick
-
-We have framed support vector machines as a tool that requires linearly separable data.
-However, we often need to apply a transformation $\psi: \mathbb{R}^d \to \mathbb{R}^D$ to the data to make it linearly separable.
-For most kernels, $D$ is very large, and explicitly computing the transformation $\psi(\mathbf{x}^{(i)})$ is infeasible.
-Fortunately, we can use the *kernel trick* to compute the inner product without explicitly computing the transformation.
-The kernel trick allows us to define a kernel function $K: \mathbb{R^d} \times \mathbb{R}^d \to \mathbb{R}$ such that
-$$
-\begin{align}
-K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \langle \psi(\mathbf{x}^{(i)}), \psi(\mathbf{x}^{(j)}) \rangle.
-\end{align}
-$$
-
-For many years, I was confused about why the kernel trick works. Doesn't computing the inner product require us to apply the transformation $\psi$?
-
-Let's see two examples:
-
-**Polynomial Kernel**: Consider the polynomial kernel $K(\mathbf{x}, \mathbf{x}') = (\langle \mathbf{x}, \mathbf{x}' \rangle + 1)^p$ for $p \in \mathbb{N}$.
-The explicit transformation $\psi$ when $p=2$ and $d=3$ is given by:
-$$
-\psi(\mathbf{x}) = \begin{bmatrix}
-1 \\
-\sqrt{2} x_1 \\
-\sqrt{2} x_2 \\
-\sqrt{2} x_3 \\
-x_1^2 \\
-x_2^2 \\
-x_3^2 \\
-\sqrt{2} x_1 x_2 \\
-\sqrt{2} x_1 x_3 \\
-\sqrt{2} x_2 x_3 \\
-\end{bmatrix}
-$$
-However, we can efficiently compute the inner product without explicitly computing $\psi$. For example,
-$$
-\begin{align}
-K(\mathbf{x}, \mathbf{w}) &= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
-\\&= (1 + x_1 x_1' + x_2 x_2' + x_3 x_3')^2
-\\&= 1 + 2x_1 x_1' + 2x_2 x_2' + 2x_3 x_3' + x_1^2 x_1'^2 + x_2^2 x_2'^2 
-\\+& x_3^2 x_3'^2 + 2x_1 x_2 x_1' x_2' + 2x_1 x_3 x_1' x_3' + 2x_2 x_3 x_2' x_3'
-\\&= \langle \psi(\mathbf{x}), \psi(\mathbf{x}') \rangle.
-\end{align}
-$$
-
-
-**Gaussian Kernel**: Consider the Gaussian kernel $K(\mathbf{x}, \mathbf{x}') = e^{-\frac{\|\mathbf{x} - \mathbf{x}'\|_2^2}{2\sigma^2}}$ for some $\sigma > 0$.
-As shown [here](https://en.wikipedia.org/wiki/Radial_basis_function_kernel), the Gaussian kernel can be expressed as an infinite series.
-Instead of explicitly computing the transformation $\psi$, we can compute the kernel in $O(d)$ time by computing the inner product $\langle \mathbf{x}, \mathbf{x}' \rangle$, and then applying the exponential function with a scaling.
-
 ### Soft Margin
 
 We have so far assumed that the data is linearly separable.

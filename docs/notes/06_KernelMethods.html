@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Support Vector Machines and Constrained Optimization</title>
+<title>Kernel Methods</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -162,11 +162,9 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#support-vector-machines" id="toc-support-vector-machines" class="nav-link active" data-scroll-target="#support-vector-machines">Support Vector Machines</a></li>
-  <li><a href="#computing-the-margin" id="toc-computing-the-margin" class="nav-link" data-scroll-target="#computing-the-margin">Computing the Margin</a></li>
-  <li><a href="#constrained-optimization" id="toc-constrained-optimization" class="nav-link" data-scroll-target="#constrained-optimization">Constrained Optimization</a></li>
-  <li><a href="#the-dual-problem" id="toc-the-dual-problem" class="nav-link" data-scroll-target="#the-dual-problem">The Dual Problem</a></li>
-  <li><a href="#soft-margin" id="toc-soft-margin" class="nav-link" data-scroll-target="#soft-margin">Soft Margin</a></li>
+  <li><a href="#k-nearest-neighbors" id="toc-k-nearest-neighbors" class="nav-link active" data-scroll-target="#k-nearest-neighbors"><span class="math inline">\(k\)</span>-Nearest Neighbors</a></li>
+  <li><a href="#kernel-trick" id="toc-kernel-trick" class="nav-link" data-scroll-target="#kernel-trick">Kernel Trick</a></li>
+  <li><a href="#reparameterization-trick" id="toc-reparameterization-trick" class="nav-link" data-scroll-target="#reparameterization-trick">Reparameterization Trick</a></li>
   </ul>
 </nav>
     </div>
@@ -175,7 +173,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><strong>Support Vector Machines and Constrained Optimization</strong></h1>
+<h1 class="title"><strong>Kernel Methods</strong></h1>
 </div>
 
 
@@ -192,142 +190,94 @@ window.Quarto = {
 </header>
 
 
-<p>We have so far explored the Naive Bayes classifier and logistic regression for solving classification tasks. In this section, we will learn about another tool called support vector machines (SVMs). While the final algorithm will be similar to logistic regression, SVMs approach the problem from a different perspective. As we’ll soon discover, both logistic regression and SVMs have their own strengths and weaknesses. Plus, we’ll get to see some fun math along the way!</p>
-<section id="support-vector-machines" class="level3">
-<h3 class="anchored" data-anchor-id="support-vector-machines">Support Vector Machines</h3>
-<p>Consider a binary classification problem with data points <span class="math inline">\(\mathbf{x}^{(i)}\)</span> and labels <span class="math inline">\(y^{(i)} \in \{-1, 1\}\)</span>. (We previously used <span class="math inline">\(y^{(i)} \in \{0, 1\}\)</span>, but this is just a relabeling for convenience.) We want to find a hyperplane that separates the two classes. For the majority of our discussion, we will assume that the data is linearly separable, meaning there exists a hyperplane that can perfectly separate the two classes.</p>
-<center>
-<img src="images/svm_data.svg" class="responsive-img">
-</center>
-<p>When there is such a separating hyperplane, there are often infinitely many that we can choose from. The question at the heart of support vector machines is: which hyperplane should we choose?</p>
-<center>
-<img src="images/svm_possible_lines.svg" class="responsive-img">
-</center>
-<p>As we’ve seen in the past, it is not too difficult to find a model that perfectly fits our training data; the real challenge is to find a model that generalizes well to unseen data. In the context of classification, we may expect that a model that separates the two classes with the largest ‘margin of error’ will generalize better than one that is very close to the data points. With this in mind, Vladimir Vapnik and Alexey Chervonenkis proposed the idea of support vector machines, which aim to find the hyperplane that maximizes the margin between the two classes.</p>
-<center>
-<img src="images/svm_definition.svg" class="responsive-img">
-</center>
-<p>Let’s consider a particular hyperplane, defined by the normal vector <span class="math inline">\(\mathbf{w}\)</span> and bias <span class="math inline">\(b\)</span>. The equation of the hyperplane is given by: <span class="math display">\[
-\begin{align}
-\langle \mathbf{w}, \mathbf{x} \rangle - b = 0.
-\end{align}
-\]</span></p>
-<p>We will define <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span> so that <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \geq 1\)</span> for all points <span class="math inline">\(\mathbf{x}^{(i)}\)</span> in the positive class (<span class="math inline">\(y^{(i)} = 1\)</span>) and <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \leq -1\)</span> for all points in the negative class (<span class="math inline">\(y^{(i)} = -1\)</span>). As we can see in the figure above, such a hyperplane will always exist if the data is linearly separable. How can we find the hyperplane that maximizes the margin?</p>
+<p>Many of the methods we have discussed so far are linear in nature, i.e., we make predictions based on a linear combination of the input features. Next, we will explore non-linear methods, specifically kernel methods, and neural networks. Both are closely related to feature transformations, which we have already discussed in the context of linear regression and support vector machines.</p>
+<section id="k-nearest-neighbors" class="level3">
+<h3 class="anchored" data-anchor-id="k-nearest-neighbors"><span class="math inline">\(k\)</span>-Nearest Neighbors</h3>
+<p>We’ll start with the <span class="math inline">\(k\)</span>-nearest neighbors algorithm, which is a simple yet powerful non-parametric method for classification and regression. As usual in the supervised learning setting, we have <span class="math inline">\(n\)</span> labeled training examples <span class="math inline">\(\{(\mathbf{x}^{(i)}, y^{(i)})\}_{i=1}^n\)</span>, where <span class="math inline">\(\mathbf{x}^{(i)} \in \mathbb{R}^d\)</span> is the feature vector and <span class="math inline">\(y^{(i)} \in \mathbb{R}\)</span> is the label. When we get a new unlabeled example <span class="math inline">\(\mathbf{x}\)</span>, we find the <span class="math inline">\(k\)</span> training examples that are <em>closest</em> to <span class="math inline">\(\mathbf{x}\)</span>, then we predict the label of <span class="math inline">\(\mathbf{x}\)</span> as the <em>average</em> of the labels of these <span class="math inline">\(k\)</span> neighbors.</p>
+<p>We can visualize the <span class="math inline">\(k\)</span>-nearest neighbors predictions as a kind of Voronoi diagram, where each point in the feature space is assigned to the label of its nearest neighbor(s).</p>
+<p>[image here]</p>
+<p>We typically measure closeness via <em>cosine similarity</em> i.e., the cosine of the angle between two vectors. Consider two vectors <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{w}\)</span>, the cosine similarity is: <span class="math display">\[
+\cos(\theta) = \frac{\langle \mathbf{x}, \mathbf{w} \rangle}{\|\mathbf{x}\| \|\mathbf{w}\|}
+\]</span> where <span class="math inline">\(\theta\)</span> is the angle between the two vectors.</p>
+<p><strong>Proof of Cosine Identity:</strong> Consider the triangle with vertices at the origin, <span class="math inline">\(\mathbf{x}\)</span>, and <span class="math inline">\(\mathbf{w}\)</span>. The lengths of the sides are <span class="math inline">\(a = \|\mathbf{x}\|_2\)</span>, <span class="math inline">\(b = \|\mathbf{w}\|_2\)</span>, and <span class="math inline">\(c = \|\mathbf{x} - \mathbf{w}\|_2\)</span>. The law of cosines tells us that: <span class="math display">\[
+\cos(\theta) = \frac{a^2 + b^2 - c^2}{2ab}.
+\]</span> Then <span class="math inline">\(a^2 + b^2 - c^2 = \|\mathbf{x}\|_2^2 + \|\mathbf{w}\|_2^2 - \|\mathbf{x} - \mathbf{w}\|_2^2\)</span>. Since <span class="math inline">\(\|\mathbf{x} - \mathbf{w}\|_2^2 = \|\mathbf{x}\|_2^2 + \|\mathbf{w}\|_2^2 - 2\langle \mathbf{x}, \mathbf{w} \rangle\)</span>, we have <span class="math display">\[
+\cos(\theta) = \frac{2 \langle \mathbf{x}, \mathbf{w} \rangle}{ 2\|\mathbf{x}\|_2 \|\mathbf{w}\|_2},
+\]</span> and the identity follows.</p>
+<p>The cosine similarity identity tells us that the following are equivalent:<br>
+• Large cosine similarity <span class="math inline">\(\cos(\theta)\)</span>.<br>
+• Small angle <span class="math inline">\(\theta\)</span>.<br>
+• Small distance <span class="math inline">\(\|\mathbf{x} - \mathbf{w}\|_2\)</span>.</p>
+<p>Let’s apply the <span class="math inline">\(k\)</span>-nearest neighbors algorithm to the MNIST dataset, which contains images of handwritten digits. Each image is a <span class="math inline">\(28 \times 28\)</span> pixel grayscale image, which we can flatten into a vector of length <span class="math inline">\(784\)</span>. When we compute the cosine similarity between two images, we are essentially measuring how similar the two images are based on their pixel values in each dimension. A search for the nearest neighbors will find the images that are closest in terms of pixel values, which often corresponds to similar handwriting styles.</p>
+<p>[image here]</p>
+<p>While quite accurate out of the box, it’s difficult to improve its accuracy because we do not have parameters to tune. Instead, we can use feature transformations to more <em>expressively</em> represent the data in higher dimensions.</p>
 </section>
-<section id="computing-the-margin" class="level3">
-<h3 class="anchored" data-anchor-id="computing-the-margin">Computing the Margin</h3>
-<p>For a given <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, we can see that the margin is the distance between the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = 1\)</span> and the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span>. Let’s calculate this distance.</p>
+<section id="kernel-trick" class="level3">
+<h3 class="anchored" data-anchor-id="kernel-trick">Kernel Trick</h3>
+<p>We can apply feature transformations to the input data to create a new representation that captures more complex relationships. Let <span class="math inline">\(\phi: \mathbb{R}^d \to \mathbb{R}^m\)</span> be a feature transformation that maps the inputs to a higher-dimensional space.</p>
 <center>
-<img src="images/svm_margin.svg" class="responsive-img">
+<img src="images/kernel_transform.svg" class="responsive-img">
 </center>
-<p>Consider a point <span class="math inline">\(\mathbf{z}_1\)</span> on the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = 1\)</span>. Let <span class="math inline">\(\mathbf{z}_2\)</span> be the point on the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span> that is <em>closest</em> to <span class="math inline">\(\mathbf{z}_1\)</span>. Because <span class="math inline">\(\mathbf{z}_1\)</span> and <span class="math inline">\(\mathbf{z}_2\)</span> are the closest points to each other on the two hyperplanes, the line connecting them is perpendicular to both hyperplanes. (Otherwise, we could move along the hyperplane <span class="math inline">\(\langle \mathbf{w}, \mathbf{x} \rangle - b = -1\)</span> to find a point <span class="math inline">\(\mathbf{z}_2'\)</span> that is closer to <span class="math inline">\(\mathbf{z}_1\)</span> than <span class="math inline">\(\mathbf{z}_2\)</span>, contradicting our assumption that <span class="math inline">\(\mathbf{z}_2\)</span> is the closest point.) Formally, we can write: <span class="math display">\[
-\mathbf{z}_1 - \mathbf{z}_2 = \lambda \bar{\mathbf{w}}
-\]</span> for some scaling <span class="math inline">\(\lambda \in \mathbb{R}\)</span>, where <span class="math inline">\(\bar{\mathbf{w}}\)</span> is the unit normal vector <span class="math inline">\(\frac{\mathbf{w}}{\|\mathbf{w}\|_2}\)</span>. We are interested in the length of this vector <span class="math inline">\(\lambda\)</span>. By our observation above, we can write <span class="math inline">\(\mathbf{z}_1 =  \lambda \bar{\mathbf{w}} + \mathbf{z}_2\)</span>. Then, plugging in <span class="math inline">\(\mathbf{z}_1\)</span> into the hyperplane equation <span class="math inline">\(\langle \mathbf{w}, \mathbf{z}_1 \rangle - b = 1\)</span>, we have: <span class="math display">\[
+<p>For most transformations, <span class="math inline">\(m\)</span> is very large, and explicitly computing the transformation <span class="math inline">\(\phi(\mathbf{x}^{(i)})\)</span> is infeasible. Fortunately, we can use the <em>kernel trick</em> to compute the inner product without explicitly computing the transformation. The kernel trick allows us to define a kernel function <span class="math inline">\(K: \mathbb{R^d} \times \mathbb{R}^d \to \mathbb{R}\)</span> such that <span class="math display">\[
 \begin{align}
-1 &amp;= \langle \mathbf{w}, \lambda \bar{\mathbf{w}} + \mathbf{z}_2 \rangle - b
-\\ &amp;= \langle \mathbf{w}, \lambda \bar{\mathbf{w}} \rangle + \langle \mathbf{w}, \mathbf{z}_2 \rangle - b
-\\ &amp;= \lambda \langle \mathbf{w}, \bar{\mathbf{w}} \rangle - 1
-\\ &amp;= \frac{\lambda}{\| \mathbf{w} \|_2} \| \mathbf{w} \|_2^2 - 1.
+K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \langle \phi(\mathbf{x}^{(i)}), \phi(\mathbf{x}^{(j)}) \rangle.
 \end{align}
-\]</span> Rearranging, we have that <span class="math inline">\(\lambda = \frac2{\| \mathbf{w} \|_2}\)</span>. For a given <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, we now know how to compute the margin. Let’s now find the <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span> with the largest margin.</p>
+\]</span></p>
+<p>For many years, I was confused about why the kernel trick works. Doesn’t computing the inner product require us to apply the transformation <span class="math inline">\(\phi\)</span>?</p>
+<p>Let’s see two examples:</p>
+<p><strong>Polynomial Kernel</strong>: Consider the polynomial kernel <span class="math inline">\(K(\mathbf{x}, \mathbf{x}') = (\langle \mathbf{x}, \mathbf{x}' \rangle + 1)^p\)</span> for <span class="math inline">\(p \in \mathbb{N}\)</span>. The explicit transformation <span class="math inline">\(\phi\)</span> when <span class="math inline">\(p=2\)</span> and <span class="math inline">\(d=3\)</span> is given by: <span class="math display">\[
+\phi(\mathbf{x}) = \begin{bmatrix}
+1 \\
+\sqrt{2} x_1 \\
+\sqrt{2} x_2 \\
+\sqrt{2} x_3 \\
+x_1^2 \\
+x_2^2 \\
+x_3^2 \\
+\sqrt{2} x_1 x_2 \\
+\sqrt{2} x_1 x_3 \\
+\sqrt{2} x_2 x_3 \\
+\end{bmatrix}
+\]</span> However, we can efficiently compute the inner product without explicitly computing <span class="math inline">\(\phi\)</span>. For example, <span class="math display">\[
+\begin{align}
+K(\mathbf{x}, \mathbf{w}) &amp;= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
+\\&amp;= (1 + x_1 x_1' + x_2 x_2' + x_3 x_3')^2
+\\&amp;= 1 + 2x_1 x_1' + 2x_2 x_2' + 2x_3 x_3' + x_1^2 x_1'^2 + x_2^2 x_2'^2
+\\&amp; + x_3^2 x_3'^2 + 2x_1 x_2 x_1' x_2' + 2x_1 x_3 x_1' x_3' + 2x_2 x_3 x_2' x_3'
+\\&amp;= \langle \phi(\mathbf{x}), \phi(\mathbf{x}') \rangle.
+\end{align}
+\]</span></p>
+<p><strong>Gaussian Kernel</strong>: Consider the Gaussian kernel <span class="math inline">\(K(\mathbf{x}, \mathbf{x}') = e^{-\frac{\|\mathbf{x} - \mathbf{x}'\|_2^2}{2\sigma^2}}\)</span> for some <span class="math inline">\(\sigma &gt; 0\)</span>. As shown <a href="https://en.wikipedia.org/wiki/Radial_basis_function_kernel">here</a>, the Gaussian kernel can be expressed as an infinite series. Instead of explicitly computing the transformation <span class="math inline">\(\phi\)</span>, we can compute the kernel in <span class="math inline">\(O(d)\)</span> time by computing the inner product <span class="math inline">\(\langle \mathbf{x}, \mathbf{x}' \rangle\)</span>, and then applying the exponential function with a scaling.</p>
+<p>We have seen how to apply the kernel trick to the <span class="math inline">\(k\)</span>-nearest neighbors algorithm, which allows us to compute the inner product in a higher-dimensional space without explicitly computing the feature transformation. Let’s see how we can apply the kernel trick to a more familiar tool: multi-class classification.</p>
 </section>
-<section id="constrained-optimization" class="level3">
-<h3 class="anchored" data-anchor-id="constrained-optimization">Constrained Optimization</h3>
-<p>We can formalize our goal as a constrained optimization problem: We want to find the hyperplane that maximizes the margin, subject to the constraints that all points in the positive class are on one side of the hyperplane and all points in the negative class are on the other side.</p>
-<p>Observe that maximizing the margin is equivalent to minimizing the <em>inverse</em> of the margin, which, by our calculation above, is equivalent to minimizing <span class="math inline">\(\frac12 \| \mathbf{w} \|_2\)</span>. Further, notice that we can simplify our constraints: <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \geq 1 \text{ for } y^{(i)} = 1\)</span> and <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \leq -1 \text{ for } y^{(i)} = -1\)</span> is equivalent to $ y^{(i)}(, ^{(i)} - b) $ for all <span class="math inline">\(i\)</span>. (This is why we relabelled the classes so that <span class="math inline">\(y^{(i)} \in \{-1, 1\}\)</span>.) We can now write our optimization problem as follows: <span class="math display">\[
-\begin{align}
-\min_{\mathbf{w}, b} \frac12 \| \mathbf{w} \|_2^2 \textnormal{ such that }
-y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \forall i.
-\end{align}
+<section id="reparameterization-trick" class="level3">
+<h3 class="anchored" data-anchor-id="reparameterization-trick">Reparameterization Trick</h3>
+<p>Let <span class="math inline">\(q\)</span> be the number of classes. We will learn <span class="math inline">\(q\)</span> weight vectors <span class="math inline">\(\mathbf{w}^{(1)}, \ldots, \mathbf{w}^{(q)} \in \mathbb{R}^d\)</span>. Our final prediction is the class with the highest value (we previously normalized these outputs so that we could interpret them as probabilities): <span class="math display">\[
+\arg \max_{\ell \in [q]} \langle \mathbf{w}^{(\ell)}, \mathbf{x} \rangle.
+\]</span> Equivalently, we can view the problem as a <em>similarity search</em>, where we want to find the class with smallest inner product: <span class="math display">\[
+\arg \min_{\ell \in [q]} \langle \mathbf{w}^{(\ell)}, \mathbf{x} \rangle.
 \]</span></p>
-<p>The points <span class="math inline">\(\mathbf{x}^{(i)}\)</span> that lie on the hyperplane i.e., those for which <span class="math inline">\(y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) = 1\)</span> are called the <em>support vectors</em>. Let <span class="math inline">\(\mathcal{S}\)</span> be the set of indices of the support vectors.</p>
+<p>In the context of MNIST, the weight vectors look something like this:</p>
+<p>[image here]</p>
+<p>While vaguely resembling the digits, they are not very interpretable, and it’s unclear how much they capture the underlying structure of the data. We would really like to represent the data in a more expressive way <em>without</em> explicitly computing the feature transformation, similar to the kernel trick we applied to the <span class="math inline">\(k\)</span>-nearest neighbors algorithm.</p>
+<p>For notational simplicity, consider binary logistic regression, where we have a single weight vector <span class="math inline">\(\mathbf{w} \in \mathbb{R}^d\)</span>. The optimization problem is to find <span class="math display">\[
+\arg \min_{\mathbf{w} \in \mathbb{R}^{d}} \mathcal{L}(\sigma(\mathbf{Xw}), \mathbf{y})
+\]</span> <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{n \times d}\)</span> is the input data matrix, <span class="math inline">\(\mathbf{y} \in \{0,1\}^n\)</span> is the label vector, <span class="math inline">\(\mathcal{L}\)</span> is the binary cross-entropy loss, and <span class="math inline">\(\sigma\)</span> is the entrywise softmax function. But it’s unclear how to apply the kernel trick here, since we are not computing the inner product between two feature vectors, but rather between a feature vector and a weight vector.</p>
+<p><strong>Reparameterization Trick:</strong> We can equivalently represent the weight vector as a linear combination of the training examples: <span class="math display">\[
+\mathbf{w} = \sum_{i=1}^n \alpha_i \mathbf{x}^{(i)}
+\]</span> for some coefficients <span class="math inline">\(\alpha_i \in \mathbb{R}\)</span>.</p>
+<p>The reparameterization trick tells us that we can equivalently represent the weight vector in the <em>span</em> of the rows of the input data matrix <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<p><strong>Proof:</strong> Suppose for contradiction that <span class="math inline">\(\mathbf{w}\)</span> is not in the span of the rows of <span class="math inline">\(\mathbf{X}\)</span>. Then we can write <span class="math inline">\(\mathbf{w} = \mathbf{v} + \mathbf{u}\)</span>, where <span class="math inline">\(\mathbf{v}\)</span> is in the span of the rows of <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{u}\)</span> is orthogonal to the span of the rows of <span class="math inline">\(\mathbf{X}\)</span>. But then <span class="math inline">\(\mathbf{X w} = \mathbf{Xv} + \mathbf{Xu} = \mathbf{Xv}\)</span>, since <span class="math inline">\(\mathbf{Xu} = 0\)</span>, so it suffices to optimize over <span class="math inline">\(\mathbf{v}\)</span>.</p>
 <center>
-<img src="images/svm_supports.svg" class="responsive-img">
+<img src="images/kernel_reparameterization.svg" class="responsive-img">
 </center>
-<p>The problem above is known as an example of a <em>constrained optimization problem</em>. More specifically, it is a <em>quadratic programming</em> problem: we have a quadratic objective function (the term <span class="math inline">\(\frac12 \| \mathbf{w} \|_2^2\)</span> is quadratic in <span class="math inline">\(\mathbf{w}\)</span>) and linear constraints (the constraints are linear in <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>). Constrained optimization problems in general, and quadratic programming in particular, are a rich area of study in optimization, and there are many techniques to solve them. However, the time complexity of these techniques will depend on the number of variables in <span class="math inline">\(\mathbf{w}\)</span>. For data in high dimensions (e.g., the transformed data after we add features to make the classes linearly separable), the time complexity can be quite high. In the next section, we will see how to find the <em>dual</em> of this problem, which can allow us to solve it more efficiently.</p>
-<p>Before we do, let’s see why the hyperplane is called a <em>support vector machine</em>.</p>
-<p><strong>Claim</strong>: The optimal hyperplane <span class="math inline">\(\mathbf{w}^\star\)</span> is a linear combination of the support vectors: <span class="math display">\[
-\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)}
-\]</span> for some coefficients <span class="math inline">\(\beta_i \in \mathbb{R}\)</span>.</p>
-<p><strong>Proof</strong>: Suppose for contradiction that <span class="math inline">\(\mathbf{w}^\star\)</span> is not a linear combination of the support vectors. That is, <span class="math inline">\(\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)} + \mathbf{v}\)</span> for some vector <span class="math inline">\(\mathbf{v}\)</span> that is orthogonal to all support vectors. We will construct a new hyperplane <span class="math inline">\(\mathbf{w}' = \mathbf{w}^\star - \epsilon \mathbf{v}\)</span> for some small <span class="math inline">\(\epsilon &gt; 0\)</span>, so that each point is still correctly classified, and the margin is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>.</p>
-<p>Let’s check that the new hyperplane <span class="math inline">\(\mathbf{w}'\)</span> still correctly classifies all points. First, for any support vector <span class="math inline">\(\mathbf{x}^{(i)}\)</span>, we have <span class="math display">\[
-\langle \mathbf{w}', \mathbf{x}^{(i)} \rangle = \langle \mathbf{w}^\star - \epsilon \mathbf{v}, \mathbf{x}^{(i)} \rangle = \langle \mathbf{w}^\star, \mathbf{x}^{(i)} \rangle
-\]</span> since <span class="math inline">\(\mathbf{v}\)</span> is orthogonal to all support vectors. By assumption, <span class="math inline">\(\mathbf{w}^\star\)</span> satisfies <span class="math inline">\(y^{(i)}(\langle \mathbf{w}^\star, \mathbf{x}^{(i)} \rangle - b) = 1\)</span>. Second, for any non-support vector <span class="math inline">\(\mathbf{x}^{(j)}\)</span>, we have <span class="math display">\[
-\langle \mathbf{w}', \mathbf{x}^{(j)} \rangle = \langle \mathbf{w}^\star - \epsilon \mathbf{v}, \mathbf{x}^{(j)} \rangle = \langle \mathbf{w}^\star, \mathbf{x}^{(j)} \rangle - \epsilon \langle \mathbf{v}, \mathbf{x}^{(j)} \rangle.
-\]</span> Since <span class="math inline">\(\mathbf{x}^{(j)}\)</span> is not a support vector, we have <span class="math inline">\(y^{(j)} (\langle \mathbf{v}, \mathbf{x}^{(j)} \rangle - b) &gt; 1\)</span>. Because this inequality is strict, we can choose <span class="math inline">\(\epsilon\)</span> small enough so that <span class="math inline">\(y^{(j)}(\langle \mathbf{w}', \mathbf{x}^{(j)} \rangle - b) = y^{(j)}(\langle \mathbf{w}^\star, \mathbf{x}^{(j)} \rangle - b - \epsilon \langle \mathbf{v}, \mathbf{x}^{(j)} \rangle) &gt; 1\)</span>.</p>
-<p>Next, let’s check that the margin of <span class="math inline">\(\mathbf{w}'\)</span> is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>. Since <span class="math inline">\(\mathbf{v}\)</span> is orthogonal to all support vectors, we can write: <span class="math display">\[
-\begin{align}
-\| \mathbf{w}' \|_2^2
-&amp;= \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} - (1-\epsilon) \mathbf{v} \|_2^2 \\
-&amp;= \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + (1-\epsilon)^2 \| \mathbf{v} \|_2^2 \\
-&amp;&lt; \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + \| \mathbf{v} \|_2^2 = \| \mathbf{w}^\star \|_2^2.
-\end{align}
-\]</span> Since the length of the normal vector <span class="math inline">\(\mathbf{w}\)</span> is inversely proportional to the margin, we have that the margin of <span class="math inline">\(\mathbf{w}'\)</span> is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>, a contradiction!</p>
-</section>
-<section id="the-dual-problem" class="level3">
-<h3 class="anchored" data-anchor-id="the-dual-problem">The Dual Problem</h3>
-<p>We have derived a quadratic programming problem, which we’ll call the <em>primal problem</em>:</p>
-<p><span class="math display">\[
-\begin{align}
-\min_{\mathbf{w}, b} \frac12 \| \mathbf{w} \|_2^2 \textnormal{ such that }
-y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \forall i \in \mathcal{S}.
-\end{align}
+<p>With the reparameterization trick in hand, we can represent the weight vector as <span class="math inline">\(\mathbf{X}^\top \mathbf{v}\)</span>. The optimization problem becomes: <span class="math display">\[
+\arg \min_{\mathbf{v} \in \mathbb{R}^{n}} \mathcal{L}(\sigma(\mathbf{X X}^\top \mathbf{v}), \mathbf{y}).
 \]</span></p>
-<p>In the version above, we only include the constraints for the support vectors <span class="math inline">\(\mathcal{S}\)</span>. Notice that this is sufficient because the remaining points are correctly classified by the hyperplane defined by the support vectors.</p>
-<p>The challenge in directly solving the primal is that the number of variables in <span class="math inline">\(\mathbf{w}\)</span> is equal to the number of features, which can be very large especially if we apply feature transformations to the data. Fortunately, we can turn the <em>primal</em> into a <em>dual problem</em>, that, roughly speaking, converts each constraint into a variable, and each variable into a constraint. Notice that this is particularly useful because we only need the constraints for the support vectors, which could be much fewer than the total number of data points <span class="math inline">\(n\)</span>.</p>
-<p>Let’s begin with the <em>Lagrangian</em> of the primal problem: <span class="math display">\[
-\begin{align}
-\min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \frac12 \| \mathbf{w} \|_2^2 - \sum_{i \in \mathcal{S}} \alpha_i \left( y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) - 1 \right)
-= \min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha}),
-\end{align}
-\]</span> where <span class="math inline">\(\boldsymbol{\alpha} \in \mathbb{R}^{|\mathcal{S}|}_+\)</span> is a vector of non-negative real numbers. Let’s see why the Lagrangian is equivalent to the primal problem: For a particular <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, the constraints in the primal problem must be satisfied by the Lagrangian, otherwise there is some <span class="math inline">\(i\)</span> such that <span class="math inline">\(y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) &lt; 1\)</span> and we can arbitrarily increase the Lagrangian objective by increasing <span class="math inline">\(\alpha_i\)</span>. Among these <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span> that satisfy the constraints, the Lagrangian objective is minimized when <span class="math inline">\(\frac12 \|\mathbf{w}\|_2^2\)</span> is as small as possible, which is equivalent to minimizing the objective of the primal problem.</p>
-<p>The Lagrangian is useful because we can more easily reason about the optimal <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>. Notice that the Lagrangian is a <em>convex</em> function in <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, and a <em>concave</em> function in <span class="math inline">\(\boldsymbol{\alpha}\)</span>. Further, as long as the data is linearly separable, we can always come up with a <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span> such that the constraints are satisfied, namely with <span class="math inline">\(\boldsymbol{\alpha} = 0\)</span>. Together, by <a href="https://en.wikipedia.org/wiki/Slater%27s_condition">Slater’s condition</a>, we can apply the <a href="https://en.wikipedia.org/wiki/Minimax_theorem">minimax theorem</a> to exchange the order of the minimization and maximization. That is, <span class="math display">\[
-\min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
-= \max_{\boldsymbol{\alpha}} \min_{\mathbf{w}, b} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha}).
-\]</span></p>
-<p>Let’s fix a <span class="math inline">\(\boldsymbol{\alpha}\)</span> and minimize the Lagrangian with respect to <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>. Taking the gradient with respect to <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, and setting it to zero, we have: <span class="math display">\[
-\begin{align}
-\nabla_{\mathbf{w}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
-&amp;= \mathbf{w} - \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)} = 0
-\\\nabla_{b} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
-&amp;= \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} = 0.
-\end{align}
-\]</span> Then we have <span class="math inline">\(\mathbf{w} = \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)}\)</span>. Notice that this implies the claim we made earlier: the optimal hyperplane <span class="math inline">\(\mathbf{w}^\star\)</span> is a linear combination of the support vectors, with coefficients <span class="math inline">\(\alpha_i y^{(i)}\)</span>. Further, we have that <span class="math inline">\(\sum_{i \in \mathcal{S}} \alpha_i y^{(i)} = 0\)</span>. We can plug these two equations into the Lagrangian to obtain <span class="math display">\[
-\begin{align}
-\mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
-&amp;=
-\frac12 \left( \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)} \right)^2
-- \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} {\mathbf{x}^{(i)}}^\top \sum_{j \in \mathcal{S}} \alpha_j y^{(j)} \mathbf{x}^{(j)}
-+ b \sum_{i \in \mathcal{S}} \alpha_i y^{(i)}
-+ \sum_{i \in \mathcal{S}} \alpha_i
-\\&amp;=
-- \frac12 \sum_{i, j \in \mathcal{S}} \alpha_i \alpha_j y^{(i)} y^{(j)} \langle \mathbf{x}^{(i)}, \mathbf{x}^{(j)} \rangle
-+ \sum_{i \in \mathcal{S}} \alpha_i.
-\end{align}
-\]</span> Finally, the dual problem is given by <span class="math display">\[
-\begin{align}
-\max_{\boldsymbol{\alpha}} \sum_{i \in \mathcal{S}} \alpha_i - \frac12 \sum_{i, j \in \mathcal{S}} \alpha_i \alpha_j y^{(i)} y^{(j)} \langle \mathbf{x}^{(i)}, \mathbf{x}^{(j)} \rangle
-\text{ such that } \alpha_i \geq 0 \text{ and } \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} = 0.
-\end{align}
-\]</span></p>
-</section>
-<section id="soft-margin" class="level3">
-<h3 class="anchored" data-anchor-id="soft-margin">Soft Margin</h3>
-<p>We have so far assumed that the data is linearly separable. However, in practice, we may have noisy data or outliers that make it impossible to find a hyperplane that perfectly separates the two classes. To address this, we can modify our optimization problem to allow for some misclassification. We can do this by introducing slack variables <span class="math inline">\(\xi_i \geq 0\)</span> for each data point, which allow us to ‘relax’ the constraints. The modified optimization problem is given by:</p>
-<p><span class="math display">\[
-\begin{align}
-\min_{\mathbf{w}, b} \| \mathbf{w} \|^2 + C \sum_{i=1}^n \xi_i
-\text{ such that }
-y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 - \xi_i \text{ and } \xi_i \geq 0 \text{ for all } i.
-\end{align}
-\]</span></p>
-<center>
-<img src="images/svm_soft.svg" class="responsive-img">
-</center>
-<p>The optimal choice of each slack variable satisfies <span class="math inline">\(\xi_i = \max(0, 1 - y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b))\)</span>. The parameter <span class="math inline">\(C &gt; 0\)</span> controls the trade-off between maximizing the margin and minimizing the misclassification. Notice that this is equivalent to minimizing the hinge loss, with a <span class="math inline">\(\ell_2\)</span> regularization term.</p>
-<center>
-<img src="images/svm_loss.svg" class="responsive-img">
-</center>
+<p>Now, we can apply the kernel trick to compute the inner products of <span class="math inline">\(K(\mathbf{X X^\top})\)</span>. At inference time, we can similarly use the kernel trick to compute the inner product between the input vector <span class="math inline">\(\mathbf{x}\)</span> and the weight vector <span class="math inline">\(\mathbf{X}^\top \mathbf{v}\)</span>.</p>
+<p>The reparameterization trick allows us to expressively represent data without explicitly computing the feature transformation. We can also apply the trick to other linear models such as linear regression.</p>
+<p>While they allow us to expressively represent data without explicitly computing the feature transformation, the kernel and reparameterization tricks are still computationally expensive: We need to compute the <span class="math inline">\(n \times n\)</span> kernel matrix <span class="math inline">\(K(\mathbf{X}, \mathbf{X})\)</span>.</p>
+<p>We will next see how neural networks allow us to <em>automatically</em> learn feature transformations, while basically maintaining the training and inference efficiency of linear models.</p>
 
 
 
