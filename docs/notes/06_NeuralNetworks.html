@@ -157,11 +157,18 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#neural-network-architectures" id="toc-neural-network-architectures" class="nav-link active" data-scroll-target="#neural-network-architectures">Neural Network Architectures</a></li>
+  <li><a href="#backpropagation" id="toc-backpropagation" class="nav-link" data-scroll-target="#backpropagation">Backpropagation</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -170,7 +177,7 @@ window.Quarto = {
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -182,9 +189,53 @@ window.Quarto = {
 </header>
 
 
+<p>Previously, we have built machine learned models in two steps: First, we chose a set of features to represent the data, possibly transforming the data in the process. Second, we optimized a model on the (transformed) features. Neural networks allow us to learn both the feature transformations and the model <em>simultaneously</em>.</p>
+<section id="neural-network-architectures" class="level3">
+<h3 class="anchored" data-anchor-id="neural-network-architectures">Neural Network Architectures</h3>
+<p>Consider training data that is not linearly separable, i.e., we cannot draw a straight line to separate the classes. We saw before how we could represent the data in a higher-dimensional space, where it is linearly separable. The alternative we’ll explore today is to divide the region with multiple linear boundaries.</p>
+<p>[image here of non linearly separable data, next to a divided region]</p>
+<p>We can learn four linear boundaries, each of bounds the region in a different direction.</p>
+<p>[four images here of linear boundaries]</p>
+<p>When we pass the input through the learned lines, we will get real numbers representing the distance from the line e.g., <span class="math inline">\(\langle \mathbf{x}, \mathbf{w}^{(i)} \rangle\)</span>. Let’s apply a non-linear activation function to these distances, which will distinguish whether the distance is positive or negative e.g., <span class="math inline">\(\sigma(\langle \mathbf{x}, \mathbf{w}^{(i)} \rangle)\)</span>, where <span class="math inline">\(\sigma(z) = \mathbf{1}[z \geq 0]\)</span>. For example, the point marked by the star would represented as <span class="math inline">\([0, 1, 1, 0]\)</span>, because it is above the first line, below the second line, below the third line, and above the fourth line. Finally, we can combine these values to make a prediction, e.g., by taking a weighted average.</p>
+<p>[image here of example neural network]</p>
+<p>In this way, we can learn a non-linear functions by combining multiple linear models with non-linear activations. By updating the weights of the linear models and the weights of the final combination, we can learn a complex function that fits the data well.</p>
+<p>Neural networks are remarkably flexible, with many different architectural options:</p>
+<ul>
+<li><p>The <strong>activation functions</strong> which process the outputs of the linear models. Options include the ReLU function <span class="math inline">\(\sigma(z) = \max(0, z)\)</span>, the sigmoid function <span class="math inline">\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</span>, the hyperbolic tangent function <span class="math inline">\(\sigma(z) = \tanh(z)\)</span>, and more.</p></li>
+<li><p>The <strong>number of layers</strong> in the network, i.e., how many times we apply the linear models and activation functions.</p></li>
+<li><p>The <strong>number of neurons</strong> in each layer, i.e., how many linear models we apply in each layer.</p></li>
+<li><p>The <strong>loss function</strong> to measure the error between the predicted and true labels. We can use the same loss functions we have seen before: cross-entropy for classification and squared error for regression.</p></li>
+<li><p>The <strong>layer type</strong> determine how we connect neurons in different layers. Common types include fully connected layers, convolutional layers, and residual layers.</p></li>
+</ul>
+<p>Tensorflow offers an excellent visualization of common neural network architectures, which you can play around with <a href="https://playground.tensorflow.org/">here</a>.</p>
+<p>With all of these options, it’s clear that neural networks are a powerful tool for representing complex functions. In order to train a neural network, we need to optimize the weights of the linear models and the final combination. We will apply gradient descent to minimize the loss function, just like we have done before. But we need to be careful about how we compute the gradients, since the neural network is a composition of multiple functions.</p>
+</section>
+<section id="backpropagation" class="level3">
+<h3 class="anchored" data-anchor-id="backpropagation">Backpropagation</h3>
+<p>Backpropagation is an efficient algorithm for computing the gradients of the loss function with respect to the weights of the neural network. The basic idea is to modularly apply the chain rule to compute the gradients of each layer, starting from the output layer and working backwards to the input layer.</p>
+<p>Before we dive into the details, let’s review the chain rule. For a scalar function <span class="math inline">\(f: \mathbb{R} \to \mathbb{R}\)</span>, we write the derivative as <span class="math display">\[
+\frac{df}{dx} = \lim_{t \to 0} \frac{f(x + t) - f(x)}{t}.
+\]</span></p>
+<p>For a multivariate function <span class="math inline">\(f: \mathbb{R}^m \to \mathbb{R}\)</span>, we write the partial derivative as <span class="math display">\[
+\frac{\partial f}{\partial x_i} = \lim_{t \to 0} \frac{f(x_1, \ldots, x_i + t, \ldots, x_d) - f(x_1, \ldots, x_i, \ldots, x_d)}{t}.
+\]</span></p>
+<p>Consider two functions <span class="math inline">\(f: \mathbb{R} \to \mathbb{R}\)</span> be a function, and <span class="math inline">\(y: \mathbb{R} \to \mathbb{R}\)</span>. The chain rule tells us that the derivative of the composition <span class="math inline">\(f(y(x))\)</span> is given by <span class="math inline">\(\frac{df}{dx} = \frac{df}{dy} \cdot \frac{dy}{dx}\)</span>. To see this, we can write <span class="math display">\[
+\frac{df}{dx}
+= \lim_{t \to 0} \frac{f(y(x + t)) - f(y(x))}{t}
+= \lim_{t \to 0} \frac{f(y(x + t)) - f(y(x))}{y(x + t) - y(x)} \frac{y(x + t) - y(x)}{t}.
+= \frac{df}{dy} \cdot \frac{dy}{dx},
+\]</span> where the last equality follows as long as <span class="math inline">\(\lim_{t \to 0} y(x + t) - y(x) = 0\)</span>.</p>
+<p>Let <span class="math inline">\(f: \mathbb{R}^m \to \mathbb{R}\)</span> be a function, and <span class="math inline">\(y_i: \mathbb{R} \to \mathbb{R}\)</span> be a sequence of <span class="math inline">\(m\)</span> functions. The multivariate chain rule tells us that the derivative of the composition <span class="math inline">\(f(y_1(x), \ldots, y_m(x))\)</span> is given by <span class="math display">\[
+\frac{df}{dx} = \left(
+  \frac{df}{dy_1} \cdot \frac{dy_1}{dx} + \ldots + \frac{df}{dy_m} \cdot \frac{dy_m}{dx}
+\right).
+\]</span></p>
+<p>Backpropagation is simply an application of the multivariate chain rule, and is the natural analog to the forward pass in a neural network.</p>
+<p>[image here of forward pass and image here of backward pass]</p>
 
 
 
+</section>
 
 </main> <!-- /main -->
 <script>

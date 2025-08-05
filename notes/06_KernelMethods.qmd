@@ -42,9 +42,9 @@ $$
 and the identity follows.
 
 The cosine similarity identity tells us that the following are equivalent:  
-• Large cosine similarity $\cos(\theta)$.  
-• Small angle $\theta$.    
-• Small distance $\|\mathbf{x} - \mathbf{w}\|_2$.
+- Large cosine similarity $\cos(\theta)$.  
+- Small angle $\theta$.    
+- Small distance $\|\mathbf{x} - \mathbf{w}\|_2$.
 
 Let's apply the $k$-nearest neighbors algorithm to the MNIST dataset, which contains images of handwritten digits.
 Each image is a $28 \times 28$ pixel grayscale image, which we can flatten into a vector of length $784$.

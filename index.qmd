@@ -90,8 +90,8 @@ output:
   </tr>
   <tr>
     <td>Week 6 (9/30 and 10/2)</td>
-    <td>Kernel Methods</td>
-    <td>Neural Networks</td>
+    <td><a href="notes/06_KernelMethods.qmd">Kernel Methods</a></td>
+    <td><a href="notes/06_NeuralNetworks.qmd">Neural Networks</a></td>
     <td></td>
     <td></td>
   </tr>

@@ -13,10 +13,10 @@ We will review some basic concepts of probability that are useful for understand
 
 Let $A$ and $B$ be two events. For example, $A$ could be the event that it rains tomorrow, and $B$ could be the event that I wear a raincoat tomorrow.
 We will use the following notation:  
-• $\Pr(A)$ represents the probability that event $A$ occurs,  
-• $\Pr(A \cup B)$ represents the probability that either event $A$ or event $B$ occurs,  
-• $\Pr(A \cap B)$ represents the probability that both events $A$ and $B$ occur,  
-• $\Pr(A | B)$ represents the probability that event $A$ occurs given that event $B$ has occurred.
+- $\Pr(A)$ represents the probability that event $A$ occurs,  
+- $\Pr(A \cup B)$ represents the probability that either event $A$ or event $B$ occurs,  
+- $\Pr(A \cap B)$ represents the probability that both events $A$ and $B$ occur,  
+- $\Pr(A | B)$ represents the probability that event $A$ occurs given that event $B$ has occurred.
 
 <center><img src="images/classification_probability.svg" class="responsive-img"></center>
 

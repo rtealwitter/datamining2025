@@ -205,9 +205,9 @@ window.Quarto = {
 \cos(\theta) = \frac{2 \langle \mathbf{x}, \mathbf{w} \rangle}{ 2\|\mathbf{x}\|_2 \|\mathbf{w}\|_2},
 \]</span> and the identity follows.</p>
 <p>The cosine similarity identity tells us that the following are equivalent:<br>
-• Large cosine similarity <span class="math inline">\(\cos(\theta)\)</span>.<br>
-• Small angle <span class="math inline">\(\theta\)</span>.<br>
-• Small distance <span class="math inline">\(\|\mathbf{x} - \mathbf{w}\|_2\)</span>.</p>
+- Large cosine similarity <span class="math inline">\(\cos(\theta)\)</span>.<br>
+- Small angle <span class="math inline">\(\theta\)</span>.<br>
+- Small distance <span class="math inline">\(\|\mathbf{x} - \mathbf{w}\|_2\)</span>.</p>
 <p>Let’s apply the <span class="math inline">\(k\)</span>-nearest neighbors algorithm to the MNIST dataset, which contains images of handwritten digits. Each image is a <span class="math inline">\(28 \times 28\)</span> pixel grayscale image, which we can flatten into a vector of length <span class="math inline">\(784\)</span>. When we compute the cosine similarity between two images, we are essentially measuring how similar the two images are based on their pixel values in each dimension. A search for the nearest neighbors will find the images that are closest in terms of pixel values, which often corresponds to similar handwriting styles.</p>
 <p>[image here]</p>
 <p>While quite accurate out of the box, it’s difficult to improve its accuracy because we do not have parameters to tune. Instead, we can use feature transformations to more <em>expressively</em> represent the data in higher dimensions.</p>

@@ -105,10 +105,10 @@ The simplest way to measure the error of a classification model is to compute th
 
 However, the error rate does not take into account *which* points are misclassified.
 We will often break down the accuracy of a classification model into four categories:  
-• **True Positives (TP):** The model correctly predicts a positive class.  
-• **True Negatives (TN):** The model correctly predicts a negative class.  
-• **False Positives (FP):** The model incorrectly predicts a positive class when the true class is negative.    
-• **False Negatives (FN):** The model incorrectly predicts a negative class when the true class is positive.
+- **True Positives (TP):** The model correctly predicts a positive class.  
+- **True Negatives (TN):** The model correctly predicts a negative class.  
+- **False Positives (FP):** The model incorrectly predicts a positive class when the true class is negative.    
+- **False Negatives (FN):** The model incorrectly predicts a negative class when the true class is positive.
 
 <center><img src="images/classification_venn.svg" class="responsive-img"></center>
 

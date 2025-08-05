@@ -7,3 +7,87 @@ format:
     include-after-body: readtime.html
 ---
 
+Previously, we have built machine learned models in two steps:
+First, we chose a set of features to represent the data, possibly transforming the data in the process.
+Second, we optimized a model on the (transformed) features.
+Neural networks allow us to learn both the feature transformations and the model *simultaneously*.
+
+### Neural Network Architectures
+
+Consider training data that is not linearly separable, i.e., we cannot draw a straight line to separate the classes.
+We saw before how we could represent the data in a higher-dimensional space, where it is linearly separable.
+The alternative we'll explore today is to divide the region with multiple linear boundaries.
+
+[image here of non linearly separable data, next to a divided region]
+
+We can learn four linear boundaries, each of bounds the region in a different direction.
+
+[four images here of linear boundaries]
+
+When we pass the input through the learned lines, we will get real numbers representing the distance from the line e.g., $\langle \mathbf{x}, \mathbf{w}^{(i)} \rangle$.
+Let's apply a non-linear activation function to these distances, which will distinguish whether the distance is positive or negative e.g., $\sigma(\langle \mathbf{x}, \mathbf{w}^{(i)} \rangle)$, where $\sigma(z) = \mathbf{1}[z \geq 0]$.
+For example, the point marked by the star would represented as $[0, 1, 1, 0]$, because it is above the first line, below the second line, below the third line, and above the fourth line.
+Finally, we can combine these values to make a prediction, e.g., by taking a weighted average.
+
+[image here of example neural network]
+
+In this way, we can learn a non-linear functions by combining multiple linear models with non-linear activations.
+By updating the weights of the linear models and the weights of the final combination, we can learn a complex function that fits the data well.
+
+Neural networks are remarkably flexible, with many different architectural options: 
+
+- The **activation functions** which process the outputs of the linear models. Options include the ReLU function $\sigma(z) = \max(0, z)$, the sigmoid function $\sigma(z) = \frac{1}{1 + e^{-z}}$, the hyperbolic tangent function $\sigma(z) = \tanh(z)$, and more. 
+
+- The **number of layers** in the network, i.e., how many times we apply the linear models and activation functions. 
+
+- The **number of neurons** in each layer, i.e., how many linear models we apply in each layer. 
+
+- The **loss function** to measure the error between the predicted and true labels. We can use the same loss functions we have seen before: cross-entropy for classification and squared error for regression. 
+
+- The **layer type** determine how we connect neurons in different layers. Common types include fully connected layers, convolutional layers, and residual layers. 
+
+Tensorflow offers an excellent visualization of common neural network architectures, which you can play around with [here](https://playground.tensorflow.org/).
+
+With all of these options, it's clear that neural networks are a powerful tool for representing complex functions.
+In order to train a neural network, we need to optimize the weights of the linear models and the final combination.
+We will apply gradient descent to minimize the loss function, just like we have done before.
+But we need to be careful about how we compute the gradients, since the neural network is a composition of multiple functions.
+
+### Backpropagation
+
+Backpropagation is an efficient algorithm for computing the gradients of the loss function with respect to the weights of the neural network.
+The basic idea is to modularly apply the chain rule to compute the gradients of each layer, starting from the output layer and working backwards to the input layer.
+
+Before we dive into the details, let's review the chain rule.
+For a scalar function $f: \mathbb{R} \to \mathbb{R}$, we write the derivative as
+$$
+\frac{df}{dx} = \lim_{t \to 0} \frac{f(x + t) - f(x)}{t}.
+$$
+
+For a multivariate function $f: \mathbb{R}^m \to \mathbb{R}$, we write the partial derivative as
+$$
+\frac{\partial f}{\partial x_i} = \lim_{t \to 0} \frac{f(x_1, \ldots, x_i + t, \ldots, x_d) - f(x_1, \ldots, x_i, \ldots, x_d)}{t}.
+$$
+
+Consider two functions $f: \mathbb{R} \to \mathbb{R}$ be a function, and $y: \mathbb{R} \to \mathbb{R}$.
+The chain rule tells us that the derivative of the composition $f(y(x))$ is given by $\frac{df}{dx} = \frac{df}{dy} \cdot \frac{dy}{dx}$.
+To see this, we can write
+$$
+\frac{df}{dx}
+= \lim_{t \to 0} \frac{f(y(x + t)) - f(y(x))}{t} 
+= \lim_{t \to 0} \frac{f(y(x + t)) - f(y(x))}{y(x + t) - y(x)} \frac{y(x + t) - y(x)}{t}.
+= \frac{df}{dy} \cdot \frac{dy}{dx},
+$$
+where the last equality follows as long as $\lim_{t \to 0} y(x + t) - y(x) = 0$.
+
+Let $f: \mathbb{R}^m \to \mathbb{R}$ be a function, and $y_i: \mathbb{R} \to \mathbb{R}$ be a sequence of $m$ functions.
+The multivariate chain rule tells us that the derivative of the composition $f(y_1(x), \ldots, y_m(x))$ is given by
+$$
+\frac{df}{dx} = \left(
+  \frac{df}{dy_1} \cdot \frac{dy_1}{dx} + \ldots + \frac{df}{dy_m} \cdot \frac{dy_m}{dx}
+\right).
+$$
+
+Backpropagation is simply an application of the multivariate chain rule, and is the natural analog to the forward pass in a neural network.
+
+[image here of forward pass and image here of backward pass]
