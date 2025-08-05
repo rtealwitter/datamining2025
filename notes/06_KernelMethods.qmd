@@ -1,0 +1,38 @@
+---
+title: "**Kernel Methods**"
+format:
+  html:
+    toc: true
+    math: mathjax
+    include-after-body: readtime.html
+---
+
+Many of the methods we have discussed so far are linear in nature, i.e., we make predictions based on a linear combination of the input features. Next, we will explore non-linear methods, specifically kernel methods, and neural networks.
+Both are closely related to feature transformations, which we have already discussed in the context of linear regression and support vector machines.
+
+### $k$-Nearest Neighbors
+
+We'll start with the $k$-nearest neighbors algorithm, which is a simple yet powerful non-parametric method for classification and regression.
+As usual in the supervised learning setting, we have $n$ labeled training examples $\{(\mathbf{x}^{(i)}, y^{(i)})\}_{i=1}^n$, where $\mathbf{x}^{(i)} \in \mathbb{R}^d$ is the feature vector and $y^{(i)} \in \mathbb{R}$ is the label.
+When we get a new unlabeled example $\mathbf{x}$, we find the $k$ training examples that are *closest* to $\mathbf{x}$ in some sense, then we predict the label of $\mathbf{x}$ as the *average* of the labels of these $k$ neighbors.
+
+We can visualize the $k$-nearest neighbors predictions as a kind of Voronoi diagram, where each point in the feature space is assigned to the label of its nearest neighbor(s).
+
+[image here]
+
+We typically measure closeness via *cosine similarity* i.e., the cosine of the angle between two vectors.
+Consider two vectors $\mathbf{x}$ and $\mathbf{w}$, the cosine similarity is:
+$$
+\cos(\theta) = \frac{\langle \mathbf{x}, \mathbf{w} \rangle}{\|\mathbf{x}\| \|\mathbf{w}\|}
+$$
+where $\theta$ is the angle between the two vectors.
+
+To see why this identity holds, consider the law of cosines, applied to the triangle with vertices at the origin, $\mathbf{x}$, and $\mathbf{w}$.
+The lengths of the sides are $a = \|\mathbf{x}\|_2$, $b = \|\mathbf{w}\|_2$, and $c = \|\mathbf{x} - \mathbf{w}\|_2$.
+The law of cosines states that:
+$$
+\cos(\theta) = \frac{a^2 + b^2 - c^2}{2ab}.
+$$
+Then $a^2 + b^2 - c^2 = \|\mathbf{x}\|_2^2 + \|\mathbf{w}\|_2^2 - \|\mathbf{x} - \mathbf{w}\|_2^2$.
+Since $\|\mathbf{x} - \mathbf{w}\|_2^2 = \|\mathbf{x}\|_2^2 + \|\mathbf{w}\|_2^2 - 2\langle \mathbf{x}, \mathbf{w} \rangle$, we can rearrange to get the claimed identity.
+

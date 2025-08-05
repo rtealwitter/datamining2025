@@ -1,0 +1,9 @@
+---
+title: "**Neural Networks**"
+format:
+  html:
+    toc: true
+    math: mathjax
+    include-after-body: readtime.html
+---
+
