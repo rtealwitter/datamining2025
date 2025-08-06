@@ -97,8 +97,8 @@ output:
   </tr>
   <tr>
     <td>Week 7 (10/7 and 10/9)</td>
-    <td>Decision Trees</td>
-    <td>Gradient Boosting</td>
+    <td><a href="notes/07_DecisionTrees.qmd">Decision Trees</a></td>
+    <td><a href="notes/07_DecisionTrees.qmd">Boosting</a></td>
     <td></td>
     <td></td>
   </tr>
