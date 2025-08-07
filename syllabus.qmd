@@ -1,5 +1,5 @@
 ---
-title: "**MATH 166: Syllabus**"
+title: "**CSCI 145: Syllabus**"
 output:
   html_document:
     css: styles.css

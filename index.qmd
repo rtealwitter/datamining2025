@@ -1,5 +1,5 @@
 ---
-title: "**MATH 166: Data Mining**"
+title: "**CSCI 145: Data Mining**"
 output:
   html_document:
     css: styles.css
@@ -16,7 +16,7 @@ output:
 
   **Instructor**: [R. Teal Witter](https://www.rtealwitter.com/). Please call me Teal.
   
-  **Class Times**: We meet Tuesdays and Thursdays; Sec. 1 is scheduled from 2:45 to 4:00pm, and Sec. 2 from 4:15 to 5:30pm.
+  **Class Times**: We meet Tuesdays and Thursdays; Sec. 1 is scheduled from 2:45 to 4:00pm in Kravis 164, and Sec. 2 from 4:15 to 5:30pm in Kravis 165.
   
   **Office Hours**: Before I schedule office hours, please fill out this [when2meet](https://www.when2meet.com/?30832039-a1d3K) so we can find times that work for all of us.
   
