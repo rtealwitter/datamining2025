@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>CSCI 145: Data Mining</title>
+<title>Decision Trees and Boosting</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,23 +23,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./eve.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../eve.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,7 +67,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<link rel="shortcut icon" href="./eve.ico">
+<link rel="shortcut icon" href="../eve.ico">
 <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
@@ -112,7 +112,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -122,7 +122,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Fall 2025</span>
     </a>
   </div>
@@ -143,7 +143,7 @@ window.Quarto = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./syllabus.html"> 
+    <a class="nav-link" href="../syllabus.html"> 
 <span class="menu-text">Syllabus</span></a>
   </li>  
 </ul>
@@ -157,18 +157,28 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#decision-trees" id="toc-decision-trees" class="nav-link active" data-scroll-target="#decision-trees">Decision Trees</a></li>
+  <li><a href="#adaptive-boosting-adaboost" id="toc-adaptive-boosting-adaboost" class="nav-link" data-scroll-target="#adaptive-boosting-adaboost">Adaptive Boosting (AdaBoost)</a></li>
+  <li><a href="#gradient-boosting" id="toc-gradient-boosting" class="nav-link" data-scroll-target="#gradient-boosting">Gradient Boosting</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><strong>CSCI 145: Data Mining</strong></h1>
+<h1 class="title"><strong>Decision Trees and Boosting</strong></h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -180,303 +190,119 @@ window.Quarto = {
 </header>
 
 
-<center>
-<em>A course on the mathematical foundations of machine learning.</em>
-</center>
-<p><br></p>
-<div class="row">
-<div class="col" data-markdown="1">
-<p><strong>Instructor</strong>: <a href="https://www.rtealwitter.com/">R. Teal Witter</a>. Please call me Teal.</p>
-<p><strong>Class Times</strong>: We meet Tuesdays and Thursdays; Sec. 1 is scheduled from 2:45 to 4:00pm in Kravis 164, and Sec. 2 from 4:15 to 5:30pm in Kravis 165.</p>
-<p><strong>Office Hours</strong>: Before I schedule office hours, please fill out this <a href="https://www.when2meet.com/?30832039-a1d3K">when2meet</a> so we can find times that work for all of us.</p>
-<p><strong>Participation</strong>: I expect you to engage in class, ask questions, and make connections. To receive credit, please fill out <a href="https://forms.gle/zQG3iLAqCDTzDyv98">this</a> form after every lecture.</p>
-<p><strong>Quizzes</strong>: There will be short quizzes at the beginning of our Tuesday classes. These quizzes will test your understanding of the problem sets and the concepts from the prior week.</p>
-</div>
-<div class="col" data-markdown="1">
-<p><strong>Problem Sets</strong>: Your primary opportunity to learn the material will be on problem sets. You may work with others to solve the problems, but you must write your solutions by yourself, and explicitly acknowledge any outside help (websites, people, LLMs).</p>
-<p><strong>Exams</strong>: The two midterm exams are designed to give you a multiple ways of demonstrating your understanding. The first is a written midterm focused on supervised learning. The second is a verbal exam, <em>à la</em> a technical interview.</p>
-<strong>Project</strong>: The project offers a chance to explore an area that interests you, practice writing high quality code, and develop your ability to communicate technical ideas to an audience. In addition to your codebase, you will write a report and give a short presentation at the end of the semester.
-</div>
-</div>
-<table style="width: 100%; border-collapse: collapse;">
-<tbody><tr>
-<td>
-Week
-</td>
-<td>
-Tuesday
-</td>
-<td>
-Thursday
-</td>
-<td>
-Slides
-</td>
-<td>
-Assignments
-</td>
-</tr>
-<tr class="section-header">
-<td colspan="5">
-Warmup
-</td>
-</tr>
-<tr>
-<td>
-Week 1 (8/27 and 8/29)
-</td>
-<td>
-<a href="./notes/01_LinearAlgebra.html">Linear Algebra</a>
-</td>
-<td>
-<a href="./notes/01_PageRank.html">PageRank</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr class="section-header">
-<td colspan="5">
-Supervised Learning
-</td>
-</tr>
-<tr>
-<td>
-Week 2 (9/2 and 9/4)
-</td>
-<td>
-<a href="./notes/02_LinearRegression.html">Linear Regression</a>
-</td>
-<td>
-<a href="./notes/02_LinearRegression.html">Optimization</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 3 (9/9 and 9/11)
-</td>
-<td>
-<a href="./notes/03_GradientDescent.html">Gradient Descent</a>
-</td>
-<td>
-<a href="./notes/03_PolynomialRegression.html">Polynomial Regression</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 4 (9/16 and 9/18)
-</td>
-<td>
-<a href="./notes/04_Probability.html">Probability</a>
-</td>
-<td>
-<a href="./notes/04_LogisticRegression.html">Logistic Regression</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 5 (9/23 and 9/25)
-</td>
-<td>
-<a href="./notes/05_SupportVectorMachines.html">Support Vector Machines</a>
-</td>
-<td>
-<a href="./notes/05_SupportVectorMachines.html">Constrained Optimization</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 6 (9/30 and 10/2)
-</td>
-<td>
-<a href="./notes/06_KernelMethods.html">Kernel Methods</a>
-</td>
-<td>
-<a href="./notes/06_NeuralNetworks.html">Neural Networks</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 7 (10/7 and 10/9)
-</td>
-<td>
-<a href="https://chinmayhegde.github.io/dl-notes/notes/lecture04/">Convolutional Networks</a>
-</td>
-<td>
-<a href="https://chinmayhegde.github.io/dl-notes/notes/lecture07/">Transformers</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 8 (10/14 and 10/16)
-</td>
-<td>
-<i>Fall Break (No Class)</i>
-</td>
-<td>
-<a href="./notes/08_DecisionTrees.html">Decision Trees</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 9 (10/21 and 10/23)
-</td>
-<td>
-<i>Midterm Exam</i>
-</td>
-<td>
-<a href="./notes/08_DecisionTrees.html">Boosting</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr class="section-header">
-<td colspan="5">
-Beyond Supervised Learning
-</td>
-</tr>
-<tr>
-<td>
-Week 10 (10/28 and 10/30)
-</td>
-<td>
-Autoencoders
-</td>
-<td>
-Principal Component Analysis
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 11 (11/4 and 11/6)
-</td>
-<td>
-Semantic Embeddings
-</td>
-<td>
-Concentration Inequalities
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 12 (11/11 and 11/13)
-</td>
-<td>
-Bandits
-</td>
-<td>
-<a href="https://chinmayhegde.github.io/dl-notes/notes/lecture09/">Policy Gradients</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 13 (11/18 and 11/20)
-</td>
-<td>
-PAC Learning
-</td>
-<td>
-PAC Learning
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 14 (11/25 and 11/27)
-</td>
-<td>
-Active Learning
-</td>
-<td>
-<i>Thanksgiving (No Class)</i>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 15 (12/2 and 12/4)
-</td>
-<td>
-Interpretability
-</td>
-<td>
-<i>Project Preparation (No Class)</i>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 16 (12/9 and 12/11)
-</td>
-<td>
-<i>Sec. 2 Presents 7–10pm</i>
-</td>
-<td>
-<i>Sec. 1 Presents 2–5pm</i>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-</tbody></table>
+<p>Feature transformations and neural networks are powerful tools for supervised learning, but they can be difficult to interpret. Today, we’ll consider a more intuitive model class called trees, which, until very recently, gave the best performance on many supervised learning tasks.</p>
+<section id="decision-trees" class="level3">
+<h3 class="anchored" data-anchor-id="decision-trees">Decision Trees</h3>
+<p>Decision trees are a simple yet powerful model class that can be used for both classification and regression tasks. For simplicity, we’ll define them in terms of classification, but the same ideas apply to regression.</p>
+<p>Decision trees work by recursively partitioning the feature space into regions that are as homogeneous as possible with respect to the target variable.</p>
+<p>[image here 2D points to separate]</p>
+<p>The tree structure is incredibly intuitive, and likely the most natural way to represent a decision-making process. At each internal node, the tree splits the data based on a feature and a threshold. The goal is to find the split that <em>best</em> (more on this later) separates the classes. In our example image, splitting at <span class="math inline">\(x_1=.5\)</span> wouldn’t separate the circle from the square points, but splitting at <span class="math inline">\(x_1=1.5\)</span> almost perfectly separates them.</p>
+<p>[example decision tree here]</p>
+<p>Like gradient descent, decision trees use a <em>greedy</em> approach to learning. As we build the tree, we recursively evaluate the data at each leaf, choosing the feature and threshold that best separates the classes. Let <span class="math inline">\(\ell\)</span> be a leaf <em>after</em> the split at the <em>prior</em> leaf, and <span class="math inline">\(p^{(\ell)}_c\)</span> be the proportion of points in leaf <span class="math inline">\(\ell\)</span> that are of class <span class="math inline">\(c\)</span>. Without loss of generality, suppose that <span class="math inline">\(c=0\)</span> is the majority class. (Soon, we’ll consider weighted points, in which case we will define the weighted majority.) If we reach leaf <span class="math inline">\(\ell\)</span>, we predict that the point belongs to the majority class.</p>
+<p>The question is what split minimizes the loss of the resulting predictions. In particular, we’d like to minimize the <em>expected</em> loss of the predictions where the expectation is taken over the proportion of points that make it to the leaf <span class="math inline">\(p^{(\ell)}\)</span>: <span class="math display">\[
+\mathbb{E}_\ell[\mathcal{L}(\ell)] = \sum_\ell \mathcal{L}(\ell) \cdot p^{(\ell)}.
+\]</span> There are several ways to define the loss of a leaf, but several common ones are:</p>
+<p><strong>Error Rate</strong>: The error rate is the proportion of points in the leaf that are not of the predicted majority class. That is, <span class="math display">\[
+\mathcal{L}_\text{error}(\ell) = 1 - p^{(\ell)}_0.
+\]</span></p>
+<p><strong>Gini Impurity</strong>: The Gini impurity measures the probability of misclassifying a randomly chosen point from the leaf <em>if we were to randomly assign it to a class according to the class proportions</em>. That is, <span class="math display">\[
+\mathcal{L}_\text{Gini}(\ell) = \sum_{c} p^{(\ell)}_c (1 - p^{(\ell)}_c).
+\]</span> With a little algebra, we can rewrite this as: <span class="math display">\[
+\mathcal{L}_\text{Gini}(\ell) = \sum_{c} p^{(\ell)}_c - \left(p^{(\ell)}_c\right)^2 = 1 - \sum_{c} \left(p^{(\ell)}_c\right)^2.
+\]</span></p>
+<p><strong>Information Gain</strong>: Like logistic regression, information gain uses the entropy of the leaf to measure the error. That is, <span class="math display">\[
+\mathcal{L}_\text{InfoGain}(\ell) = H(\ell) = -\sum_{c} p^{(\ell)}_c \log(p^{(\ell)}_c).
+\]</span> Since the entropy is a measure of uncertainty, we call the reduction in entropy from the prior leaf to the resulting leaves after the split the <em>information gain</em>.</p>
+<p>Previously, we updated the parameters of our model to minimize the loss of our predictions. In decision trees, we search over all possible splits of the data to find the one that minimizes the expected loss. While this sounds expensive, in practice, there are a limited number of feasible splits.</p>
+<p>We’ve discussed decision trees in terms of classification, but they can also be used for regression tasks. What prediction would a leaf make in a regression task? How could we measure the loss of this prediction?</p>
+<p>On their own, decision trees are not particularly expressive. But, they can be <em>boosted</em> to create remarkably powerful models. A boosted model is a collection of weaker learners that together make the final prediction.</p>
+</section>
+<section id="adaptive-boosting-adaboost" class="level3">
+<h3 class="anchored" data-anchor-id="adaptive-boosting-adaboost">Adaptive Boosting (AdaBoost)</h3>
+<p>In adaptive boosting, we iteratively train a model to improve the composite model we’ve built so far. For simplicity, we’ll explore adaptive boosting in the context of binary classification, but the method can be generalized to regression tasks.</p>
+<p>Let <span class="math inline">\(f_t : \mathbb{R}^d \to \{-1, 1\}\)</span> be the model learned at iteration <span class="math inline">\(t\)</span>. The combined prediction is given by an ensemble model <span class="math inline">\(F_t : \mathbb{R}^d \to \mathbb{R}\)</span>. The ensemble model is defined as a weighted sum of the predictions of the individual models: <span class="math display">\[
+F_t(x) = \alpha_1 f_1(x) + \alpha_2 f_2(x) + \ldots + \alpha_t f_t(x)
+= F_{t-1}(x) + \alpha_t f_t(x),
+\]</span> where <span class="math inline">\(\alpha_k &gt; 0\)</span> is a weight that determines the importance of the model <span class="math inline">\(f_k\)</span> in the ensemble.</p>
+<p>Given <span class="math inline">\(F_{t-1}\)</span>, we are interested in learning a new model <span class="math inline">\(f_t\)</span> and a new weight <span class="math inline">\(\alpha_t\)</span> that minimizes the loss of the composite model. We’ll define the loss as <span class="math display">\[
+\mathcal{L}(F_t) = \sum_{i=1}^n e^{-y^{(i)} F_t(\mathbf{x}^{(i)})},
+\]</span> where <span class="math inline">\(y^{(i)} \in \{-1, 1\}\)</span> is the true label of the <span class="math inline">\(i\)</span>-th training example. When the composite model output is the same sign as the true label, the term in the exponent is negative, and the contribution to the error is less than 1. When the composite model output is the opposite sign as the true label, the term in the exponent is positive, and the contribution to the loss is (potentially much) greater than 1.</p>
+<p>Using the multiplication property of exponents, and the definition of <span class="math inline">\(F_t\)</span>, we can rewrite the loss as <span class="math display">\[
+\mathcal{L}(F_t) = \sum_{i=1}^n e^{-y^{(i)} (F_{t-1}(\mathbf{x}^{(i)}) + \alpha_t f_t(\mathbf{x}^{(i)}))}
+= \sum_{i=1}^n e^{-y^{(i)} F_{t-1}(\mathbf{x}^{(i)})} e^{-y^{(i)} \alpha_t f_t(\mathbf{x}^{(i)})}.
+\]</span> Let <span class="math inline">\(w^{(i)}_{t-1} = e^{-y^{(i)} F_{t-1}(\mathbf{x}^{(i)})}\)</span> be the weight of the <span class="math inline">\(i\)</span>th training example at iteration <span class="math inline">\(t\)</span>. Notice that these weights are independent of the new model <span class="math inline">\(f_t\)</span> and the new weight <span class="math inline">\(\alpha_t\)</span>. Then, partitioning the summation, we can write the error as <span class="math display">\[
+\begin{align}
+\mathcal{L}(F_t) &amp;=
+\sum_{i: y^{(i)} = f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} e^{-\alpha_t} + \sum_{i: y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} e^{\alpha_t}
+\\&amp;= \sum_{i=1}^n w^{(i)}_{t-1} e^{-\alpha_t} + \sum_{i: y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} (e^{\alpha_t} - e^{-\alpha_t})
+\\&amp;= \sum_{i=1}^n w^{(i)}_{t-1} e^{-\alpha_t} + (e^{\alpha_t} - e^{-\alpha_t}) \sum_{i: y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1}.
+\end{align}
+\]</span></p>
+<p>With <span class="math inline">\(F_{t-1}\)</span> fixed, minimizing <span class="math inline">\(\mathcal{L}(F_t)\)</span> is equivalent to minimizing the weighted error of the new model <span class="math inline">\(f_t\)</span> i.e., the sum of the weights for all misclassified points. Once we learn a decision tree <span class="math inline">\(f_t\)</span> that minimizes the weighted error, we can find the optimal weight <span class="math inline">\(\alpha_t\)</span> by differentiating the loss with respect to <span class="math inline">\(\alpha_t\)</span> and setting it to zero. In particular, we have <span class="math display">\[
+\frac{\partial \mathcal{L}(F_t)}{\partial \alpha_t}
+= - \sum_{i : y^{(i)} = f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} (-e^{-\alpha_t})
++ \sum_{i : y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} e^{\alpha_t}
+= 0
+\]</span> which tells us that <span class="math display">\[
+e^{-\alpha_t} \sum_{i : y^{(i)} = f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1}
+= e^{\alpha_t} \sum_{i : y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1}.
+\]</span> Taking the logarithm of both sides, we have: <span class="math display">\[
+-\alpha_t + \log\left(\sum_{i : y^{(i)} = f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1}\right)
+= \alpha_t + \log\left(\sum_{i : y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1}\right).
+\]</span> Rearranging, we have <span class="math display">\[
+\alpha_t = \frac{1}{2} \log\left(\frac{1-\epsilon_t}{\epsilon_t}\right)
+\]</span> where <span class="math inline">\(\epsilon_t = \frac{\sum_{i : y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1}}{\sum_{i=1}^n w^{(i)}_{t-1}}\)</span> is the weighted error rate of the model <span class="math inline">\(f_t\)</span>.</p>
+<p>At each iteration <span class="math inline">\(t\)</span>, we compute the weights <span class="math inline">\(w^{(i)}_{t-1}\)</span> based on which points the current ensemble model <span class="math inline">\(F_{t-1}\)</span> are misclassifying. We then learn a new model <span class="math inline">\(f_t\)</span> that minimizes the weighted error, adapting to correct the mistakes of the current ensemble. Finally, we compute the optimal weight <span class="math inline">\(\alpha_t\)</span> for the new model based on its weighted error rate.</p>
+<p>[image here of the AdaBoost algorithm]</p>
+<p>The AdaBoost algorithm is agnostic to the choice of weak learner, but decision trees are efficient and interpretable: Each weak learner can be trained quickly, and the resulting decision tree can be understood as a weighted vote of the individual trees.</p>
+</section>
+<section id="gradient-boosting" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-boosting">Gradient Boosting</h3>
+<p>Remarkably, AdaBoost can be viewed as gradient descent where the loss function is defined over the <em>predictions</em> on points rather than the <em>parameters</em> of the model.</p>
+<p>Let <span class="math inline">\(\mathcal{L}\)</span> be a differentiable loss function defined over the predictions of the model on the training data. In AdaBoost, we used the exponential loss, but we could use other loss functions like squared error or logistic loss. Rather than considering weak learners that are binary classifiers, we will now consider real-valued functions <span class="math inline">\(f_t : \mathbb{R}^d \to \mathbb{R}\)</span>.</p>
+<p>As before, the combined prediction is given by an ensemble model <span class="math inline">\(F_t : \mathbb{R}^d \to \mathbb{R}\)</span>. The ensemble model is defined as a weighted sum of the predictions of the individual models: <span class="math display">\[
+F_t(x) = \alpha_1 f_1(x) + \alpha_2 f_2(x) + \ldots + \alpha_t f_t(x) = F_{t-1}(x) + \alpha_t f_t(x).
+\]</span></p>
+<p>Our goal is to find a weak learner <span class="math inline">\(f_t\)</span> that minimizes the loss <span class="math display">\[
+\arg \min_{f_t} \sum_{i=1}^n \mathcal{L}(y^{(i)}, F_{t-1}(\mathbf{x}^{(i)}) + f_t(\mathbf{x}^{(i)})).
+\]</span> Recall that the gradient descent update subtracts the gradient of the parameter (opposite the direction of steepest ascent) for a small learning rate <span class="math inline">\(\alpha\)</span>. Instead of updating the parameters of the model, we will update the predictions of the model. In our boosting language, the gradient descent update for the <span class="math inline">\(i\)</span>th prediction is <span class="math display">\[
+F_t(\mathbf{x}^{(i)}) = F_{t-1}(\mathbf{x}^{(i)}) - \alpha \frac{ \partial \mathcal{L}(y^{(i)}, F_{t-1}(\mathbf{x}^{(i)}))}{\partial F_{t-1}(\mathbf{x}^{(i)})}.
+\]</span> In practice, finding a function that exactly matches the gradient is difficult, so we will instead find a function that <em>approximates</em> the gradient. That is, we train a weak learner <span class="math inline">\(f_t\)</span> to fit the points <span class="math inline">\((\mathbf{x}^{(i)}, \frac{ \partial \mathcal{L}(y^{(i)}, F_{t-1}(\mathbf{x}^{(i)}))}{\partial F_{t-1}(\mathbf{x}^{(i)})})\)</span> for <span class="math inline">\(i \in \{1, \ldots n\}\)</span>. When the loss is the squared error loss, i.e., <span class="math display">\[
+\mathcal{L}(y, F_{t-1}(\mathbf{x})) = \frac12 (F_{t-1}(\mathbf{x}) - y)^2,
+\]</span> the gradient of the loss with respect to the prediction is simply the residual between the prior prediction and the label, i.e., <span class="math display">\[
+\frac{ \partial \mathcal{L}(y, F_{t-1}(\mathbf{x}))}{\partial F_{t-1}(\mathbf{x})} = F_{t-1}(\mathbf{x}) - y.
+\]</span> In this, gradient boosting has a nice interpretation as an iterative process of fitting a model to the residuals of the prior model. Once we have trained the weak learner <span class="math inline">\(f_t\)</span>, we can select the weight <span class="math inline">\(\alpha_t\)</span> to minimize the loss of the composite model: <span class="math display">\[
+\alpha_t = \arg \min_\alpha \sum_{i=1}^n \mathcal{L}(y^{(i)}, F_{t-1}(\mathbf{x}^{(i)}) + \alpha f_t(\mathbf{x}^{(i)})).
+\]</span> When the loss is differentiable and convex (e.g., mean squared error), we can find the optimal weight <span class="math inline">\(\alpha_t\)</span> by differentiating the loss with respect to <span class="math inline">\(\alpha_t\)</span> and setting it to zero.</p>
+<p>The gradient boosting algorithm called <a href="https://en.wikipedia.org/wiki/XGBoost">XGBoost</a> is a popular implementation. Since 2014, XGboost has basically been the best performing model on many supervised learning tasks. However, foundation models like <a href="https://en.wikipedia.org/wiki/TabPFN">TabPFN</a> are starting to outperform XGBoost on small to medium-sized datasets. Like modern models, TabPFN uses a transformer architecture, and is trained on some 130 million synthetic datasets. While XGBoost requires relearning an ensemble for each new dataset, TabPFN can be run without any training by simply passing labeled example data, and unlabeled validation data as input to the model.</p>
 
 
 
+</section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const wordsPerMinute = 200;
+  const text = document.body.innerText;
+  const words = text.trim().split(/\s+/).length;
+  const readingTime = Math.ceil(words / wordsPerMinute);
+
+  const readTimeEl = document.createElement("div");
+  readTimeEl.innerText = `⏱️ ${readingTime} min read`;
+
+  // Style it to appear centered
+  readTimeEl.style.fontSize = "0.9em";
+  readTimeEl.style.margin = "1em auto";
+  readTimeEl.style.textAlign = "left";
+  readTimeEl.style.width = "100%";
+
+  const title = document.querySelector("h1");
+  if (title) {
+    title.parentNode.insertBefore(readTimeEl, title.nextSibling);
+  }
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
