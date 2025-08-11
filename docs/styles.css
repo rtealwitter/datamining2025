@@ -83,3 +83,34 @@ mjx-container[jax="SVG"] > svg {
   max-width: 100%;
   height: auto;
 }
+
+/* Collapsible proof block */
+.proof-block details {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  border-left: 4px solid #4b8bbe; /* nice blue accent */
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.proof-block summary {
+  font-weight: bold;
+  cursor: pointer;
+  list-style: none;
+}
+
+.proof-block summary::-webkit-details-marker {
+  display: none; /* hide default marker */
+}
+
+.proof-block summary::before {
+  content: "▶ ";
+  transition: transform 0.2s ease;
+}
+
+.proof-block[open] summary::before,
+.proof-block details[open] summary::before {
+  transform: rotate(90deg);
+  display: inline-block;
+}
+

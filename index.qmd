@@ -121,22 +121,22 @@ output:
   </tr>
   <tr>
     <td>Week 10 (10/28 and 10/30)</td>
-    <td>Autoencoders</td>
-    <td>Principal Component Analysis</td>
+    <td><a href="notes/09_Autoencoders.qmd">Autoencoders</a></td>
+    <td><a href="notes/09_Autoencoders.qmd">Principal Component Analysis</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 11 (11/4 and 11/6)</td>
-    <td>Semantic Embeddings</td>
-    <td>Concentration Inequalities</td>
+    <td><a href="notes/09_Autoencoders.qmd">Semantic Embedding</a></td>
+    <td><a href="https://chinmayhegde.github.io/dl-notes/notes/lecture09/">Reinforcement Learning</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 12 (11/11 and 11/13)</td>
-    <td>Bandits</td>
-    <td><a href="https://chinmayhegde.github.io/dl-notes/notes/lecture09/">Policy Gradients</a></td>
+    <td>Concentration Inequalities</td>
+    <td>RL Theory</td>
     <td></td>
     <td></td>
   </tr>

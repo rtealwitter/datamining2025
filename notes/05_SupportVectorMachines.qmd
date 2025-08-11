@@ -114,7 +114,10 @@ $$
 $$
 for some coefficients $\beta_i \in \mathbb{R}$.
 
-**Proof**:
+::: {.proof-block}
+<details open>
+<summary>Proof</summary>
+
 Suppose for contradiction that $\mathbf{w}^\star$ is not a linear combination of the support vectors.
 That is, $\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)} + \mathbf{v}$ for some vector $\mathbf{v}$ that is orthogonal to all support vectors.
 We will construct a new hyperplane $\mathbf{w}' = \mathbf{w}^\star - \epsilon \mathbf{v}$ for some small $\epsilon > 0$, so that each point is still correctly classified, and the margin is larger than that of $\mathbf{w}^\star$.
@@ -144,6 +147,9 @@ $$
 \end{align}
 $$
 Since the length of the normal vector $\mathbf{w}$ is inversely proportional to the margin, we have that the margin of $\mathbf{w}'$ is larger than that of $\mathbf{w}^\star$, a contradiction!
+
+</details>
+:::
 
 ### The Dual Problem
 
@@ -212,7 +218,7 @@ $$
 + \sum_{i \in \mathcal{S}} \alpha_i.
 \end{align}
 $$
-Finally, the dual problem is given by
+Finally, the dual problem is given by 
 $$
 \begin{align}
 \max_{\boldsymbol{\alpha}} \sum_{i \in \mathcal{S}} \alpha_i - \frac12 \sum_{i, j \in \mathcal{S}} \alpha_i \alpha_j y^{(i)} y^{(j)} \langle \mathbf{x}^{(i)}, \mathbf{x}^{(j)} \rangle

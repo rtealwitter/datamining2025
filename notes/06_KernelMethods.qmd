@@ -27,7 +27,10 @@ $$
 $$
 where $\theta$ is the angle between the two vectors.
 
-**Proof of Cosine Identity:**
+::: {.proof-block}
+<details open>
+<summary>Proof of Cosine Identity</summary>
+
 Consider the triangle with vertices at the origin, $\mathbf{x}$, and $\mathbf{w}$.
 The lengths of the sides are $a = \|\mathbf{x}\|_2$, $b = \|\mathbf{w}\|_2$, and $c = \|\mathbf{x} - \mathbf{w}\|_2$.
 The law of cosines tells us that:
@@ -40,6 +43,9 @@ $$
 \cos(\theta) = \frac{2 \langle \mathbf{x}, \mathbf{w} \rangle}{ 2\|\mathbf{x}\|_2 \|\mathbf{w}\|_2},
 $$
 and the identity follows.
+
+</details>
+:::
 
 The cosine similarity identity tells us that the following are equivalent:  
 - Large cosine similarity $\cos(\theta)$.  
@@ -145,12 +151,18 @@ $$
 $$
 for some coefficients $\alpha_i \in \mathbb{R}$.
 
-The reparameterization trick tells us that we can equivalently represent the weight vector in the *span* of the rows of the input data matrix $\mathbf{X}$.
+::: {.proof-block}
+<details open>
+<summary>Proof of Reparameterization Trick</summary>
 
-**Proof:**
 Suppose for contradiction that $\mathbf{w}$ is not in the span of the rows of $\mathbf{X}$.
 Then we can write $\mathbf{w} = \mathbf{v} + \mathbf{u}$, where $\mathbf{v}$ is in the span of the rows of $\mathbf{X}$ and $\mathbf{u}$ is orthogonal to the span of the rows of $\mathbf{X}$.
 But then $\mathbf{X w} = \mathbf{Xv} + \mathbf{Xu} = \mathbf{Xv}$, since $\mathbf{Xu} = 0$, so it suffices to optimize over $\mathbf{v}$.
+</details>
+:::
+
+The reparameterization trick tells us that we can equivalently represent the weight vector in the *span* of the rows of the input data matrix $\mathbf{X}$.
+
 
 <center><img src="images/kernel_reparameterization.svg" class="responsive-img"></center>
 
