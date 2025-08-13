@@ -142,21 +142,21 @@ output:
   </tr>
   <tr>
     <td>Week 13 (11/18 and 11/20)</td>
-    <td>PAC Learning</td>
-    <td>PAC Learning</td>
+    <td>Explainable AI</td>
+    <td>Active Regression</td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 14 (11/25 and 11/27)</td>
-    <td>Active Learning</td>
+    <td><i>Final Exam</i></td>
     <td><i>Thanksgiving (No Class)</i></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 15 (12/2 and 12/4)</td>
-    <td>Interpretability</td>
+    <td><i>Project Preparation</i></td>
     <td><i>Project Preparation (No Class)</i></td>
     <td></td>
     <td></td>
