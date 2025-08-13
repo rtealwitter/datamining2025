@@ -128,15 +128,15 @@ output:
   </tr>
   <tr>
     <td>Week 11 (11/4 and 11/6)</td>
-    <td><a href="notes/09_Autoencoders.qmd">Semantic Embedding</a></td>
     <td><a href="https://chinmayhegde.github.io/dl-notes/notes/lecture09/">Reinforcement Learning</a></td>
+    <td><a href="https://chinmayhegde.github.io/dl-notes/notes/lecture10/">Q Learning</a></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Week 12 (11/11 and 11/13)</td>
     <td>Concentration Inequalities</td>
-    <td>RL Theory</td>
+    <td>Bandits</td>
     <td></td>
     <td></td>
   </tr>

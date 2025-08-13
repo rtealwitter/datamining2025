@@ -276,6 +276,107 @@ $$
 Similarly, the distance between reconstructed points $\tilde{\mathbf{x}}^{(i)}$ and $\tilde{\mathbf{x}}^{(j)}$ is the same as the distance between the latent representations $\mathbf{z}^{(i)}$ and $\mathbf{z}^{(j)}$. Do you see why?
 
 If the original data is close to the reconstructed data, then $\| \tilde{\mathbf{x}} \|_2 \approx \| \mathbf{x} \|_2$, and the latent representation $\| \mathbf{z} \|_2$ will also be similar.
-Put another way, the latent representation can capture the magnitudes and distances of the original data points.
+Put another way, the latent representations effectively capture the behavior of the original data.
+Next, we'll see how PCA can effectively represent language data.
 
 ### Semantic Embeddings
+
+When we discussed transformers, we assumed we could meaningfully represent words as vectors in a continuous space. This idea is at the heart of semantic embeddings, where words with similar meanings are mapped to nearby latent representations.
+
+Our first attempt will be with a document-word matrix $\mathbf{X} \in \mathbb{R}^{n \times d}$.
+Each row of $\mathbf{X}$ corresponds to a document, and each column corresponds to a word.
+The entry $X_{ij}$ represents whether word $j$ appears in document $i$.
+When we apply PCA to this matrix, we can obtain a low-dimensional representation of the documents, and of the words!
+
+[image here of document-word matrix]
+
+Among other applications, the latent document representations are useful for efficient search.
+By representing documents in a lower-dimensional space, we can quickly find similar documents using techniques like nearest neighbor search.
+
+Let $\mathbf{z}$ be the latent representation of a document $\mathbf{x}$.
+Consider the principal components $\mathbf{v}_i$ and $\mathbf{v}_j$ associated with words $i$ and $j$.
+If the reconstruction $\tilde{\mathbf{X}}$ is close to the original $\mathbf{X}$, then $\langle \mathbf{z}, \mathbf{v}_i \rangle \approx 1$ if word $i$ appears in the document, and $\langle \mathbf{z}, \mathbf{v}_j \rangle \approx 1$ if word $j$ appears.
+In this case, $\langle \mathbf{v}_i, \mathbf{v}_j \rangle$ will likely be large.
+In this way, the principal components can capture the meaning of words.
+
+[image here of latent representations of words in various directions]
+
+For our document-word matrix, we defined the document representations as $\mathbf{X} \mathbf{V}_k = \mathbf{U}_k \mathbf{\Sigma}_k$ and the word representations as $\mathbf{V}_k^\top$.
+But, we could have just as easily defined the document representations as $\mathbf{U}_k$ and the word representations as $\mathbf{\Sigma}_k \mathbf{V}_k^\top$.
+With this definition, we can write the outer product between the word representations and itself as:
+$$
+\left( \mathbf{\Sigma}_k \mathbf{V}_k^\top\right)^\top \left( \mathbf{\Sigma}_k \mathbf{V}_k^\top \right)
+= \mathbf{V}_k \mathbf{\Sigma}_k^\top \mathbf{\Sigma}_k \mathbf{V}_k^\top
+= \tilde{\mathbf{X}}^\top \tilde{\mathbf{X}}.
+$$
+When $\tilde{\mathbf{X}}$ is close to $\mathbf{X}$,
+the inner product between word vectors $\mathbf{y}_i$ and $\mathbf{y}_j$ can be approximated as:
+$$
+\langle \mathbf{y}_i, \mathbf{y}_j \rangle \approx [\mathbf{X}^\top \mathbf{X}]_{i,j}
+= \text{\# documents with both $i$ and $j$}
+$$
+
+More generally, we can compress a variety of language data beyond document and word matrices.
+As a general recipe, we can compute the similarity between all word pairs $i$ and $j$, and store the results in a matrix $\mathbf{M} \in \mathbb{R}^{d \times d}$.
+We find a low-rank approximation $\mathbf{M} \approx \mathbf{Y}^\top \mathbf{Y} for some $\mathbf{Y} \in \mathbb{R}^{d \times k}$.
+Then, we can define the word representations as the rows of $\mathbf{Y}$.
+
+For example, one approach is to define similarity as the number of times a word appears in the same context as another word. This can be captured by counting co-occurrences in a sliding window over a corpus of text. 
+
+[window size and matrix visualization]
+
+We then could process the co-occurrence counts with non-linearities to account for [Zipf's law](https://en.wikipedia.org/wiki/Zipf%27s_law).
+In the popular word2vec algorithm, for example, the similarity is given by
+$$
+[\mathbf{M}]_{i,j} = \log \frac{\text{\# contexts with both $i$ and $j$}}{\text{\# contexts with $i$}{\text{\# contexts with $j$}}}.
+$$
+
+Note: If $\mathbf{M}$ is not symmetric, then the factorization may be of the form $\mathbf{M} \approx \mathbf{W}^\top \mathbf{Y}$, where $\mathbf{W} \neq \mathbf{Y}$.
+In this case, we can take the rows of either $\mathbf{W}$ or $\mathbf{Y}$ as the word representations.
+
+There are many interesting applications of latent representations.
+
+#### Word Math
+
+When the reconstructed data is close to the original, we saw how latent representations can effectively capture the behavior of the original data.
+One interesting corollary is that we can do "word math" like
+$$
+\mathbf{y}_\text{dog} - \mathbf{y}_\text{old} + \mathbf{y}_\text{young} \approx \mathbf{y}_\text{puppy}.
+$$
+
+[image here of word math]
+
+#### Unsupervised Translation
+
+Using our co-occurrence strategy, we can turn documents or even transcribed conversations into language data $\mathbf{X}$, and then semantic embeddings $\mathbf{Y}$ without any supervision.
+In fact, we can construct these embeddings for multiple languages in parallel.
+If the languages have similar structures (e.g., family relationships), we can leverage this to rotate one language's embeddings into another's space.
+
+[image here of aligning point clouds]
+
+While not perfect, the aligned vectors can give a translation strategy without any supervision.
+Some researchers are even applying these strategies to map the sounds of monkeys or whales to human language!
+
+#### Graph Representations
+
+The applications of autoencoders go far beyond language.
+One particularly versatile data structure is a *graph*, where nodes represent entities and edges represent relationships.
+For example, we can use a graph to represent social networks (people are nodes and friendships are edges), road infrastructure (intersections are nodes and roads are edges), or even knowledge graphs (concepts are nodes and relationships are edges).
+Even when the underlying graph is massive, we can use a random walk through the graph and apply our co-occurrence strategy to learn embeddings for the nodes.
+
+[image here of random walk and resulting matrix]
+
+#### Multi-modal Contrastive Learning
+
+A particularly interesting feature of modern machine learning is the connection between different modalities of data e.g., generating images from text descriptions or vice versa.
+The method for achieving this connection is known as *contrastive learning*, and can be viewed as yet another application of autoencoders.
+
+Consider a dataset of captioned images where each image is paired with a descriptive caption.
+We can use neural networks (e.g., a convolutional network for the image, and a transformer for the text) to map the data to latent representations.
+Then we represent the similarity of the image and text embeddings in a similarity matrix $\mathbf{M} = \mathbf{I}$, where pairs of related images and captions that match have a value of 1, and all other pairs have a value of 0.
+The resulting embeddings, trained with updates to the networks so that $\mathbf{M} \approx \mathbf{W}^\top \mathbf{Y}$, can then be used for various tasks such as image captioning or text-to-image generation.
+
+[image here of contrastive learning and multi-modal embeddings]
+
+We can then use the embeddings in downstream techniques like [diffusion](https://www.rtealwitter.com/deeplearning2023/diffusion.html) to generate images from text descriptions.
+
