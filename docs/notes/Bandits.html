@@ -210,7 +210,7 @@ a^{(t)} = \arg \max_{a} \tilde{\mu}_a^{(t)} + \epsilon_a^{(t)}.
 <summary>
 Proof of Lemma
 </summary>
-<p>We will apply Hoeffding’s inequality to bound the estimation error.</p>
+<p>We will apply <a href="Concentration.html#hoeffding">Hoeffding’s inequality</a> to bound the estimation error.</p>
 <p>Consider <span class="math inline">\(n\)</span> independent random variables <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span> that such that <span class="math inline">\(a \leq X_i \leq b\)</span> for all <span class="math inline">\(i\)</span>. Let <span class="math inline">\(\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i\)</span> be the sample mean, and <span class="math inline">\(\mu = \mathbb{E}[\bar{X}]\)</span> be the expected value of the sample mean. Recall the one-sided version of Hoeffding’s inequality: For any <span class="math inline">\(\epsilon &gt; 0\)</span>, <span class="math display">\[
 \Pr\left(\mathbb{E}[\bar{X}] - \bar{X} \geq \epsilon\right) \leq \exp\left(-\frac{2n\epsilon^2}{(b-a)^2}\right).
 \]</span> In our setting, the rewards are bounded between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>, so we have <span class="math inline">\(a = -1\)</span> and <span class="math inline">\(b = 1\)</span>. Setting the failure probability to <span class="math inline">\(\frac{\delta}{T k}\)</span> and solving for <span class="math inline">\(\epsilon\)</span>, we get <span class="math display">\[

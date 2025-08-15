@@ -69,7 +69,7 @@ Can you construct such a distribution?
 In order to distinguish between distributions with different tail behaviors, we will make use of additional information.
 The next inequality we consider will incorporate the variance.
 
-### Chebyshev's Inequality
+### Chebyshev's Inequality {#chebyshev}
 
 Chebyshev's inequality is a stronger concentration inequality that applies to any random variable with a finite mean and variance.
 Let $\sigma^2 = \text{Var}(X)$ be the variance of $X$, and $\sigma = \sqrt{\sigma^2}$ be the standard deviation.
@@ -122,7 +122,7 @@ The simplest way to see this is through a Venn diagram. Each event $E_i$ corresp
 
 [image here proof by picture]
 
-### Hoeffding's Inequality
+### Hoeffding's Inequality {#hoeffding}
 
 The central limit theorem tells us that the sum of many independent random variables will be approximately normally distributed, regardless of the original distribution of the variables.
 (Check out [this](https://www.youtube.com/watch?v=zeJD6dqJ5lo) excellent 3blue1brown video for an intuitive explanation.)

@@ -7,3 +7,192 @@ format:
     include-after-body: readtime.html
 ---
 
+In this course, we have explored how machine learning can be used to solve tasks, from supervised learning with linear models to reinforcement learning with neural networks.
+The approaches we've discussed, especially when we throw lots of compute and data at them, tend to work very well in practice.
+However, as these models are deployed in the real world, it becomes increasingly important to understand their behavior.
+Today, we'll explore one way to gain insights into model behavior.
+
+Understanding a model like linear regression is easy.
+The output of the model is a weighted linear combination of the inputs:
+$$
+f(\mathbf{x}) = \sum_{i=1}^{d} w_i x_i.
+$$
+So, changing feature $i$ from baseline $b_i$ to $x_i$ will simply increase the output at a rate of the weight $w_i$.
+Formally, the attribution of the change in output to feature $i$ from $x_i$ to $b_i$ can be expressed as:
+$$
+\phi_i = w_i (x_i - b_i).
+$$
+With these attribution values $\phi_i$ in hand, we can perform several safety checks.
+For example, it would be concerning if the attribution of race in a mortgage rate model was non-zero, or if the attribution of gender in a hiring model was non-zero.
+
+General models (think neural networks with many layers) are unfortunately not so easy to understand.
+The challenge is that there are *non-linear* interactions between features, making it difficult to attribute changes in the output to specific input features.
+For example, consider a model which predicts how weather will impact the growth of plants:
+Precipitation is beneficial for plant growth, but only when the temperature is high enough;
+if it's below freezing, precipitation will instead be harmful.
+Teasing apart the effects of a feature requires considering not just the feature itself, but also all the other features.
+
+Let $\mathbf{x} \in \mathbb{R}^d$ be the input to a model, and let $f(\mathbf{x})$ be the output that we're trying to understand.
+We'll consider the impact of feature $x_i$ relative to a baseline $\mathbf{b} \in \mathbb{R}^d$.
+In order to tease apart this effect, we will consider all possible ways to set the other features.
+For a subset of features $S \subseteq [d]$, define $\mathbf{x}^S$ so that
+$$
+\mathbf{x}^S_j = \begin{cases}
+x_i & \text{if } j \in S \\
+b_j & \text{if } j \notin S.
+\end{cases}
+$$
+Then, one natural way to examine the effect of $x_i$ is to compare $f(\mathbf{x}^{S \cup \{i\}}) - f(\mathbf{x}^S)$ for all sets $S \subseteq [d] \setminus \{i\}$.
+For notational convenience, define a function $v: 2^{[d]} \to \mathbb{R}$ so that $v(S) = f(\mathbf{x}^{S})$.
+
+### Shapley Values
+
+There are several desirable properties that we would like our attribution values to satisfy:
+
+- **Null**: If a feature does not affect the output, its attribution should be zero.
+- **Symmetry**: If two features contribute equally to the output, they should receive equal attribution.
+- **Linearity**: If the model is a linear combination of two models, the attribution should be a linear combination of the attributions of the individual models.
+- **Efficiency**: The total attribution across all features should equal the change in output from the baseline.
+
+These four properties have been studied since the mid-20th century in the context of fairly distributing payouts among players in a cooperative game $v: 2^{[d]} \to \mathbb{R}$.
+The Shapley value, proposed by Nobel laureate Lloyd Shapley, *uniquely* satisfies the four properties:
+$$
+\begin{align}
+\phi_i &= \frac1{d} \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{\binom{d-1}{|S|}}
+\\&= 
+\underbrace{
+\frac1{d} 
+\sum_{\ell=0}^{d-1} 
+  \underbrace{
+    \frac1{\binom{d-1}{\ell}} 
+    \sum_{\substack{S \subseteq [d] \setminus \{i\} \\ |S|=\ell}} 
+      \big( v(S \cup \{i\}) - v(S) \big)
+  }_{\text{average over subsets of size }\ell}
+}_{\text{average over all subset sizes}}
+\end{align}
+$$
+Intuitively, the Shapley value is the *average* contribution of a feature to the model's output, where the distribution equally weights each set size $\ell$.
+While different distributions will satisfy the first three properties, only the Shapley value satisfies efficiency.
+Mathematically, efficiency requires that
+$$
+\sum_{i=1}^{d} \phi_i = v([d]) - v(\emptyset) = f(\mathbf{x}) - f(\mathbf{b}).
+$$
+Notably, this allows us to *decompose* the change in the prediction into contributions from each feature.
+
+[image here of decomposition of prediction]
+
+Because of these desirable properties, Shapley values are the *de facto* method of feature attribution in modern machine learning.
+But, because there are an exponential number of subsets, computing Shapley values exactly is computationally challenging.
+
+### Monte Carlo Estimation
+
+Our first attempt at approximation will be with the standard Monte Carlo estimator.
+Any time we have a summation over many terms, we can *estimate* the entire sum using only a few of its terms.
+Consider a sampling distribution $\mathcal{D}$ over subsets $S \subseteq [d] \setminus \{i\}$.
+We will let $p_S$ be the probability of sampling subset $S$ from $\mathcal{D}$.
+Draw $m$ subsets $S_1, \ldots, S_m$ with replacement from $\mathcal{D}$.
+
+The Monte Carlo estimator is
+$$
+\tilde{\phi}_i^\text{MC} = \frac1{m} \sum_{j=1}^{m} \frac{v(S_j \cup \{i\}) - v(S_j)}{d \binom{d-1}{|S_j|} p_{S_j}}.
+$$
+Often, we set the sampling probabilities to the weights i.e., $p_S = \frac{1}{d \binom{d-1}{|S|}}$ so that the estimator can simply be written as
+$$
+\tilde{\phi}_i^\text{MC} = \frac1{m} \sum_{j=1}^{m} \left(v(S_j \cup \{i\}) - v(S_j)\right).
+$$
+
+The expected value of our estimator, with respect to the randomness of the sampling, is
+$$
+\mathbb{E}[\tilde{\phi}_i^\text{MC}]
+= \mathbb{E}\left[\frac1{m} \sum_{j=1}^{m} \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|} p_S} \mathbb{1}[S = S_j]\right]
+= \frac1{m} \sum_{j=1}^{m} \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|} p_S} \mathbb{E}[\mathbb{1}[S = S_j]]
+= \phi_i,
+$$
+where the second equality follows by the linearity of expectation, and the last equality follows because the expectation of an indicator random variable is the probability that the indicator is 1.
+While it's important that the estimator is right expectation, we also care about how closely it concentrates around $\phi_i$.
+To this end, let's compute the variance. We'll use three properties of the variance:
+
+- **Scalar Constant:** If $c$ is a constant, then $\text{Var}(cX) = \mathbb{E}[(cX)^2] - \mathbb{E}[cX]^2 = c^2 \text{Var}(X)$. 
+- **[Linearity of Variance](https://en.wikipedia.org/wiki/Variance#Sum_of_uncorrelated_variables):**
+If $X$ and $Y$ are independent random variables, then $\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y)$. 
+- **Variance of an Indicator Random Variable:**
+Let $\mathbb{1}[A]$ be an indicator random variable that is 1 if event $A$ occurs and 0 otherwise.
+Then, $\text{Var}(\mathbb{1}[A]) = \mathbb{E}[\mathbb{1}[A]^2] - \mathbb{E}[\mathbb{1}[A]]^2 = \Pr(A) - \Pr(A)^2 \leq \Pr(A)$.
+
+With these in hand, the variance of our estimator is
+$$
+\text{Var}(\tilde{\phi}_i^\text{MC})
+\leq \frac1{m^2} \sum_{j=1}^{m} \sum_{S \subseteq [d] \setminus \{i\}}
+\left(\frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|} p_S}\right)^2
+\Pr(\mathbb{1}[S_j = S])
+= \frac1{m} \sum_{S \subseteq [d] \setminus \{i\}}
+\left(\frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|} p_S}\right)^2
+p_S
+$$
+
+With our choice of $p_S = \frac{1}{d\binom{d-1}{|S|}}$, we get
+$$
+\text{Var}(\tilde{\phi}_i^\text{MC})
+\leq \frac1{m} \sum_{S \subseteq [d] \setminus \{i\}}
+\frac{\left(v(S \cup \{i\}) - v(S)\right)^2}{d\binom{d-1}{|S|}}.
+$$
+
+Using [Chebyshev's inequality](Concentration.html#chebyshev), we can bound the probability that our estimator deviates from the true value:
+$$
+\Pr\left(|\tilde{\phi}_i^\text{MC} - \phi_i| \geq \epsilon\right) \leq \frac{\text{Var}(\tilde{\phi}_i^\text{MC})}{\epsilon^2}.
+$$
+Setting the failure probability to $\delta$, we could solve for the number of samples $m$ that we need to achieve an $\epsilon$ approximation to $\phi_i$.
+
+While an excellent (and simple) estimator, the naive Monte Carlo approach has an unfortunate drawback:
+Each sampled pair $v(S)$ and $v(S \cup \{i\})$ can only be used for estimating the $i$th Shapley value $\phi_i$.
+In effect, we only use $1/d$ of our total sample budget for each estimate.
+
+### Maximum Sample Reuse Estimation
+
+A more sophisticated approach to estimating Shapley values is to rewrite the Shapley value where the subsets are not paired.
+Observe that
+$$
+\begin{align}
+\phi_i &= \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|}}
+\\&= \sum_{S \subseteq [d] \setminus \{i\} : i \in S} \frac{v(S)}{d \binom{d-1}{|S|-1}}
+- \sum_{S \subseteq [d] \setminus \{i\} : i \notin S} \frac{v(S)}{d \binom{d-1}{|S|}}
+\\&= \sum_{S \subseteq [d] \setminus \{i\}} v(S) \left(\frac{\mathbb{1}[i \in S]}{d \binom{d-1}{|S|-1}}
+- \frac{\mathbb{1}[i \notin S]}{d \binom{d-1}{|S|}}\right).
+\end{align}
+$$
+
+A natural approach is to use each sampled set $S$ to estimate *every* Shapley value.
+This Maximum Sample Reuse (MSR) estimator is
+
+$$
+\begin{align}
+\tilde{\phi}_i^\text{MSR}
+&= \frac1{m} \sum_{j=1}^m v(S_j) \left(
+\frac{\mathbb{1}[i \in S_j]}{d \binom{d-1}{|S_j|-1}} - \frac{\mathbb{1}[i \notin S_j]}{d \binom{d-1}{|S_j|}}
+\right)
+\frac{1}{p_S}.
+\end{align}
+$$
+
+A similar calculation to before shows that this estimator is also right in expectation.
+However, its variance depends on $[v(S)]^2$ rather than $[v(S \cup \{i\}) - v(S)]^2$.
+In practice, we expect similar inputs $\mathbf{x}^{S \cup \{i\}}$ and $\mathbf{x}^{S}$ to yield similar outputs, so the variance of the Monte Carlo estimator is generally much smaller than the variance of the Maximum Sample Reuse estimator.
+Before we come up with an estimator that is both sample efficient and low-variance, let's discuss another application of Shapley values.
+
+**A Data Perspective**
+
+We motivated Shapley values as a way to understand the predictions of models, but their definition and the estimators we discussed can be applied to any function $v: 2^{[n]} \to \mathbb{R}$.
+One particularly relevant choice for $v(S)$ is the *quality* of a model when trained only on data points in $S$.
+(Typically, as you may expect, we measure quality via loss on a fixed testing set.)
+Just like when teasing apart the contributions of individual features, the value of a data point will change in importance depending on the context of the other data points in the training set.
+With this particular $v$, the Shapley value $\phi_i$ tells us how valuable the $i$th data point is to the model performance.
+As data becomes increasingly important, understanding the contributions of individual data points can help us make more informed decisions about data collection, labeling, and model training.
+For example, we could use Shapley values as a mechanism for assigning value to data owners such as newspapers or artists who created the data.
+
+### Shapley Values and Linear Regression
+
+### Active Learning
+
+### Leverage Scores
+
+### Regression Adjustment

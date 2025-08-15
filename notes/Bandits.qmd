@@ -52,7 +52,7 @@ where $n_a^{(t)}$ is the number of times arm $a$ has been pulled up to time $t$ 
 <details open>
 <summary>Proof of Lemma</summary>
 
-We will apply Hoeffding's inequality to bound the estimation error.
+We will apply [Hoeffding's inequality](Concentration.html#hoeffding) to bound the estimation error.
 
 Consider $n$ independent random variables $X_1, X_2, \ldots, X_n$ that such that $a \leq X_i \leq b$ for all $i$. Let $\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i$ be the sample mean, and $\mu = \mathbb{E}[\bar{X}]$ be the expected value of the sample mean.
 Recall the one-sided version of Hoeffding's inequality: For any $\epsilon > 0$,

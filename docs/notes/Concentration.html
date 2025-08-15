@@ -163,9 +163,9 @@ window.Quarto = {
    
   <ul>
   <li><a href="#markovs-inequality" id="toc-markovs-inequality" class="nav-link active" data-scroll-target="#markovs-inequality">Markov’s Inequality</a></li>
-  <li><a href="#chebyshevs-inequality" id="toc-chebyshevs-inequality" class="nav-link" data-scroll-target="#chebyshevs-inequality">Chebyshev’s Inequality</a></li>
+  <li><a href="#chebyshev" id="toc-chebyshev" class="nav-link" data-scroll-target="#chebyshev">Chebyshev’s Inequality</a></li>
   <li><a href="#union-bound" id="toc-union-bound" class="nav-link" data-scroll-target="#union-bound">Union Bound</a></li>
-  <li><a href="#hoeffdings-inequality" id="toc-hoeffdings-inequality" class="nav-link" data-scroll-target="#hoeffdings-inequality">Hoeffding’s Inequality</a></li>
+  <li><a href="#hoeffding" id="toc-hoeffding" class="nav-link" data-scroll-target="#hoeffding">Hoeffding’s Inequality</a></li>
   </ul>
 </nav>
     </div>
@@ -226,8 +226,8 @@ Proof of Markov’s Inequality
 <p>As <span class="math inline">\(\epsilon\)</span> increases, the probability that <span class="math inline">\(X \geq \epsilon\)</span> decays at a rate of <span class="math inline">\(1/\epsilon\)</span>. This is certainly in the right direction (as <span class="math inline">\(\epsilon\)</span> increases, the probability that <span class="math inline">\(X\)</span> exceeds <span class="math inline">\(\epsilon\)</span> decreases), but we could hope for a stronger bound. For example, the tail bound of the Gaussian distribution decays at an exponential rate. However, there are also some distributions where Markov’s inequality is tight i.e., <span class="math inline">\(\Pr(X \geq \epsilon) = \frac{\mathbb{E}[X]}{\epsilon}\)</span>. Can you construct such a distribution?</p>
 <p>In order to distinguish between distributions with different tail behaviors, we will make use of additional information. The next inequality we consider will incorporate the variance.</p>
 </section>
-<section id="chebyshevs-inequality" class="level3">
-<h3 class="anchored" data-anchor-id="chebyshevs-inequality">Chebyshev’s Inequality</h3>
+<section id="chebyshev" class="level3">
+<h3 class="anchored" data-anchor-id="chebyshev">Chebyshev’s Inequality</h3>
 <p>Chebyshev’s inequality is a stronger concentration inequality that applies to any random variable with a finite mean and variance. Let <span class="math inline">\(\sigma^2 = \text{Var}(X)\)</span> be the variance of <span class="math inline">\(X\)</span>, and <span class="math inline">\(\sigma = \sqrt{\sigma^2}\)</span> be the standard deviation. Chebyshev’s inequality states that, for any <span class="math inline">\(\epsilon &gt; 0\)</span>, <span class="math display">\[
 \Pr(|X - \mathbb{E}[X]| \geq \epsilon \sigma) \leq \frac{1}{\epsilon^2}.
 \]</span> In words, the probability that a random variable deviates from its mean by more than <span class="math inline">\(\epsilon\)</span> standard deviations is at most <span class="math inline">\(\frac{1}{\epsilon^2}\)</span>.</p>
@@ -256,8 +256,8 @@ Proof of Chebyshev’s Inequality
 <p>The simplest way to see this is through a Venn diagram. Each event <span class="math inline">\(E_i\)</span> corresponds to a region in the diagram, and the union of all events corresponds to the total area covered by these regions. By the properties of probability, the area of the union is at most the sum of the areas of the individual regions.</p>
 <p>[image here proof by picture]</p>
 </section>
-<section id="hoeffdings-inequality" class="level3">
-<h3 class="anchored" data-anchor-id="hoeffdings-inequality">Hoeffding’s Inequality</h3>
+<section id="hoeffding" class="level3">
+<h3 class="anchored" data-anchor-id="hoeffding">Hoeffding’s Inequality</h3>
 <p>The central limit theorem tells us that the sum of many independent random variables will be approximately normally distributed, regardless of the original distribution of the variables. (Check out <a href="https://www.youtube.com/watch?v=zeJD6dqJ5lo">this</a> excellent 3blue1brown video for an intuitive explanation.) Hoeffding’s inequality allows us to formalize this idea for a finite number of random variables.</p>
 <p>Consider <span class="math inline">\(n\)</span> independent random variables <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span> that are bounded such that <span class="math inline">\(a \leq X_i \leq b\)</span> for all <span class="math inline">\(i\)</span>. Let <span class="math inline">\(\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i\)</span> be the sample mean, and <span class="math inline">\(\mu = \mathbb{E}[\bar{X}]\)</span> be the expected value of the sample mean. Hoeffding’s inequality states that, for any <span class="math inline">\(\epsilon &gt; 0\)</span>, <span class="math display">\[
 \Pr\left(\left|\bar{X} - \mathbb{E}[\bar{X}]\right| \geq \epsilon\right) \leq 2 \exp\left(-\frac{2n\epsilon^2}{(b-a)^2}\right).

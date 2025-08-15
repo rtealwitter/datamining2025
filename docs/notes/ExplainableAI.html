@@ -157,11 +157,23 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#shapley-values" id="toc-shapley-values" class="nav-link active" data-scroll-target="#shapley-values">Shapley Values</a></li>
+  <li><a href="#monte-carlo-estimation" id="toc-monte-carlo-estimation" class="nav-link" data-scroll-target="#monte-carlo-estimation">Monte Carlo Estimation</a></li>
+  <li><a href="#maximum-sample-reuse-estimation" id="toc-maximum-sample-reuse-estimation" class="nav-link" data-scroll-target="#maximum-sample-reuse-estimation">Maximum Sample Reuse Estimation</a></li>
+  <li><a href="#shapley-values-and-linear-regression" id="toc-shapley-values-and-linear-regression" class="nav-link" data-scroll-target="#shapley-values-and-linear-regression">Shapley Values and Linear Regression</a></li>
+  <li><a href="#active-learning" id="toc-active-learning" class="nav-link" data-scroll-target="#active-learning">Active Learning</a></li>
+  <li><a href="#leverage-scores" id="toc-leverage-scores" class="nav-link" data-scroll-target="#leverage-scores">Leverage Scores</a></li>
+  <li><a href="#regression-adjustment" id="toc-regression-adjustment" class="nav-link" data-scroll-target="#regression-adjustment">Regression Adjustment</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -170,7 +182,7 @@ window.Quarto = {
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -182,9 +194,126 @@ window.Quarto = {
 </header>
 
 
+<p>In this course, we have explored how machine learning can be used to solve tasks, from supervised learning with linear models to reinforcement learning with neural networks. The approaches we’ve discussed, especially when we throw lots of compute and data at them, tend to work very well in practice. However, as these models are deployed in the real world, it becomes increasingly important to understand their behavior. Today, we’ll explore one way to gain insights into model behavior.</p>
+<p>Understanding a model like linear regression is easy. The output of the model is a weighted linear combination of the inputs: <span class="math display">\[
+f(\mathbf{x}) = \sum_{i=1}^{d} w_i x_i.
+\]</span> So, changing feature <span class="math inline">\(i\)</span> from baseline <span class="math inline">\(b_i\)</span> to <span class="math inline">\(x_i\)</span> will simply increase the output at a rate of the weight <span class="math inline">\(w_i\)</span>. Formally, the attribution of the change in output to feature <span class="math inline">\(i\)</span> from <span class="math inline">\(x_i\)</span> to <span class="math inline">\(b_i\)</span> can be expressed as: <span class="math display">\[
+\phi_i = w_i (x_i - b_i).
+\]</span> With these attribution values <span class="math inline">\(\phi_i\)</span> in hand, we can perform several safety checks. For example, it would be concerning if the attribution of race in a mortgage rate model was non-zero, or if the attribution of gender in a hiring model was non-zero.</p>
+<p>General models (think neural networks with many layers) are unfortunately not so easy to understand. The challenge is that there are <em>non-linear</em> interactions between features, making it difficult to attribute changes in the output to specific input features. For example, consider a model which predicts how weather will impact the growth of plants: Precipitation is beneficial for plant growth, but only when the temperature is high enough; if it’s below freezing, precipitation will instead be harmful. Teasing apart the effects of a feature requires considering not just the feature itself, but also all the other features.</p>
+<p>Let <span class="math inline">\(\mathbf{x} \in \mathbb{R}^d\)</span> be the input to a model, and let <span class="math inline">\(f(\mathbf{x})\)</span> be the output that we’re trying to understand. We’ll consider the impact of feature <span class="math inline">\(x_i\)</span> relative to a baseline <span class="math inline">\(\mathbf{b} \in \mathbb{R}^d\)</span>. In order to tease apart this effect, we will consider all possible ways to set the other features. For a subset of features <span class="math inline">\(S \subseteq [d]\)</span>, define <span class="math inline">\(\mathbf{x}^S\)</span> so that <span class="math display">\[
+\mathbf{x}^S_j = \begin{cases}
+x_i &amp; \text{if } j \in S \\
+b_j &amp; \text{if } j \notin S.
+\end{cases}
+\]</span> Then, one natural way to examine the effect of <span class="math inline">\(x_i\)</span> is to compare <span class="math inline">\(f(\mathbf{x}^{S \cup \{i\}}) - f(\mathbf{x}^S)\)</span> for all sets <span class="math inline">\(S \subseteq [d] \setminus \{i\}\)</span>. For notational convenience, define a function <span class="math inline">\(v: 2^{[d]} \to \mathbb{R}\)</span> so that <span class="math inline">\(v(S) = f(\mathbf{x}^{S})\)</span>.</p>
+<section id="shapley-values" class="level3">
+<h3 class="anchored" data-anchor-id="shapley-values">Shapley Values</h3>
+<p>There are several desirable properties that we would like our attribution values to satisfy:</p>
+<ul>
+<li><strong>Null</strong>: If a feature does not affect the output, its attribution should be zero.</li>
+<li><strong>Symmetry</strong>: If two features contribute equally to the output, they should receive equal attribution.</li>
+<li><strong>Linearity</strong>: If the model is a linear combination of two models, the attribution should be a linear combination of the attributions of the individual models.</li>
+<li><strong>Efficiency</strong>: The total attribution across all features should equal the change in output from the baseline.</li>
+</ul>
+<p>These four properties have been studied since the mid-20th century in the context of fairly distributing payouts among players in a cooperative game <span class="math inline">\(v: 2^{[d]} \to \mathbb{R}\)</span>. The Shapley value, proposed by Nobel laureate Lloyd Shapley, <em>uniquely</em> satisfies the four properties: <span class="math display">\[
+\begin{align}
+\phi_i &amp;= \frac1{d} \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{\binom{d-1}{|S|}}
+\\&amp;=
+\underbrace{
+\frac1{d}
+\sum_{\ell=0}^{d-1}
+  \underbrace{
+    \frac1{\binom{d-1}{\ell}}
+    \sum_{\substack{S \subseteq [d] \setminus \{i\} \\ |S|=\ell}}
+      \big( v(S \cup \{i\}) - v(S) \big)
+  }_{\text{average over subsets of size }\ell}
+}_{\text{average over all subset sizes}}
+\end{align}
+\]</span> Intuitively, the Shapley value is the <em>average</em> contribution of a feature to the model’s output, where the distribution equally weights each set size <span class="math inline">\(\ell\)</span>. While different distributions will satisfy the first three properties, only the Shapley value satisfies efficiency. Mathematically, efficiency requires that <span class="math display">\[
+\sum_{i=1}^{d} \phi_i = v([d]) - v(\emptyset) = f(\mathbf{x}) - f(\mathbf{b}).
+\]</span> Notably, this allows us to <em>decompose</em> the change in the prediction into contributions from each feature.</p>
+<p>[image here of decomposition of prediction]</p>
+<p>Because of these desirable properties, Shapley values are the <em>de facto</em> method of feature attribution in modern machine learning. But, because there are an exponential number of subsets, computing Shapley values exactly is computationally challenging.</p>
+</section>
+<section id="monte-carlo-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="monte-carlo-estimation">Monte Carlo Estimation</h3>
+<p>Our first attempt at approximation will be with the standard Monte Carlo estimator. Any time we have a summation over many terms, we can <em>estimate</em> the entire sum using only a few of its terms. Consider a sampling distribution <span class="math inline">\(\mathcal{D}\)</span> over subsets <span class="math inline">\(S \subseteq [d] \setminus \{i\}\)</span>. We will let <span class="math inline">\(p_S\)</span> be the probability of sampling subset <span class="math inline">\(S\)</span> from <span class="math inline">\(\mathcal{D}\)</span>. Draw <span class="math inline">\(m\)</span> subsets <span class="math inline">\(S_1, \ldots, S_m\)</span> with replacement from <span class="math inline">\(\mathcal{D}\)</span>.</p>
+<p>The Monte Carlo estimator is <span class="math display">\[
+\tilde{\phi}_i^\text{MC} = \frac1{m} \sum_{j=1}^{m} \frac{v(S_j \cup \{i\}) - v(S_j)}{d \binom{d-1}{|S_j|} p_{S_j}}.
+\]</span> Often, we set the sampling probabilities to the weights i.e., <span class="math inline">\(p_S = \frac{1}{d \binom{d-1}{|S|}}\)</span> so that the estimator can simply be written as <span class="math display">\[
+\tilde{\phi}_i^\text{MC} = \frac1{m} \sum_{j=1}^{m} \left(v(S_j \cup \{i\}) - v(S_j)\right).
+\]</span></p>
+<p>The expected value of our estimator, with respect to the randomness of the sampling, is <span class="math display">\[
+\mathbb{E}[\tilde{\phi}_i^\text{MC}]
+= \mathbb{E}\left[\frac1{m} \sum_{j=1}^{m} \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|} p_S} \mathbb{1}[S = S_j]\right]
+= \frac1{m} \sum_{j=1}^{m} \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|} p_S} \mathbb{E}[\mathbb{1}[S = S_j]]
+= \phi_i,
+\]</span> where the second equality follows by the linearity of expectation, and the last equality follows because the expectation of an indicator random variable is the probability that the indicator is 1. While it’s important that the estimator is right expectation, we also care about how closely it concentrates around <span class="math inline">\(\phi_i\)</span>. To this end, let’s compute the variance. We’ll use three properties of the variance:</p>
+<ul>
+<li><strong>Scalar Constant:</strong> If <span class="math inline">\(c\)</span> is a constant, then <span class="math inline">\(\text{Var}(cX) = \mathbb{E}[(cX)^2] - \mathbb{E}[cX]^2 = c^2 \text{Var}(X)\)</span>.</li>
+<li><strong><a href="https://en.wikipedia.org/wiki/Variance#Sum_of_uncorrelated_variables">Linearity of Variance</a>:</strong> If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent random variables, then <span class="math inline">\(\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y)\)</span>.</li>
+<li><strong>Variance of an Indicator Random Variable:</strong> Let <span class="math inline">\(\mathbb{1}[A]\)</span> be an indicator random variable that is 1 if event <span class="math inline">\(A\)</span> occurs and 0 otherwise. Then, <span class="math inline">\(\text{Var}(\mathbb{1}[A]) = \mathbb{E}[\mathbb{1}[A]^2] - \mathbb{E}[\mathbb{1}[A]]^2 = \Pr(A) - \Pr(A)^2 \leq \Pr(A)\)</span>.</li>
+</ul>
+<p>With these in hand, the variance of our estimator is <span class="math display">\[
+\text{Var}(\tilde{\phi}_i^\text{MC})
+\leq \frac1{m^2} \sum_{j=1}^{m} \sum_{S \subseteq [d] \setminus \{i\}}
+\left(\frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|} p_S}\right)^2
+\Pr(\mathbb{1}[S_j = S])
+= \frac1{m} \sum_{S \subseteq [d] \setminus \{i\}}
+\left(\frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|} p_S}\right)^2
+p_S
+\]</span></p>
+<p>With our choice of <span class="math inline">\(p_S = \frac{1}{d\binom{d-1}{|S|}}\)</span>, we get <span class="math display">\[
+\text{Var}(\tilde{\phi}_i^\text{MC})
+\leq \frac1{m} \sum_{S \subseteq [d] \setminus \{i\}}
+\frac{\left(v(S \cup \{i\}) - v(S)\right)^2}{d\binom{d-1}{|S|}}.
+\]</span></p>
+<p>Using <a href="Concentration.html#chebyshev">Chebyshev’s inequality</a>, we can bound the probability that our estimator deviates from the true value: <span class="math display">\[
+\Pr\left(|\tilde{\phi}_i^\text{MC} - \phi_i| \geq \epsilon\right) \leq \frac{\text{Var}(\tilde{\phi}_i^\text{MC})}{\epsilon^2}.
+\]</span> Setting the failure probability to <span class="math inline">\(\delta\)</span>, we could solve for the number of samples <span class="math inline">\(m\)</span> that we need to achieve an <span class="math inline">\(\epsilon\)</span> approximation to <span class="math inline">\(\phi_i\)</span>.</p>
+<p>While an excellent (and simple) estimator, the naive Monte Carlo approach has an unfortunate drawback: Each sampled pair <span class="math inline">\(v(S)\)</span> and <span class="math inline">\(v(S \cup \{i\})\)</span> can only be used for estimating the <span class="math inline">\(i\)</span>th Shapley value <span class="math inline">\(\phi_i\)</span>. In effect, we only use <span class="math inline">\(1/d\)</span> of our total sample budget for each estimate.</p>
+</section>
+<section id="maximum-sample-reuse-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="maximum-sample-reuse-estimation">Maximum Sample Reuse Estimation</h3>
+<p>A more sophisticated approach to estimating Shapley values is to rewrite the Shapley value where the subsets are not paired. Observe that <span class="math display">\[
+\begin{align}
+\phi_i &amp;= \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|}}
+\\&amp;= \sum_{S \subseteq [d] \setminus \{i\} : i \in S} \frac{v(S)}{d \binom{d-1}{|S|-1}}
+- \sum_{S \subseteq [d] \setminus \{i\} : i \notin S} \frac{v(S)}{d \binom{d-1}{|S|}}
+\\&amp;= \sum_{S \subseteq [d] \setminus \{i\}} v(S) \left(\frac{\mathbb{1}[i \in S]}{d \binom{d-1}{|S|-1}}
+- \frac{\mathbb{1}[i \notin S]}{d \binom{d-1}{|S|}}\right).
+\end{align}
+\]</span></p>
+<p>A natural approach is to use each sampled set <span class="math inline">\(S\)</span> to estimate <em>every</em> Shapley value. This Maximum Sample Reuse (MSR) estimator is</p>
+<p><span class="math display">\[
+\begin{align}
+\tilde{\phi}_i^\text{MSR}
+&amp;= \frac1{m} \sum_{j=1}^m v(S_j) \left(
+\frac{\mathbb{1}[i \in S_j]}{d \binom{d-1}{|S_j|-1}} - \frac{\mathbb{1}[i \notin S_j]}{d \binom{d-1}{|S_j|}}
+\right)
+\frac{1}{p_S}.
+\end{align}
+\]</span></p>
+<p>A similar calculation to before shows that this estimator is also right in expectation. However, its variance depends on <span class="math inline">\([v(S)]^2\)</span> rather than <span class="math inline">\([v(S \cup \{i\}) - v(S)]^2\)</span>. In practice, we expect similar inputs <span class="math inline">\(\mathbf{x}^{S \cup \{i\}}\)</span> and <span class="math inline">\(\mathbf{x}^{S}\)</span> to yield similar outputs, so the variance of the Monte Carlo estimator is generally much smaller than the variance of the Maximum Sample Reuse estimator. Before we come up with an estimator that is both sample efficient and low-variance, let’s discuss another application of Shapley values.</p>
+<p><strong>A Data Perspective</strong></p>
+<p>We motivated Shapley values as a way to understand the predictions of models, but their definition and the estimators we discussed can be applied to any function <span class="math inline">\(v: 2^{[n]} \to \mathbb{R}\)</span>. One particularly relevant choice for <span class="math inline">\(v(S)\)</span> is the <em>quality</em> of a model when trained only on data points in <span class="math inline">\(S\)</span>. (Typically, as you may expect, we measure quality via loss on a fixed testing set.) Just like when teasing apart the contributions of individual features, the value of a data point will change in importance depending on the context of the other data points in the training set. With this particular <span class="math inline">\(v\)</span>, the Shapley value <span class="math inline">\(\phi_i\)</span> tells us how valuable the <span class="math inline">\(i\)</span>th data point is to the model performance. As data becomes increasingly important, understanding the contributions of individual data points can help us make more informed decisions about data collection, labeling, and model training. For example, we could use Shapley values as a mechanism for assigning value to data owners such as newspapers or artists who created the data.</p>
+</section>
+<section id="shapley-values-and-linear-regression" class="level3">
+<h3 class="anchored" data-anchor-id="shapley-values-and-linear-regression">Shapley Values and Linear Regression</h3>
+</section>
+<section id="active-learning" class="level3">
+<h3 class="anchored" data-anchor-id="active-learning">Active Learning</h3>
+</section>
+<section id="leverage-scores" class="level3">
+<h3 class="anchored" data-anchor-id="leverage-scores">Leverage Scores</h3>
+</section>
+<section id="regression-adjustment" class="level3">
+<h3 class="anchored" data-anchor-id="regression-adjustment">Regression Adjustment</h3>
 
 
 
+</section>
 
 </main> <!-- /main -->
 <script>
