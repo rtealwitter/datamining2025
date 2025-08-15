@@ -1,0 +1,9 @@
+---
+title: "**Explainable AI and Active Learning**"
+format:
+  html:
+    toc: true
+    math: mathjax
+    include-after-body: readtime.html
+---
+

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>CSCI 145: Data Mining</title>
+<title>Multi-armed Bandits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +23,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./eve.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c5a5d5e27fcc88644031c24cff017230.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../eve.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-c5a5d5e27fcc88644031c24cff017230.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,7 +68,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<link rel="shortcut icon" href="./eve.ico">
+<link rel="shortcut icon" href="../eve.ico">
 <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
 
@@ -113,7 +113,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -123,7 +123,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Fall 2025</span>
     </a>
   </div>
@@ -143,7 +143,7 @@ window.Quarto = {
     </span>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./syllabus.html"> 
+    <a class="nav-link" href="../syllabus.html"> 
 <span class="menu-text">Syllabus</span></a>
   </li>  
 </ul>
@@ -157,18 +157,26 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#upper-confidence-bound-ucb" id="toc-upper-confidence-bound-ucb" class="nav-link active" data-scroll-target="#upper-confidence-bound-ucb">Upper Confidence Bound (UCB)</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><strong>CSCI 145: Data Mining</strong></h1>
+<h1 class="title"><strong>Multi-armed Bandits</strong></h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -180,303 +188,123 @@ window.Quarto = {
 </header>
 
 
-<center>
-<em>A course on the mathematical foundations of machine learning.</em>
-</center>
-<p><br></p>
-<div class="row">
-<div class="col" data-markdown="1">
-<p><strong>Instructor</strong>: <a href="https://www.rtealwitter.com/">R. Teal Witter</a>. Please call me Teal.</p>
-<p><strong>Class Times</strong>: We meet Tuesdays and Thursdays; Sec. 1 is scheduled from 2:45 to 4:00pm in Kravis 164, and Sec. 2 from 4:15 to 5:30pm in Kravis 165.</p>
-<p><strong>Office Hours</strong>: Before I schedule office hours, please fill out this <a href="https://www.when2meet.com/?30832039-a1d3K">when2meet</a> so we can find times that work for all of us.</p>
-<p><strong>Participation</strong>: I expect you to engage in class, ask questions, and make connections. To receive credit, please fill out <a href="https://forms.gle/zQG3iLAqCDTzDyv98">this</a> form after every lecture.</p>
-<p><strong>Quizzes</strong>: There will be short quizzes at the beginning of our Tuesday classes. These quizzes will test your understanding of the problem sets and the concepts from the prior week.</p>
+<p>The fundamental tension in reinforcement learning (and perhaps in life more generally) is between exploration and exploitation. On one hand, we want to exploit what we know to maximize our reward. On the other, we want to explore new actions to discover their potential rewards. Today, we will explore this tension in the context of a simplified reinforcement learning model: multi-armed bandits.</p>
+<p>In a multi-armed bandit problem, we have a set of <span class="math inline">\(k\)</span> actions (or “arms”) to choose from, each with an unknown probability distribution of rewards. At each time step <span class="math inline">\(t \in \{1,\ldots,T\}\)</span>, we choose one arm to pull <span class="math inline">\(a^{(t)} \in \{1, \ldots, k\}\)</span>. We then receive a reward <span class="math inline">\(r_{a^{(t)}} \in [-1,1]\)</span> drawn from chosen arm <span class="math inline">\(a^{(t)}\)</span>. Define the expected reward of arm <span class="math inline">\(a\)</span> as <span class="math inline">\(\mu_a = \mathbb{E}[r_a]\)</span>.</p>
+<p>[image here of arms, distributions, and pulls]</p>
+<p>Our goal is to minimize the <em>average regret</em>, compared to the optimal arm: <span class="math display">\[
+R_T = \max_{a \in \{1,\ldots, k\}} \mu_a - \frac1{T} \sum_{t=1}^{T} \mu_{a^{(t)}},
+\]</span> The challenge is balancing exploration (trying out different arms to learn their rewards) with exploitation (choosing the arm that currently seems best). Our solution will be “optimism in the face of uncertainty”; that is, giving each arm a <em>reasonable</em> benefit of the doubt when picking the best option.</p>
+<section id="upper-confidence-bound-ucb" class="level3">
+<h3 class="anchored" data-anchor-id="upper-confidence-bound-ucb">Upper Confidence Bound (UCB)</h3>
+<p>Since we initially have no information about the arms, we use the first <span class="math inline">\(k\)</span> time steps to sample each arm once. From then on, we will maintain an estimate <span class="math inline">\(\tilde{\mu}_a^{(t)}\)</span> of the expected reward for each arm based on the reward we observed from all previous time steps <span class="math inline">\(1,\ldots, t-1\)</span>.</p>
+<p>We will also maintain a confidence bound <span class="math inline">\(\epsilon_a^{(t)}\)</span> for each arm, which quantifies the uncertainty of our estimate. Formally, we expect <span class="math inline">\(\mu_a - \tilde{\mu}_a^{(t)} \leq \epsilon_a^{(t)}\)</span> with high probability. At each time step <span class="math inline">\(t\)</span>, we will choose the arm with the highest upper confidence bound: <span class="math display">\[
+a^{(t)} = \arg \max_{a} \tilde{\mu}_a^{(t)} + \epsilon_a^{(t)}.
+\]</span></p>
+<p>We will choose the confidence intervals so that the probability that our estimate deviates from the true mean by more than the confidence bound <em>at any point in the algorithm</em> is at most a user-defined parameter <span class="math inline">\(\delta\)</span>.</p>
+<p>The following technical lemma will help us analyze the algorithm.</p>
+<p><strong>Lemma</strong> For all time steps <span class="math inline">\(t \in \{k+1, \ldots, T\}\)</span> and arms <span class="math inline">\(a \in \{1, \ldots, k\}\)</span>, with probability <span class="math inline">\(1-\delta\)</span>, we have <span class="math display">\[
+\mu_a - \tilde{\mu}_a^{(t)} \leq \epsilon_a^{(t)} = \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}
+\]</span> where <span class="math inline">\(n_a^{(t)}\)</span> is the number of times arm <span class="math inline">\(a\)</span> has been pulled up to time <span class="math inline">\(t\)</span> i.e., <span class="math inline">\(n_a^{(t)} = \sum_{s=1}^{t-1} \mathbb{1}(a^{(s)} = a)\)</span>.</p>
+<div class="proof-block">
+<details open="">
+<summary>
+Proof of Lemma
+</summary>
+<p>We will apply Hoeffding’s inequality to bound the estimation error.</p>
+<p>Consider <span class="math inline">\(n\)</span> independent random variables <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span> that such that <span class="math inline">\(a \leq X_i \leq b\)</span> for all <span class="math inline">\(i\)</span>. Let <span class="math inline">\(\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i\)</span> be the sample mean, and <span class="math inline">\(\mu = \mathbb{E}[\bar{X}]\)</span> be the expected value of the sample mean. Recall the one-sided version of Hoeffding’s inequality: For any <span class="math inline">\(\epsilon &gt; 0\)</span>, <span class="math display">\[
+\Pr\left(\mathbb{E}[\bar{X}] - \bar{X} \geq \epsilon\right) \leq \exp\left(-\frac{2n\epsilon^2}{(b-a)^2}\right).
+\]</span> In our setting, the rewards are bounded between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>, so we have <span class="math inline">\(a = -1\)</span> and <span class="math inline">\(b = 1\)</span>. Setting the failure probability to <span class="math inline">\(\frac{\delta}{T k}\)</span> and solving for <span class="math inline">\(\epsilon\)</span>, we get <span class="math display">\[
+\begin{align}
+\exp\left(-\frac{2 {n} \epsilon^2}{4}\right)
+&amp;= \frac{\delta}{T k}
+\\ \frac{{n} \epsilon^2}{2}
+&amp;= \log\left(\frac{T k}{\delta}\right)
+\\ \epsilon
+&amp;= \sqrt{\frac{2 \log\left(\frac{T k}{\delta}\right)}{n}}.
+\end{align}
+\]</span></p>
+<p>Applying Hoeffding’s inequality, and this choice of <span class="math inline">\(\epsilon\)</span>, to our reward estimation problem for a particular arm <span class="math inline">\(a\)</span> and time step <span class="math inline">\(t\)</span>, we get <span class="math display">\[
+\Pr\left(\mu_a - \tilde{\mu}_a^{(t)} \geq \epsilon_a^{(t)}\right) \leq \frac{\delta}{T k}.
+\]</span></p>
+<p>We want this inequality to hold simultaneously for all arms and all time steps. Union bounding over all <span class="math inline">\(Tk\)</span> events yields</p>
+<p><span class="math display">\[
+\Pr \left(
+  \bigcup_{t=1}^{T} \bigcup_{a=1}^{k} \left\{ \mu_a - \tilde{\mu}_a^{(t)} \geq \epsilon_a^{(t)} \right\}
+\right)
+\leq \sum_{t=1}^T \sum_{a=1}^k \frac{\delta}{T k}
+= \delta.
+\]</span></p>
+</details>
 </div>
-<div class="col" data-markdown="1">
-<p><strong>Problem Sets</strong>: Your primary opportunity to learn the material will be on problem sets. You may work with others to solve the problems, but you must write your solutions by yourself, and explicitly acknowledge any outside help (websites, people, LLMs).</p>
-<p><strong>Exams</strong>: The two midterm exams are designed to give you a multiple ways of demonstrating your understanding. The first is a written midterm focused on supervised learning. The second is a verbal exam, <em>à la</em> a technical interview.</p>
-<strong>Project</strong>: The project offers a chance to explore an area that interests you, practice writing high quality code, and develop your ability to communicate technical ideas to an audience. In addition to your codebase, you will write a report and give a short presentation at the end of the semester.
+<p>With the lemma in hand, we are now ready to prove the regret guarantee of the UCB algorithm. Let <span class="math inline">\(a^*\)</span> be the optimal arm, i.e., the arm with the highest expected reward <span class="math inline">\(\mu_{a^*} = \max_{a} \mu_a\)</span>.</p>
+<p><strong>Regret Theorem:</strong> The average regret of the UCB algorithm satisfies: <span class="math display">\[
+\frac1{T} \sum_{t=1}^T \mu_{a^*} - \mu_{a^{(t)}}
+= O\left(\frac{k}{T} + \sqrt{\log\left(\frac{T k}{\delta}\right)} \frac{\sqrt{k}}{\sqrt{T}}\right).
+\]</span></p>
+<p>Note that the logarithmic term is always small; for example, <span class="math inline">\(\log_{10}(\# \text{atoms in the universe}) \approx \log_{10}(10^{80}) = 80\)</span>.</p>
+<p>Since the multi-armed bandit problem is only interesting for <span class="math inline">\(T \gg k\)</span>, the average regret is dominated by the second term, which decays as <span class="math inline">\(\tilde{O}(\sqrt{k/T})\)</span> where the <span class="math inline">\(\tilde{O}(\cdot)\)</span> hides log factors. In words, increasing the number of steps by a factor of 100 decreases the average regret by a factor of 10. Conversely, increasing the number of arms by a factor of 100 only increases the average regret by a factor of 10.</p>
+<p>Up to logarithmic factors, the UCB algorithm gives the best possible guarantee: That is, there are instances where the average regret grows at a rate of <span class="math inline">\(\Omega(\sqrt{k/T})\)</span> for all possible strategies (see e.g., Chapter 2 in <a href="https://arxiv.org/pdf/1204.5721">Regret Analysis of Stochastic and Nonstochastic Multi-armed Bandit Problems</a>).</p>
+<div class="proof-block">
+<details open="">
+<summary>
+Proof of Regret Theorem
+</summary>
+<p>Consider the difference between the reward of the optimal action <span class="math inline">\(a^*\)</span> and the reward of the action chosen by the algorithm <span class="math inline">\(a^{(t)}\)</span> at time <span class="math inline">\(t\)</span>: <span class="math display">\[
+\begin{align}
+\mu_{a^*} - \mu_{a^{(t)}}
+&amp;\leq \tilde{\mu}_{a^{(t)}}^{(t)} + \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}} - \mu_{a^{(t)}}
+\\&amp;\leq \mu_{a^{(t)}} + \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}} + \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}} - \mu_{a^{(t)}}
+\\&amp;= 2 \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}.
+\end{align}
+\]</span> The first inequality follows because we selected <span class="math inline">\(a^{(t)}\)</span> greedily i.e., <span class="math display">\[
+\tilde{\mu}_{a^*}^{(t)} + \epsilon_{a^*}^{(t)} \leq \tilde{\mu}_{a^{(t)}}^{(t)} + \epsilon_{a^{(t)}}^{(t)},
+\]</span> and <span class="math inline">\(\mu_{a^*} \leq \tilde{\mu}_{a^*}^{(t)} + \epsilon_{a^*}^{(t)}\)</span> by the lemma. The second inequality follows directly from the lemma.</p>
+<p>Summing over all but the first <span class="math inline">\(k\)</span> time steps, <span class="math display">\[
+\sum_{t=k+1}^T \mu_{a^*} - \mu_{a^{(t)}}
+\leq \sum_{t=k+1}^T 2 \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}
+= 2 \sqrt{2\log\left(\frac{T k}{\delta}\right)} \sum_{t=k+1}^T \frac{1}{\sqrt{n_a^{(t)}}}.
+\]</span> We can write the inner summation as <span class="math display">\[
+\sum_{t=k+1}^T \frac{1}{\sqrt{n_a^{(t)}}}
+= \sum_{a=1}^k \sum_{i=1}^{n_a^{(T)}} \frac{1}{\sqrt{i}}
+\leq \sum_{a=1}^k 2 \sqrt{n_a^{(T)}}
+\leq \sqrt{T k},
+\]</span> where the first inequality follows by upper bounding the sum with an integral, and the second inequality follows from Cauchy-Schwarz. Do you see how?</p>
+<p>Then, the <em>average</em> regret is</p>
+<p><span class="math display">\[
+\frac1{T} \sum_{t=1}^T \mu_{a^*} - \mu_{a^{(t)}}
+\leq 2 \frac{k}{T} +\frac1{T} \sum_{t=k+1}^T \mu_{a^*} - \mu_{a^{(t)}}
+= 2 \frac{k}{T} + 2 \sqrt{2\log\left(\frac{T k}{\delta}\right)} \frac{\sqrt{k}}{\sqrt{T}}.
+\]</span></p>
+</details>
 </div>
-</div>
-<table style="width: 100%; border-collapse: collapse;">
-<tbody><tr>
-<td>
-Week
-</td>
-<td>
-Tuesday
-</td>
-<td>
-Thursday
-</td>
-<td>
-Slides
-</td>
-<td>
-Assignments
-</td>
-</tr>
-<tr class="section-header">
-<td colspan="5">
-Warmup
-</td>
-</tr>
-<tr>
-<td>
-Week 1 (8/27 and 8/29)
-</td>
-<td>
-<a href="./notes/LinearAlgebra.html">Linear Algebra</a>
-</td>
-<td>
-<a href="./notes/PageRank.html">PageRank</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr class="section-header">
-<td colspan="5">
-Supervised Learning
-</td>
-</tr>
-<tr>
-<td>
-Week 2 (9/2 and 9/4)
-</td>
-<td>
-<a href="./notes/LinearRegression.html">Linear Regression</a>
-</td>
-<td>
-<a href="./notes/LinearRegression.html">Optimization</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 3 (9/9 and 9/11)
-</td>
-<td>
-<a href="./notes/GradientDescent.html">Gradient Descent</a>
-</td>
-<td>
-<a href="./notes/PolynomialRegression.html">Polynomial Regression</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 4 (9/16 and 9/18)
-</td>
-<td>
-<a href="./notes/Probability.html">Probability</a>
-</td>
-<td>
-<a href="./notes/LogisticRegression.html">Logistic Regression</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 5 (9/23 and 9/25)
-</td>
-<td>
-<a href="./notes/SupportVectorMachines.html">Support Vector Machines</a>
-</td>
-<td>
-<a href="./notes/SupportVectorMachines.html">Constrained Optimization</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 6 (9/30 and 10/2)
-</td>
-<td>
-<a href="./notes/KernelMethods.html">Kernel Methods</a>
-</td>
-<td>
-<a href="./notes/NeuralNetworks.html">Neural Networks</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 7 (10/7 and 10/9)
-</td>
-<td>
-<a href="https://chinmayhegde.github.io/dl-notes/notes/lecture04/">Convolutional Networks</a>
-</td>
-<td>
-<a href="https://chinmayhegde.github.io/dl-notes/notes/lecture07/">Transformers</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 8 (10/14 and 10/16)
-</td>
-<td>
-<i>Fall Break (No Class)</i>
-</td>
-<td>
-<a href="./notes/DecisionTrees.html">Decision Trees</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 9 (10/21 and 10/23)
-</td>
-<td>
-<i>Midterm Exam</i>
-</td>
-<td>
-<a href="./notes/DecisionTrees.html">Boosting</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr class="section-header">
-<td colspan="5">
-Beyond Supervised Learning
-</td>
-</tr>
-<tr>
-<td>
-Week 10 (10/28 and 10/30)
-</td>
-<td>
-<a href="./notes/Autoencoders.html">Autoencoders</a>
-</td>
-<td>
-<a href="./notes/Autoencoders.html">Principal Component Analysis</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 11 (11/4 and 11/6)
-</td>
-<td>
-<a href="https://chinmayhegde.github.io/dl-notes/notes/lecture09/">Reinforcement Learning</a>
-</td>
-<td>
-<a href="https://chinmayhegde.github.io/dl-notes/notes/lecture10/">Q Learning</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 12 (11/11 and 11/13)
-</td>
-<td>
-<a href="./notes/Concentration.html">Concentration Inequalities</a>
-</td>
-<td>
-<a href="./notes/Bandits.html">Multi-Armed Bandits</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 13 (11/18 and 11/20)
-</td>
-<td>
-<a href="./notes/ExplainableAI.html">Explainable AI</a>
-</td>
-<td>
-<a href="./notes/ExplainableAI.html">Active Learning</a>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 14 (11/25 and 11/27)
-</td>
-<td>
-<i>Final Exam</i>
-</td>
-<td>
-<i>Thanksgiving (No Class)</i>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 15 (12/2 and 12/4)
-</td>
-<td>
-<i>Project Preparation</i>
-</td>
-<td>
-<i>Project Preparation (No Class)</i>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-Week 16 (12/9 and 12/11)
-</td>
-<td>
-<i>Sec. 2 Presents 7–10pm</i>
-</td>
-<td>
-<i>Sec. 1 Presents 2–5pm</i>
-</td>
-<td>
-</td>
-<td>
-</td>
-</tr>
-</tbody></table>
 
 
 
+</section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const wordsPerMinute = 200;
+  const text = document.body.innerText;
+  const words = text.trim().split(/\s+/).length;
+  const readingTime = Math.ceil(words / wordsPerMinute);
+
+  const readTimeEl = document.createElement("div");
+  readTimeEl.innerText = `⏱️ ${readingTime} min read`;
+
+  // Style it to appear centered
+  readTimeEl.style.fontSize = "0.9em";
+  readTimeEl.style.margin = "1em auto";
+  readTimeEl.style.textAlign = "left";
+  readTimeEl.style.width = "100%";
+
+  const title = document.querySelector("h1");
+  if (title) {
+    title.parentNode.insertBefore(readTimeEl, title.nextSibling);
+  }
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Concentration Inequalities</title>
+<title>Explainable AI and Active Learning</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -157,28 +157,20 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#markovs-inequality" id="toc-markovs-inequality" class="nav-link active" data-scroll-target="#markovs-inequality">Markov’s Inequality</a></li>
-  <li><a href="#chebyshevs-inequality" id="toc-chebyshevs-inequality" class="nav-link" data-scroll-target="#chebyshevs-inequality">Chebyshev’s Inequality</a></li>
-  <li><a href="#hoeffdings-inequality" id="toc-hoeffdings-inequality" class="nav-link" data-scroll-target="#hoeffdings-inequality">Hoeffding’s Inequality</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><strong>Concentration Inequalities</strong></h1>
+<h1 class="title"><strong>Explainable AI and Active Learning</strong></h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -190,69 +182,9 @@ window.Quarto = {
 </header>
 
 
-<p>In our exploration of reinforcement learning, we saw how the outcome of actions can be random. More generally, we are surrounded by random processes, from the weather to stock prices. Today, we will discuss concentration inequalities, which provide powerful tools for understanding the behavior of random variables. In the remainder of the course, we will see applications in a simplified model of reinforcement learning, explainable AI, and active learning.</p>
-<p>Let <span class="math inline">\(X\)</span> be a random variable drawn from a distribution. We will let <span class="math inline">\(\Pr(X = x)\)</span> denote the probability that <span class="math inline">\(X\)</span> takes on the particular value <span class="math inline">\(x\)</span>. The expectation, or mean, of <span class="math inline">\(X\)</span> is defined as <span class="math display">\[
-\mathbb{E}[X] = \sum_{x} x \cdot \Pr(X = x).
-\]</span> Note: When <span class="math inline">\(X\)</span> is a continuous random variable, the expectation is defined using an integral instead of a sum. The variance measures how closely <span class="math inline">\(X\)</span> concentrates around its expectation: <span class="math display">\[
-\text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2].
-\]</span></p>
-<p>[image here of distribution, with mean and confidence intervals]</p>
-<p>Concentration inequalities will tell us the probability that <span class="math inline">\(X\)</span> deviates from its mean by a certain amount.</p>
-<section id="markovs-inequality" class="level3">
-<h3 class="anchored" data-anchor-id="markovs-inequality">Markov’s Inequality</h3>
-<p>The building block of concentration inequalities is Markov’s inequality. Let <span class="math inline">\(\mathbf{X}\)</span> be a non-negative random variable. Markov’s inequality says that, for any <span class="math inline">\(\epsilon &gt; 0\)</span>, <span class="math display">\[
-\Pr(\mathbf{X} \geq \epsilon) \leq \frac{\mathbb{E}[\mathbf{X}]}{\epsilon}.
-\]</span></p>
-<div class="proof-block">
-<details open="">
-<summary>
-Proof of Markov’s Inequality
-</summary>
-<p>We will use the definition of expectation to prove Markov’s inequality: <span class="math display">\[
-\begin{align}
-\mathbb{E}[\mathbf{X}]
-&amp;= \sum_{x} x \cdot \Pr(\mathbf{X} = x)
-\\&amp;= \sum_{x: x \geq \epsilon} x \cdot \Pr(\mathbf{X} = x) + \sum_{x: x &lt; \epsilon} x \cdot \Pr(\mathbf{X} = x)
-\\&amp;\geq \sum_{x: x \geq \epsilon} \epsilon \cdot \Pr(\mathbf{X} = x) + \sum_{x: x &lt; \epsilon} 0 \cdot \Pr(\mathbf{X} = x)
-\\&amp;= \epsilon \sum_{x: x \geq \epsilon} \Pr(\mathbf{X} = x)
-\\&amp;= \epsilon \cdot \Pr(\mathbf{X} \geq \epsilon),
-\end{align}
-\]</span> where the second equality is by partitioning the sum, the inequality is because <span class="math inline">\(x \geq 0\)</span> by assumption in the first term and <span class="math inline">\(x\)</span> is non-negative, and the last equality follows because the probability of the event <span class="math inline">\(\{\mathbf{X} \geq \epsilon\}\)</span> is the sum of the probabilities of all outcomes where <span class="math inline">\(\mathbf{X}\)</span> is at least <span class="math inline">\(\epsilon\)</span>.</p>
-</details>
-</div>
-<p>[image here of number line and expectation, dependence of <span class="math inline">\(1/\epsilon\)</span>]</p>
-<p>As <span class="math inline">\(\epsilon\)</span> increases, the probability that <span class="math inline">\(X \geq \epsilon\)</span> decays at a rate of <span class="math inline">\(1/\epsilon\)</span>. This is certainly in the right direction (as <span class="math inline">\(\epsilon\)</span> increases, the probability that <span class="math inline">\(X\)</span> exceeds <span class="math inline">\(\epsilon\)</span> decreases), but we could hope for a stronger bound. For example, the tail bound of the Gaussian distribution decays at an exponential rate. However, there are also some distributions where Markov’s inequality is tight i.e., <span class="math inline">\(\Pr(X \geq \epsilon) = \frac{\mathbb{E}[X]}{\epsilon}\)</span>. Can you construct such a distribution?</p>
-<p>In order to distinguish between distributions with different tail behaviors, we will make use of additional information. The next inequality we consider will incorporate the variance.</p>
-</section>
-<section id="chebyshevs-inequality" class="level3">
-<h3 class="anchored" data-anchor-id="chebyshevs-inequality">Chebyshev’s Inequality</h3>
-<p>Chebyshev’s inequality is a stronger concentration inequality that applies to any random variable with a finite mean and variance. Let <span class="math inline">\(\sigma^2 = \text{Var}(X)\)</span> be the variance of <span class="math inline">\(X\)</span>, and <span class="math inline">\(\sigma = \sqrt{\sigma^2}\)</span> be the standard deviation. Chebyshev’s inequality states that, for any <span class="math inline">\(\epsilon &gt; 0\)</span>, <span class="math display">\[
-\Pr(|X - \mathbb{E}[X]| \geq \epsilon \sigma) \leq \frac{1}{\epsilon^2}.
-\]</span> In words, the probability that a random variable deviates from its mean by more than <span class="math inline">\(\epsilon\)</span> standard deviations is at most <span class="math inline">\(\frac{1}{\epsilon^2}\)</span>.</p>
-<div class="proof-block">
-<details open="">
-<summary>
-Proof of Chebyshev’s Inequality
-</summary>
-<p>While the two inequalities appear quite different, we will actually use Markov’s to prove Chebyshev’s. Define a new random variable <span class="math inline">\(Z = (\mathbf{X} - \mathbb{E}[X])^2\)</span>. Then, we can apply Markov’s inequality to <span class="math inline">\(Z\)</span>: <span class="math display">\[
-\Pr((\mathbf{X} - \mathbb{E}[X])^2 \geq \epsilon^2) \leq \frac{\mathbb{E}[(\mathbf{X} - \mathbb{E}[X])^2]}{\epsilon^2}.
-\]</span> Notice that <span class="math inline">\(\mathbb{E}[(\mathbf{X} - \mathbb{E}[X])^2] = \text{Var}(X) = \sigma^2\)</span>. Taking the squareroot of both sides of the event <span class="math inline">\((\mathbf{X} - \mathbb{E}[X])^2 \geq \epsilon^2\)</span> yields <span class="math display">\[
-\Pr(|\mathbf{X} - \mathbb{E}[X]| \geq \epsilon) \leq \frac{\sigma^2}{\epsilon^2}.
-\]</span> Setting <span class="math inline">\(\epsilon = \epsilon' \sigma\)</span> gives us <span class="math display">\[
-\Pr(|\mathbf{X} - \mathbb{E}[X]| \geq \epsilon' \sigma) \leq \frac{\sigma^2}{(\epsilon' \sigma)^2} = \frac{1}{\epsilon'^2}.
-\]</span> The statement follows by relabeling <span class="math inline">\(\epsilon'\)</span> as <span class="math inline">\(\epsilon\)</span>.</p>
-</details>
-</div>
-<p>[image here of number line, and probability bound]</p>
-<p>The advantage of Chebyshev’s inequality is that information about the distribution’s variance yields tighter bounds. But, for fixed variance, the dependence on the the deviation is still only <span class="math inline">\(1/\epsilon^2\)</span>. When we are interested in the behavior of many random variables simultaneously, we’ll need an even better dependence on <span class="math inline">\(\epsilon\)</span> to get meaningful bounds.</p>
-</section>
-<section id="hoeffdings-inequality" class="level3">
-<h3 class="anchored" data-anchor-id="hoeffdings-inequality">Hoeffding’s Inequality</h3>
-<p>As we add more random variables, the central limit theorem tells us that their sum will behave like a Gaussian. (Check out <a href="https://www.youtube.com/watch?v=zeJD6dqJ5lo">this</a> excellent 3blue1brown video for an intuitive explanation.)</p>
 
 
 
-</section>
 
 </main> <!-- /main -->
 <script>
