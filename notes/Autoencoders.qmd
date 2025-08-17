@@ -29,19 +29,17 @@ $$
 \mathcal{L}_{\text{recon}} = \frac1{n} \sum_{i=1}^n \| \boldsymbol{x}^{(i)} - \tilde{\boldsymbol{x}}^{(i)} \|^2_2.
 $$
 
-[image here of autoencoder bottle neck]
+<center><img src="images/autoencoder_bottleneck.svg" class="responsive-img"></center>
 
 Notice that this problem is trivial when $k \geq d$, since we can simply represent $\boldsymbol{z} = \boldsymbol{x}$ in the latent space without any loss of information.
 Crucially, our architecture must have a bottleneck, meaning that we need to enforce $k < d$ in order to learn a non-trivial representation.
 
 There are many applications of autoencoders:
 
-- data compression (for example, JPEG is a form of lossy compression that can be interpreted as an autoencoder), 
-- denoising (removing noise from images), 
-- inpainting (filling in missing parts of images), 
-- representation learning (discovering useful features that can be used in downstream applications).
-
-[image here of inpainting]
+- [data compression](https://en.wikipedia.org/wiki/Data_compression) (for example, JPEG is a form of lossy compression that can be interpreted as an autoencoder), 
+- [denoising](https://en.wikipedia.org/wiki/Total_variation_denoising) (removing noise from images), 
+- [inpainting](https://en.wikipedia.org/wiki/Inpainting) (filling in missing parts of images), 
+- [representation learning](https://en.wikipedia.org/wiki/Feature_learning) (discovering useful features that can be used in downstream applications).
 
 When we map from $\mathbb{R}^d$ to a smaller dimension $\mathbb{R}^k$, we are necessarily losing information.
 However, much of this information isn't useful.
@@ -49,7 +47,7 @@ With images, for example, most $d$-dimensional vectors are not natural images th
 Instead, there is a *manifold* of $d$-dimensional natural images.
 Learning this manifold directly is challenging, and autoencoders provide a powerful tool for mapping to a lower-dimensional space and back.
 
-[image here of manifold]
+<center><img src="images/autoencoder_manifold.svg" class="responsive-img"></center>
 
 Once we represent the data in the latent space, we can use it for various tasks such as classification, clustering, and generation.
 Instead of working in the *pixel-space*, for example, we can work in a lower dimension that captures the essential features of the data.
@@ -59,9 +57,7 @@ Such latent representations form the backbone of state-of-the-art models in vari
 ### Variational Autoencoders
 
 The natural manifold of our data in $\mathbb{R}^d$ is generally complicated and non-convex.
-For example, we may have two images of the same cat from different angles, but the linear combination of these two images does not lie on the manifold of cat images.
-
-[image here of stripes from two angles, and the linear combination]
+For example, we may have two images of the same cat, but the linear combination of these two images at the pixel-level does not lie on the manifold of cat images.
 
 When we build the autoencoder, we have a chance to make the latent space more structured.
 One method is called *Variational Autoencoders*, which impose a probabilistic structure on the latent space.
@@ -84,7 +80,7 @@ The reconstruction loss encourages the model to generate realistic samples, whil
 These two goals are naturally at odds: if the encoder always outputted the mean $\boldsymbol{\mu}_\boldsymbol{x}=\boldsymbol{0}$, and the covariance $\boldsymbol{\Sigma}_\boldsymbol{x}=\boldsymbol{I}$, the KL divergence would be 0 but there would be no information for the decoder to reconstruct the input.
 However, by simultaneously training to achieve both goals, we can learn a meaningful latent space that captures the essential features of the data while also being structured.
 
-[image here of autoencoder vs variational autoencoder]
+<center><img src="images/autoencoder_vae.svg" class="responsive-img"></center>
 
 We will use gradient descent to train the parameters of the encoder $f_0$ and the decoder $f_1$.
 However, when we use KL divergence as the loss, it's not immediately clear how to backpropagate through a random sample $\boldsymbol{z} \sim \mathcal{N}(\boldsymbol{\mu}_\boldsymbol{x}, \boldsymbol{\Sigma}_\boldsymbol{x})$.
@@ -98,12 +94,12 @@ PCA is the simplest kind of autoencoder, where the encoder and decoder are each 
 Let $\mathbf{W}_0 \in \mathbb{R}^{k \times d}$ be the encoder weight matrix, and $\mathbf{W}_1 \in \mathbb{R}^{d \times k}$ be the decoder weight matrix.
 The latent for input $\mathbf{x}$ is $\mathbf{z}^\top = \mathbf{x}^\top \mathbf{W}_0$, and the reconstruction is $\tilde{\mathbf{x}}^\top = \mathbf{z}^\top \mathbf{W}_1  = \mathbf{x}^\top \mathbf{W}_0 \mathbf{W}_1$.
 
-[image here of single input]
+<center><img src="images/pca_single.svg" class="responsive-img"></center>
 
 We train the encoder and decoder on $n$ (unlabelled) data points $\mathbf{x}^{(1)}, \ldots, \mathbf{x}^{(n)}$.
 Let $\mathbf{X} \in \mathbf{R}^{n \times d}$ be the matrix of input data, where the $i$th row corresponds to data point ${\mathbf{x}^{(i)}}^\top$.
 
-[image here of all inputs]
+<center><img src="images/pca_all.svg" class="responsive-img"></center>
 
 The goal is for the input matrix $\mathbf{X}$ to be well approximated by the reconstruction $\tilde{\mathbf{X}} = \mathbf{X} \mathbf{W}_0 \mathbf{W}_1$.
 In particular,
@@ -126,6 +122,9 @@ $$
 \mathbf{X} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^\top
 $$
 where $\mathbf{U} \in \mathbb{R}^{n \times r}$ and $\mathbf{V} \in \mathbb{R}^{d \times r}$ have orthonormal columns, and $\mathbf{\Sigma} \in \mathbb{R}^{r \times r}$ is a diagonal matrix with non-negative entries.
+
+<center><img src="images/pca_svd.svg" class="responsive-img"></center>
+
 Because the columns of $\mathbf{U}$ and $\mathbf{V}$ are orthonormal, we have 
 $$
 \mathbf{U}^\top \mathbf{U} = \mathbf{I}_r = \mathbf{V}^\top \mathbf{V}.
@@ -234,7 +233,7 @@ But, this approach is generally less efficient since it requires computing the f
 
 In practice, PCA gives us a low-dimensional representation of the data that captures the most important variance.
 
-[image here of full rank vs rank 1, etc]
+<center><img src="images/pca_approximations.svg" class="responsive-img"></center>
 
 As we increase the rank of the approximation, the reconstruction error decreases.
 Recall from the proof of the Eckart-Young-Mirsky theorem that the error of the rank-$k$ approximation is given by
@@ -244,7 +243,7 @@ $$
 When the singular values are all similar, the reconstruction error decreases more slowly as we add more components.
 However, if the singular values decay quickly, we can achieve a significant reduction in error by adding just a few components.
 
-[image here of singular values vs i]
+<center><img src="images/pca_spectrum.svg" class="responsive-img"></center>
 
 The reconstruction error is also smaller when the rank is lower.
 So if we have columns that are linear related, then the error tends to be lower.
@@ -262,7 +261,7 @@ $$
 \tilde{\mathbf{x}} = \sum_{i=1}^k z_i \mathbf{v}_i = \sum_{i=1}^k \langle \mathbf{x}, \mathbf{v}_i \rangle \mathbf{v}_i.
 $$
 
-[image here of directions of data, and projection into lower dimensional space]
+<center><img src="images/pca_embedding.svg" class="responsive-img"></center>
 
 The magnitude of the reconstruction is the same as the magnitude of the latent representation.
 To see why, observe that
@@ -288,7 +287,7 @@ Each row of $\mathbf{X}$ corresponds to a document, and each column corresponds 
 The entry $X_{ij}$ represents whether word $j$ appears in document $i$.
 When we apply PCA to this matrix, we can obtain a low-dimensional representation of the documents, and of the words!
 
-[image here of document-word matrix]
+<center><img src="images/semantic_document_matrix.svg" class="responsive-img"></center>
 
 Among other applications, the latent document representations are useful for efficient search.
 By representing documents in a lower-dimensional space, we can quickly find similar documents using techniques like nearest neighbor search.
@@ -299,7 +298,12 @@ If the reconstruction $\tilde{\mathbf{X}}$ is close to the original $\mathbf{X}$
 In this case, $\langle \mathbf{v}_i, \mathbf{v}_j \rangle$ will likely be large.
 In this way, the principal components can capture the meaning of words.
 
-[image here of latent representations of words in various directions]
+<center><img src="images/semantic_words.svg" class="responsive-img"></center>
+
+One interesting application is that we can do "word math" like
+$$
+\mathbf{y}_\text{dog} - \mathbf{y}_\text{old} + \mathbf{y}_\text{young} \approx \mathbf{y}_\text{puppy}.
+$$
 
 For our document-word matrix, we defined the document representations as $\mathbf{X} \mathbf{V}_k = \mathbf{U}_k \mathbf{\Sigma}_k$ and the word representations as $\mathbf{V}_k^\top$.
 But, we could have just as easily defined the document representations as $\mathbf{U}_k$ and the word representations as $\mathbf{\Sigma}_k \mathbf{V}_k^\top$.
@@ -318,17 +322,17 @@ $$
 
 More generally, we can compress a variety of language data beyond document and word matrices.
 As a general recipe, we can compute the similarity between all word pairs $i$ and $j$, and store the results in a matrix $\mathbf{M} \in \mathbb{R}^{d \times d}$.
-We find a low-rank approximation $\mathbf{M} \approx \mathbf{Y}^\top \mathbf{Y} for some $\mathbf{Y} \in \mathbb{R}^{d \times k}$.
+We find a low-rank approximation $\mathbf{M} \approx \mathbf{Y}^\top \mathbf{Y}$ for some $\mathbf{Y} \in \mathbb{R}^{d \times k}$.
 Then, we can define the word representations as the rows of $\mathbf{Y}$.
 
 For example, one approach is to define similarity as the number of times a word appears in the same context as another word. This can be captured by counting co-occurrences in a sliding window over a corpus of text. 
 
-[window size and matrix visualization]
+<center><img src="images/semantic_window.svg" class="responsive-img"></center>
 
 We then could process the co-occurrence counts with non-linearities to account for [Zipf's law](https://en.wikipedia.org/wiki/Zipf%27s_law).
 In the popular word2vec algorithm, for example, the similarity is given by
 $$
-[\mathbf{M}]_{i,j} = \log \frac{\text{\# contexts with both $i$ and $j$}}{\text{\# contexts with $i$}{\text{\# contexts with $j$}}}.
+[\mathbf{M}]_{i,j} = \log \frac{\text{\# contexts with both $i$ and $j$}}{\text{\# contexts with $i$}\cdot{\text{\# contexts with $j$}}}.
 $$
 
 Note: If $\mathbf{M}$ is not symmetric, then the factorization may be of the form $\mathbf{M} \approx \mathbf{W}^\top \mathbf{Y}$, where $\mathbf{W} \neq \mathbf{Y}$.
@@ -336,23 +340,13 @@ In this case, we can take the rows of either $\mathbf{W}$ or $\mathbf{Y}$ as the
 
 There are many interesting applications of latent representations.
 
-#### Word Math
-
-When the reconstructed data is close to the original, we saw how latent representations can effectively capture the behavior of the original data.
-One interesting corollary is that we can do "word math" like
-$$
-\mathbf{y}_\text{dog} - \mathbf{y}_\text{old} + \mathbf{y}_\text{young} \approx \mathbf{y}_\text{puppy}.
-$$
-
-[image here of word math]
-
 #### Unsupervised Translation
 
 Using our co-occurrence strategy, we can turn documents or even transcribed conversations into language data $\mathbf{X}$, and then semantic embeddings $\mathbf{Y}$ without any supervision.
 In fact, we can construct these embeddings for multiple languages in parallel.
 If the languages have similar structures (e.g., family relationships), we can leverage this to rotate one language's embeddings into another's space.
 
-[image here of aligning point clouds]
+<center><img src="images/semantic_clouds.svg" class="responsive-img"></center>
 
 While not perfect, the aligned vectors can give a translation strategy without any supervision.
 Some researchers are even applying these strategies to map the sounds of monkeys or whales to human language!
@@ -364,7 +358,7 @@ One particularly versatile data structure is a *graph*, where nodes represent en
 For example, we can use a graph to represent social networks (people are nodes and friendships are edges), road infrastructure (intersections are nodes and roads are edges), or even knowledge graphs (concepts are nodes and relationships are edges).
 Even when the underlying graph is massive, we can use a random walk through the graph and apply our co-occurrence strategy to learn embeddings for the nodes.
 
-[image here of random walk and resulting matrix]
+<center><img src="images/semantic_graph.svg" class="responsive-img"></center>
 
 #### Multi-modal Contrastive Learning
 
@@ -376,7 +370,7 @@ We can use neural networks (e.g., a convolutional network for the image, and a t
 Then we represent the similarity of the image and text embeddings in a similarity matrix $\mathbf{M} = \mathbf{I}$, where pairs of related images and captions that match have a value of 1, and all other pairs have a value of 0.
 The resulting embeddings, trained with updates to the networks so that $\mathbf{M} \approx \mathbf{W}^\top \mathbf{Y}$, can then be used for various tasks such as image captioning or text-to-image generation.
 
-[image here of contrastive learning and multi-modal embeddings]
+<center><img src="images/semantic_contrastive.svg" class="responsive-img"></center>
 
 We can then use the embeddings in downstream techniques like [diffusion](https://www.rtealwitter.com/deeplearning2023/diffusion.html) to generate images from text descriptions.
 
