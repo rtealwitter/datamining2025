@@ -162,13 +162,18 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#shapley-values" id="toc-shapley-values" class="nav-link active" data-scroll-target="#shapley-values">Shapley Values</a></li>
+  <li><a href="#shapley-values" id="toc-shapley-values" class="nav-link active" data-scroll-target="#shapley-values">Shapley Values</a>
+  <ul class="collapse">
   <li><a href="#monte-carlo-estimation" id="toc-monte-carlo-estimation" class="nav-link" data-scroll-target="#monte-carlo-estimation">Monte Carlo Estimation</a></li>
   <li><a href="#maximum-sample-reuse-estimation" id="toc-maximum-sample-reuse-estimation" class="nav-link" data-scroll-target="#maximum-sample-reuse-estimation">Maximum Sample Reuse Estimation</a></li>
-  <li><a href="#shapley-values-and-linear-regression" id="toc-shapley-values-and-linear-regression" class="nav-link" data-scroll-target="#shapley-values-and-linear-regression">Shapley Values and Linear Regression</a></li>
+  </ul></li>
+  <li><a href="#active-linear-regression" id="toc-active-linear-regression" class="nav-link" data-scroll-target="#active-linear-regression">Active Linear Regression</a>
+  <ul class="collapse">
   <li><a href="#active-learning" id="toc-active-learning" class="nav-link" data-scroll-target="#active-learning">Active Learning</a></li>
   <li><a href="#leverage-scores" id="toc-leverage-scores" class="nav-link" data-scroll-target="#leverage-scores">Leverage Scores</a></li>
   <li><a href="#regression-adjustment" id="toc-regression-adjustment" class="nav-link" data-scroll-target="#regression-adjustment">Regression Adjustment</a></li>
+  <li><a href="#a-data-perspective" id="toc-a-data-perspective" class="nav-link" data-scroll-target="#a-data-perspective">A Data Perspective</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -207,8 +212,8 @@ x_i &amp; \text{if } j \in S \\
 b_j &amp; \text{if } j \notin S.
 \end{cases}
 \]</span> Then, one natural way to examine the effect of <span class="math inline">\(x_i\)</span> is to compare <span class="math inline">\(f(\mathbf{x}^{S \cup \{i\}}) - f(\mathbf{x}^S)\)</span> for all sets <span class="math inline">\(S \subseteq [d] \setminus \{i\}\)</span>. For notational convenience, define a function <span class="math inline">\(v: 2^{[d]} \to \mathbb{R}\)</span> so that <span class="math inline">\(v(S) = f(\mathbf{x}^{S})\)</span>.</p>
-<section id="shapley-values" class="level3">
-<h3 class="anchored" data-anchor-id="shapley-values">Shapley Values</h3>
+<section id="shapley-values" class="level2">
+<h2 class="anchored" data-anchor-id="shapley-values">Shapley Values</h2>
 <p>There are several desirable properties that we would like our attribution values to satisfy:</p>
 <ul>
 <li><strong>Null</strong>: If a feature does not affect the output, its attribution should be zero.</li>
@@ -235,7 +240,6 @@ b_j &amp; \text{if } j \notin S.
 \]</span> Notably, this allows us to <em>decompose</em> the change in the prediction into contributions from each feature.</p>
 <p>[image here of decomposition of prediction]</p>
 <p>Because of these desirable properties, Shapley values are the <em>de facto</em> method of feature attribution in modern machine learning. But, because there are an exponential number of subsets, computing Shapley values exactly is computationally challenging.</p>
-</section>
 <section id="monte-carlo-estimation" class="level3">
 <h3 class="anchored" data-anchor-id="monte-carlo-estimation">Monte Carlo Estimation</h3>
 <p>Our first attempt at approximation will be with the standard Monte Carlo estimator. Any time we have a summation over many terms, we can <em>estimate</em> the entire sum using only a few of its terms. Consider a sampling distribution <span class="math inline">\(\mathcal{D}\)</span> over subsets <span class="math inline">\(S \subseteq [d] \setminus \{i\}\)</span>. We will let <span class="math inline">\(p_S\)</span> be the probability of sampling subset <span class="math inline">\(S\)</span> from <span class="math inline">\(\mathcal{D}\)</span>. Draw <span class="math inline">\(m\)</span> subsets <span class="math inline">\(S_1, \ldots, S_m\)</span> with replacement from <span class="math inline">\(\mathcal{D}\)</span>.</p>
@@ -252,7 +256,7 @@ b_j &amp; \text{if } j \notin S.
 \]</span> where the second equality follows by the linearity of expectation, and the last equality follows because the expectation of an indicator random variable is the probability that the indicator is 1. While it’s important that the estimator is right expectation, we also care about how closely it concentrates around <span class="math inline">\(\phi_i\)</span>. To this end, let’s compute the variance. We’ll use three properties of the variance:</p>
 <ul>
 <li><strong>Scalar Constant:</strong> If <span class="math inline">\(c\)</span> is a constant, then <span class="math inline">\(\text{Var}(cX) = \mathbb{E}[(cX)^2] - \mathbb{E}[cX]^2 = c^2 \text{Var}(X)\)</span>.</li>
-<li><strong><a href="https://en.wikipedia.org/wiki/Variance#Sum_of_uncorrelated_variables">Linearity of Variance</a>:</strong> If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent random variables, then <span class="math inline">\(\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y)\)</span>.</li>
+<li><strong>Linearity of Variance:</strong> If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are independent random variables, then <span class="math inline">\(\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y)\)</span>. Can you prove why?</li>
 <li><strong>Variance of an Indicator Random Variable:</strong> Let <span class="math inline">\(\mathbb{1}[A]\)</span> be an indicator random variable that is 1 if event <span class="math inline">\(A\)</span> occurs and 0 otherwise. Then, <span class="math inline">\(\text{Var}(\mathbb{1}[A]) = \mathbb{E}[\mathbb{1}[A]^2] - \mathbb{E}[\mathbb{1}[A]]^2 = \Pr(A) - \Pr(A)^2 \leq \Pr(A)\)</span>.</li>
 </ul>
 <p>With these in hand, the variance of our estimator is <span class="math display">\[
@@ -296,23 +300,89 @@ p_S
 \end{align}
 \]</span></p>
 <p>A similar calculation to before shows that this estimator is also right in expectation. However, its variance depends on <span class="math inline">\([v(S)]^2\)</span> rather than <span class="math inline">\([v(S \cup \{i\}) - v(S)]^2\)</span>. In practice, we expect similar inputs <span class="math inline">\(\mathbf{x}^{S \cup \{i\}}\)</span> and <span class="math inline">\(\mathbf{x}^{S}\)</span> to yield similar outputs, so the variance of the Monte Carlo estimator is generally much smaller than the variance of the Maximum Sample Reuse estimator. Before we come up with an estimator that is both sample efficient and low-variance, let’s discuss another application of Shapley values.</p>
-<p><strong>A Data Perspective</strong></p>
-<p>We motivated Shapley values as a way to understand the predictions of models, but their definition and the estimators we discussed can be applied to any function <span class="math inline">\(v: 2^{[n]} \to \mathbb{R}\)</span>. One particularly relevant choice for <span class="math inline">\(v(S)\)</span> is the <em>quality</em> of a model when trained only on data points in <span class="math inline">\(S\)</span>. (Typically, as you may expect, we measure quality via loss on a fixed testing set.) Just like when teasing apart the contributions of individual features, the value of a data point will change in importance depending on the context of the other data points in the training set. With this particular <span class="math inline">\(v\)</span>, the Shapley value <span class="math inline">\(\phi_i\)</span> tells us how valuable the <span class="math inline">\(i\)</span>th data point is to the model performance. As data becomes increasingly important, understanding the contributions of individual data points can help us make more informed decisions about data collection, labeling, and model training. For example, we could use Shapley values as a mechanism for assigning value to data owners such as newspapers or artists who created the data.</p>
 </section>
-<section id="shapley-values-and-linear-regression" class="level3">
-<h3 class="anchored" data-anchor-id="shapley-values-and-linear-regression">Shapley Values and Linear Regression</h3>
 </section>
+<section id="active-linear-regression" class="level2">
+<h2 class="anchored" data-anchor-id="active-linear-regression">Active Linear Regression</h2>
+<p>Shapley values have many wonderful and surprising properties. One of them is that they are the best linear approximation to the function <span class="math inline">\(v\)</span>, for a certain weighting of the values <span class="math inline">\(v(S)\)</span>.</p>
+<p>For notational convenience, suppose that <span class="math inline">\(v(\emptyset) =0\)</span>. (If not, we could subtract <span class="math inline">\(v(\emptyset)\)</span> from all values to center them without change the Shapley values.) We can write the vector of Shapley values as <span class="math display">\[
+\boldsymbol{\phi} =
+\begin{bmatrix}
+\phi_1 \\
+\phi_2 \\
+\vdots \\
+\phi_d
+\end{bmatrix}
+= \arg \min_{\boldsymbol{\beta} \in \mathbb{R}^d: \langle \boldsymbol{\beta}, \mathbf{1} \rangle = v([d])}
+\sum_{S \subseteq [d]: 0 &lt; |S| &lt; d}
+\left( v(S) - \sum_{i \in S} \beta_i \right)^2 w_S,
+\]</span> where the weights are <span class="math inline">\(w_S = \frac{1}{\binom{d}{|S|} |S| (d-|S|)}\)</span>. Notice that the weighting in the regression problem is similar to that of the Shapley values themselves. Further, the constraint that <span class="math inline">\(\boldsymbol{\beta}\)</span> sums to <span class="math inline">\(v([d])\)</span> ensures that the efficiency property is satisfied, since we assumed that <span class="math inline">\(v(\emptyset) = 0\)</span>.</p>
+<p>Unfortunately, proving this equality is involved, and not particularly informative. But it will be quite useful for estimating Shapley values efficiently.</p>
+<p>We’ll first need to convert the constrained regression problem to an unconstrained one. Define the input matrix <span class="math inline">\(\mathbf{A}' \in \mathbb{R}^{2^d-2 \times d}\)</span> so that each row corresponds to a subset <span class="math inline">\(S \subseteq [d]\)</span> where <span class="math inline">\(0 &lt; |S| &lt; d\)</span>, and each column corresponds to an index <span class="math inline">\(i \in [d]\)</span>. The <span class="math inline">\((S,i)\)</span> entry is given by <span class="math inline">\([\mathbf{A}']_{S,i} = \mathbb{1}[i \in S] \sqrt{w_S}\)</span>. Define the target vector <span class="math inline">\(\mathbf{b}' \in \mathbb{R}^{2^d-2}\)</span> so that the <span class="math inline">\(S\)</span>th entry is given by <span class="math inline">\([\mathbf{b}']_S = v(S) \sqrt{w_S}\)</span>. Then we can rewrite the regression problem as <span class="math display">\[
+\begin{align}
+\boldsymbol{\phi}
+&amp;= \arg \min_{\boldsymbol{\beta} \in \mathbb{R}^d: \langle \boldsymbol{\beta}, \mathbf{1} \rangle = v([d])} \| \mathbf{A}' \boldsymbol{\beta} - \mathbf{b}' \|^2
+\\&amp; = \arg \min_{\boldsymbol{\beta} \in \mathbb{R}^d: \langle \boldsymbol{\beta}, \mathbf{1} \rangle = 0} \| \mathbf{A}' \boldsymbol{\beta} + \mathbf{A}' \mathbf{1} \frac{v([d])}{d} - \mathbf{b}' \|^2 +  \mathbf{1} \frac{v([d])}{d}
+\\&amp; = \arg \min_{\boldsymbol{\beta} \in \mathbb{R}^d} \| \mathbf{A} \boldsymbol{\beta} - \mathbf{b} \|^2 + \mathbf{1} \frac{v([d])}{d},
+\end{align}
+\]</span> where we define <span class="math inline">\(\mathbf{b} = \mathbf{b'} - \mathbf{A' 1} \frac{v([d])}{d}\)</span>, we define <span class="math inline">\(\mathbf{A}= \mathbf{A' P}\)</span>, and we define <span class="math inline">\(\mathbf{P} = \mathbf{I} - \frac1{d} \mathbf{1} \mathbf{1}^\top\)</span> as the projection matrix onto the subspace orthogonal to the constant vector <span class="math inline">\(\mathbf{1}\)</span>.</p>
+<p>Now we can apply our favorite linear regression tools.</p>
 <section id="active-learning" class="level3">
 <h3 class="anchored" data-anchor-id="active-learning">Active Learning</h3>
+<p>Let <span class="math display">\[
+\boldsymbol{\beta}^* = \arg \min_{\boldsymbol{\beta} \in \mathbb{R}^d} \| \mathbf{A} \boldsymbol{\beta} - \mathbf{b} \|^2.
+\]</span></p>
+<p>The challenge in solving this linear regression problem is similar to the challenge of directly computing the Shapley values: the input matrix and target vector are exponentially large in <span class="math inline">\(d\)</span>. Luckily, we can sample only a fraction of the rows, and find the best linear approximation to these.</p>
+<p>[image here of full regression converted to sampled regression]</p>
+<p>Let <span class="math inline">\(\boldsymbol{\Pi} \in \mathbb{R}^{m \times (2^d-2)}\)</span> be the sampling matrix. Each row of <span class="math inline">\(\boldsymbol{\Pi}\)</span> corresponds to a sample. In the <span class="math inline">\(j\)</span>th row, we have <span class="math display">\[
+[\boldsymbol{\Pi}]_{j,S} = \begin{cases}
+\frac1{\sqrt{p_S}} &amp; \text{ if } S_j = S \\
+0 &amp; \text{ else}.
+\end{cases}
+\]</span> The least squares solution on the sampled problem is given by: <span class="math display">\[
+\tilde{\boldsymbol{\beta}}=\arg \min_{\boldsymbol{\beta} \in \mathbb{R}^d}
+\| \boldsymbol{\Pi} \mathbf{A} \boldsymbol{\beta} - \boldsymbol{\Pi} \mathbf{b} \|_2
+= \left( \mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{A} \right)^{+} \mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{b}
+\]</span> Notice that we reweight the sampling matrix so that <span class="math inline">\(\mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{A}\)</span> and <span class="math inline">\(\mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{b}\)</span> are correct in expectation; that is, <span class="math inline">\(\mathbb{E}[ \boldsymbol{\Pi}^\top \boldsymbol{\Pi}] = \mathbf{I}\)</span>. Because of the correlation between samples, this doesn’t actually mean that the model is correct in expectation; that is, <span class="math inline">\(\mathbb{E}[ \tilde{\boldsymbol{\beta}}] \neq \boldsymbolhi{\beta}^*\)</span>.</p>
+<p>Unlike in most of the problems we’ve seen where sampled points are given to us in a dataset, we get to choose the sampled subsets that we use to solve the regression problem.</p>
 </section>
 <section id="leverage-scores" class="level3">
 <h3 class="anchored" data-anchor-id="leverage-scores">Leverage Scores</h3>
+<p>A particularly powerful tool in active learning is the use of leverage scores. Leverage scores quantify how useful a sample is for fitting the linear regression model.</p>
+<p>[image here of choosing high leverage point or not]</p>
+<p>The idea is to measure how “alone” a fitted sample value <em>could</em> be relative to the other samples. Mathematically, the leverage of a sample <span class="math inline">\(S\)</span> is given by <span class="math display">\[
+\ell_S = \max_{\boldsymbol{\beta} \in \mathbb{R}^d}
+\frac{([\boldsymbol{A \beta}]_S)^2}{\| \boldsymbol{A \beta} \|_2^2}.
+\]</span> Notice that <span class="math inline">\(\ell_S\)</span> is defined independently of the target vector <span class="math inline">\(\mathbf{b}\)</span>: It measures, over all possible learned vectors <span class="math inline">\(\boldsymbol{\beta}\)</span>, what’s the largest the entry <span class="math inline">\([\boldsymbol{A \beta}]_S\)</span> can be relative to the overall norm of the fitted vector <span class="math inline">\(\boldsymbol{A \beta}\)</span>.</p>
+<p>When we sample according to leverage scores, we can get strong guarantees on the performance of our learned function. Roughly, with <span class="math inline">\(m=O(d \log(d) + \frac{d}{\epsilon})\)</span> samples, the solution to the approximate regression problem <span class="math inline">\(\boldsymbol{\beta}\)</span> satisfies, with high probability, <span class="math display">\[
+\| \boldsymbol{A} \tilde{\boldsymbol{\beta}} - \boldsymbol{b} \|_2^2 \leq
+(1-\epsilon) \| \boldsymbol{A} \boldsymbol{\beta}^* - \boldsymbol{b} \|_2^2.
+\]</span> That is, the fit of the learned model is close to the fit of the optimal model. We unfortunately won’t cover the proofs of these results here, but the key technical tool is applying <em>matrix</em> concentration inequalities.</p>
 </section>
 <section id="regression-adjustment" class="level3">
 <h3 class="anchored" data-anchor-id="regression-adjustment">Regression Adjustment</h3>
+<p>Once we have the learned model <span class="math inline">\(\tilde{\boldsymbol{\beta}}\)</span>, we can simply return our estimated Shapley values <span class="math inline">\(\tilde{\boldsymbol{\phi}} = \tilde{\boldsymbol{\beta}} + \mathbf{1} \frac{v([d])}{d}\)</span> as our best guess for the Shapley values. While this is generally quite accurate, our linear regression estimates are not correct in expectation (because of the correlated samples when we built the <span class="math inline">\(\boldsymbol{\beta}\)</span>).</p>
+<p>If we wanted to get unbiased estimates with the same accuracy, we could use our estimates to reduce the variance of an unbiased estimator like Monte Carlo or Maximum Sample Reuse. Consider an approximation <span class="math inline">\(\tilde{v}: 2^{[d]} \to \mathbb{R}\)</span> defined by <span class="math display">\[
+\tilde{v}(S) = \sum_{i \in S} \tilde{\phi}_i.
+\]</span> Let <span class="math inline">\(\phi_i(v)\)</span> be the Shapley value of the <span class="math inline">\(i\)</span>th data point with respect to the function <span class="math inline">\(v\)</span>. Since the Shapley values are linear, we can write <span class="math display">\[
+\begin{align}
+\phi_i (v) &amp;=
+\sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{d \binom{d-1}{|S|}}
+\\&amp;= \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S) + \tilde{v}(S \cup \{i\}) - \tilde{v}(S) - \tilde{v}(S \cup \{i\}) + \tilde{v}(S)}{d \binom{d-1}{|S|}}
+\\&amp;= \sum_{S \subseteq [d] \setminus \{i\}} \frac{\tilde{v}(S \cup \{i\}) - \tilde{v}(S)}{d \binom{d-1}{|S|}}
++ \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S) - \tilde{v}(S \cup \{i\}) + \tilde{v}(S)}{d \binom{d-1}{|S|}}
+\\&amp;= \phi_i(\tilde{v}) + \phi_i(v - \tilde{v}).
+\end{align}
+\]</span> When <span class="math inline">\(\tilde{v}\)</span> is a linear function, we can simply read off the Shapley values. It remains to estimate the Shapley values of the residual <span class="math inline">\(\phi_i(v - \tilde{v})\)</span>, for which we can use any estimator.</p>
+<p>Recall that the Maximum Sample Reuse estimator is both unbiased and sample efficient. The one drawback was that the variance depended on <span class="math inline">\([v(S)]^2\)</span>. However, when we use the estimator on the residual <span class="math inline">\(v - \tilde{v}\)</span>, the variance will depend on <span class="math inline">\([v(S) - \tilde{v}(S)]^2\)</span> instead. As long as <span class="math inline">\(\tilde{v}\)</span> is a good approximation of <span class="math inline">\(v\)</span>, this can lead to much lower variance estimates.</p>
+</section>
+<section id="a-data-perspective" class="level3">
+<h3 class="anchored" data-anchor-id="a-data-perspective">A Data Perspective</h3>
+<p>We motivated Shapley values as a way to understand the predictions of models, but their definition and the estimators we discussed can be applied to any function <span class="math inline">\(v\)</span>. One particularly relevant choice for <span class="math inline">\(v(S)\)</span> is the <em>quality</em> of a model when trained only on data points in <span class="math inline">\(S\)</span>. (Typically, as you may expect, we measure quality via loss on a fixed testing set.) Just like when teasing apart the contributions of individual features, the value of a data point will change in importance depending on the context of the other data points in the training set. With this particular <span class="math inline">\(v\)</span>, the Shapley value <span class="math inline">\(\phi_i\)</span> tells us how valuable the <span class="math inline">\(i\)</span>th data point is to the model performance. As data becomes increasingly important, understanding the contributions of individual data points can help us make more informed decisions about data collection, labeling, and model training. For example, we could use the Shapley values of this data function as a mechanism for assigning value to data owners such as newspapers or artists who created the data.</p>
 
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
