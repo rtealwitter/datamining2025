@@ -200,6 +200,9 @@ window.Quarto = {
 
 
 <p>In this course, we have explored how machine learning can be used to solve tasks, from supervised learning with linear models to reinforcement learning with neural networks. The approaches we’ve discussed, especially when we throw lots of compute and data at them, tend to work very well in practice. However, as these models are deployed in the real world, it becomes increasingly important to understand their behavior. Today, we’ll explore one way to gain insights into model behavior.</p>
+<center>
+<img src="images/xai_intro.svg" class="responsive-img">
+</center>
 <p>Understanding a model like linear regression is easy. The output of the model is a weighted linear combination of the inputs: <span class="math display">\[
 f(\mathbf{x}) = \sum_{i=1}^{d} w_i x_i.
 \]</span> So, changing feature <span class="math inline">\(i\)</span> from baseline <span class="math inline">\(b_i\)</span> to <span class="math inline">\(x_i\)</span> will simply increase the output at a rate of the weight <span class="math inline">\(w_i\)</span>. Formally, the attribution of the change in output to feature <span class="math inline">\(i\)</span> from <span class="math inline">\(x_i\)</span> to <span class="math inline">\(b_i\)</span> can be expressed as: <span class="math display">\[
@@ -238,7 +241,9 @@ b_j &amp; \text{if } j \notin S.
 \]</span> Intuitively, the Shapley value is the <em>average</em> contribution of a feature to the model’s output, where the distribution equally weights each set size <span class="math inline">\(\ell\)</span>. While different distributions will satisfy the first three properties, only the Shapley value satisfies efficiency. Mathematically, efficiency requires that <span class="math display">\[
 \sum_{i=1}^{d} \phi_i = v([d]) - v(\emptyset) = f(\mathbf{x}) - f(\mathbf{b}).
 \]</span> Notably, this allows us to <em>decompose</em> the change in the prediction into contributions from each feature.</p>
-<p>[image here of decomposition of prediction]</p>
+<center>
+<img src="images/xai_efficiency.svg" class="responsive-img">
+</center>
 <p>Because of these desirable properties, Shapley values are the <em>de facto</em> method of feature attribution in modern machine learning. But, because there are an exponential number of subsets, computing Shapley values exactly is computationally challenging.</p>
 <section id="monte-carlo-estimation" class="level3">
 <h3 class="anchored" data-anchor-id="monte-carlo-estimation">Monte Carlo Estimation</h3>
@@ -333,7 +338,9 @@ p_S
 \boldsymbol{\beta}^* = \arg \min_{\boldsymbol{\beta} \in \mathbb{R}^d} \| \mathbf{A} \boldsymbol{\beta} - \mathbf{b} \|^2.
 \]</span></p>
 <p>The challenge in solving this linear regression problem is similar to the challenge of directly computing the Shapley values: the input matrix and target vector are exponentially large in <span class="math inline">\(d\)</span>. Luckily, we can sample only a fraction of the rows, and find the best linear approximation to these.</p>
-<p>[image here of full regression converted to sampled regression]</p>
+<center>
+<img src="images/xai_subsample.svg" class="responsive-img">
+</center>
 <p>Let <span class="math inline">\(\boldsymbol{\Pi} \in \mathbb{R}^{m \times (2^d-2)}\)</span> be the sampling matrix. Each row of <span class="math inline">\(\boldsymbol{\Pi}\)</span> corresponds to a sample. In the <span class="math inline">\(j\)</span>th row, we have <span class="math display">\[
 [\boldsymbol{\Pi}]_{j,S} = \begin{cases}
 \frac1{\sqrt{p_S}} &amp; \text{ if } S_j = S \\
@@ -348,8 +355,10 @@ p_S
 </section>
 <section id="leverage-scores" class="level3">
 <h3 class="anchored" data-anchor-id="leverage-scores">Leverage Scores</h3>
-<p>A particularly powerful tool in active learning is the use of leverage scores. Leverage scores quantify how useful a sample is for fitting the linear regression model.</p>
-<p>[image here of choosing high leverage point or not]</p>
+<p>A particularly powerful tool in active learning is the use of leverage scores. Leverage scores quantify how useful a sample is for fitting the linear regression model. For samples with high leverage, excluding them can deteriorate the quality of the learned model.</p>
+<center>
+<img src="images/xai_leverage.svg" class="responsive-img">
+</center>
 <p>The idea is to measure how “alone” a fitted sample value <em>could</em> be relative to the other samples. Mathematically, the leverage of a sample <span class="math inline">\(S\)</span> is given by <span class="math display">\[
 \ell_S = \max_{\boldsymbol{\beta} \in \mathbb{R}^d}
 \frac{([\boldsymbol{A \beta}]_S)^2}{\| \boldsymbol{A \beta} \|_2^2}.

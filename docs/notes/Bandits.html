@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Multi-armed Bandits</title>
+<title>Multi-Armed Bandits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -171,7 +171,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><strong>Multi-armed Bandits</strong></h1>
+<h1 class="title"><strong>Multi-Armed Bandits</strong></h1>
 </div>
 
 
@@ -190,7 +190,9 @@ window.Quarto = {
 
 <p>The fundamental tension in reinforcement learning (and perhaps in life more generally) is between exploration and exploitation. On one hand, we want to exploit what we know to maximize our reward. On the other, we want to explore new actions to discover their potential rewards. Today, we will explore this tension in the context of a simplified reinforcement learning model: multi-armed bandits.</p>
 <p>In a multi-armed bandit problem, we have a set of <span class="math inline">\(k\)</span> actions (or “arms”) to choose from, each with an unknown probability distribution of rewards. At each time step <span class="math inline">\(t \in \{1,\ldots,T\}\)</span>, we choose one arm to pull <span class="math inline">\(a^{(t)} \in \{1, \ldots, k\}\)</span>. We then receive a reward <span class="math inline">\(r_{a^{(t)}} \in [-1,1]\)</span> drawn from chosen arm <span class="math inline">\(a^{(t)}\)</span>. Define the expected reward of arm <span class="math inline">\(a\)</span> as <span class="math inline">\(\mu_a = \mathbb{E}[r_a]\)</span>.</p>
-<p>[image here of arms, distributions, and pulls]</p>
+<center>
+<img src="images/bandit.svg" class="responsive-img">
+</center>
 <p>Our goal is to minimize the <em>average regret</em>, compared to the optimal arm: <span class="math display">\[
 R_T = \max_{a \in \{1,\ldots, k\}} \mu_a - \frac1{T} \sum_{t=1}^{T} \mu_{a^{(t)}},
 \]</span> The challenge is balancing exploration (trying out different arms to learn their rewards) with exploitation (choosing the arm that currently seems best). Our solution will be “optimism in the face of uncertainty”; that is, giving each arm a <em>reasonable</em> benefit of the doubt when picking the best option.</p>

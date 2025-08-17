@@ -1,5 +1,5 @@
 ---
-title: "**Multi-armed Bandits**"
+title: "**Multi-Armed Bandits**"
 format:
   html:
     toc: true
@@ -17,7 +17,7 @@ At each time step $t \in \{1,\ldots,T\}$, we choose one arm to pull $a^{(t)} \in
 We then receive a reward $r_{a^{(t)}} \in [-1,1]$ drawn from chosen arm $a^{(t)}$.
 Define the expected reward of arm $a$ as $\mu_a = \mathbb{E}[r_a]$.
 
-[image here of arms, distributions, and pulls]
+<center><img src="images/bandit.svg" class="responsive-img"></center>
 
 Our goal is to minimize the *average regret*, compared to the optimal arm:
 $$

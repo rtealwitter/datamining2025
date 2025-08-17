@@ -25,7 +25,7 @@ $$
 \text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2].
 $$
 
-[image here of distribution, with mean and confidence intervals]
+<center><img src="images/concentration_intro.svg" class="responsive-img"></center>
 
 Concentration inequalities will help us bound the probability that $X$ deviates from its mean by a certain amount.
 
@@ -58,7 +58,7 @@ where the second equality is by partitioning the sum, the inequality is because 
 </details>
 :::
 
-[image here of number line and expectation, dependence of $1/\epsilon$]
+<center><img src="images/concentration_markov+.svg" class="responsive-img"></center>
 
 As $\epsilon$ increases, the probability that $X \geq \epsilon$ decays at a rate of $1/\epsilon$.
 This is certainly in the right direction (as $\epsilon$ increases, the probability that $X$ exceeds $\epsilon$ decreases), but we could hope for a stronger bound.
@@ -103,7 +103,7 @@ The statement follows by relabeling $\epsilon'$ as $\epsilon$.
 </details>
 :::
 
-[image here of number line, and probability bound]
+<center><img src="images/concentration_chebyshev+.svg" class="responsive-img"></center>
 
 The advantage of Chebyshev's inequality is that information about the distribution's variance yields tighter bounds.
 But, for fixed variance, the probability of deviating more than $\epsilon$ from the mean is still only $1/\epsilon^2$.
@@ -120,7 +120,7 @@ $$
 
 The simplest way to see this is through a Venn diagram. Each event $E_i$ corresponds to a region in the diagram, and the union of all events corresponds to the total area covered by these regions. By the properties of probability, the area of the union is at most the sum of the areas of the individual regions.
 
-[image here proof by picture]
+<center><img src="images/concentration_union.svg" class="responsive-img"></center>
 
 ### Hoeffding's Inequality {#hoeffding}
 
@@ -193,7 +193,7 @@ The final statement follows by similarly bounding $-Z$, and then union bounding 
 </details>
 :::
 
-[image here of number line, and probability bound]
+<center><img src="images/concentration_hoeffding+.svg" class="responsive-img"></center>
 
 For a fixed interval $[a, b]$ and number of variables $n$, Hoeffding's inequality gives an exponentially decaying bound on the probability that the sample mean deviates from the true mean by more than $\epsilon$.
 When we discuss a simplified model of reinforcement learning, we will see how this strong inequality can be applied to simultaneously bound many events.

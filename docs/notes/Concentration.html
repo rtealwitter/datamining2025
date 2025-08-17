@@ -198,7 +198,9 @@ window.Quarto = {
 <p>The variance of <span class="math inline">\(X\)</span> measures how closely it concentrates around its expectation: <span class="math display">\[
 \text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2].
 \]</span></p>
-<p>[image here of distribution, with mean and confidence intervals]</p>
+<center>
+<img src="images/concentration_intro.svg" class="responsive-img">
+</center>
 <p>Concentration inequalities will help us bound the probability that <span class="math inline">\(X\)</span> deviates from its mean by a certain amount.</p>
 <section id="markovs-inequality" class="level3">
 <h3 class="anchored" data-anchor-id="markovs-inequality">Markov’s Inequality</h3>
@@ -222,7 +224,9 @@ Proof of Markov’s Inequality
 \]</span> where the second equality is by partitioning the sum, the inequality is because <span class="math inline">\(x \geq 0\)</span> by assumption in the first term and <span class="math inline">\(x\)</span> is non-negative, and the last equality follows because the probability of the event <span class="math inline">\(\{\mathbf{X} \geq \epsilon\}\)</span> is the sum of the probabilities of all outcomes where <span class="math inline">\(\mathbf{X}\)</span> is at least <span class="math inline">\(\epsilon\)</span>.</p>
 </details>
 </div>
-<p>[image here of number line and expectation, dependence of <span class="math inline">\(1/\epsilon\)</span>]</p>
+<center>
+<img src="images/concentration_markov+.svg" class="responsive-img">
+</center>
 <p>As <span class="math inline">\(\epsilon\)</span> increases, the probability that <span class="math inline">\(X \geq \epsilon\)</span> decays at a rate of <span class="math inline">\(1/\epsilon\)</span>. This is certainly in the right direction (as <span class="math inline">\(\epsilon\)</span> increases, the probability that <span class="math inline">\(X\)</span> exceeds <span class="math inline">\(\epsilon\)</span> decreases), but we could hope for a stronger bound. For example, the tail bound of the Gaussian distribution decays at an exponential rate. However, there are also some distributions where Markov’s inequality is tight i.e., <span class="math inline">\(\Pr(X \geq \epsilon) = \frac{\mathbb{E}[X]}{\epsilon}\)</span>. Can you construct such a distribution?</p>
 <p>In order to distinguish between distributions with different tail behaviors, we will make use of additional information. The next inequality we consider will incorporate the variance.</p>
 </section>
@@ -245,7 +249,9 @@ Proof of Chebyshev’s Inequality
 \]</span> The statement follows by relabeling <span class="math inline">\(\epsilon'\)</span> as <span class="math inline">\(\epsilon\)</span>.</p>
 </details>
 </div>
-<p>[image here of number line, and probability bound]</p>
+<center>
+<img src="images/concentration_chebyshev+.svg" class="responsive-img">
+</center>
 <p>The advantage of Chebyshev’s inequality is that information about the distribution’s variance yields tighter bounds. But, for fixed variance, the probability of deviating more than <span class="math inline">\(\epsilon\)</span> from the mean is still only <span class="math inline">\(1/\epsilon^2\)</span>. When we are interested in the behavior of <em>many</em> random variables simultaneously, we’ll need an even stronger dependence on <span class="math inline">\(\epsilon\)</span> to get meaningful bounds.</p>
 </section>
 <section id="union-bound" class="level3">
@@ -254,7 +260,9 @@ Proof of Chebyshev’s Inequality
 \Pr\left( E_1, \ldots, E_m \right) \leq \Pr(E_1) + \ldots + \Pr(E_m).
 \]</span></p>
 <p>The simplest way to see this is through a Venn diagram. Each event <span class="math inline">\(E_i\)</span> corresponds to a region in the diagram, and the union of all events corresponds to the total area covered by these regions. By the properties of probability, the area of the union is at most the sum of the areas of the individual regions.</p>
-<p>[image here proof by picture]</p>
+<center>
+<img src="images/concentration_union.svg" class="responsive-img">
+</center>
 </section>
 <section id="hoeffding" class="level3">
 <h3 class="anchored" data-anchor-id="hoeffding">Hoeffding’s Inequality</h3>
@@ -296,7 +304,9 @@ Proof of Hoeffding’s Inequality
 <p>The final statement follows by similarly bounding <span class="math inline">\(-Z\)</span>, and then union bounding over the event that <span class="math inline">\(-Z &gt; \epsilon\)</span> and <span class="math inline">\(Z \geq \epsilon\)</span>.</p>
 </details>
 </div>
-<p>[image here of number line, and probability bound]</p>
+<center>
+<img src="images/concentration_hoeffding+.svg" class="responsive-img">
+</center>
 <p>For a fixed interval <span class="math inline">\([a, b]\)</span> and number of variables <span class="math inline">\(n\)</span>, Hoeffding’s inequality gives an exponentially decaying bound on the probability that the sample mean deviates from the true mean by more than <span class="math inline">\(\epsilon\)</span>. When we discuss a simplified model of reinforcement learning, we will see how this strong inequality can be applied to simultaneously bound many events.</p>
 
 
