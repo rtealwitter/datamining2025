@@ -195,9 +195,10 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="decision-trees">Decision Trees</h3>
 <p>Decision trees are a simple yet powerful model class that can be used for both classification and regression tasks. For simplicity, we’ll define them in terms of classification, but the same ideas apply to regression.</p>
 <p>Decision trees work by recursively partitioning the feature space into regions that are as homogeneous as possible with respect to the target variable.</p>
-<p>[image here 2D points to separate]</p>
+<center>
+<img src="images/tree_example.svg" class="responsive-img">
+</center>
 <p>The tree structure is incredibly intuitive, and likely the most natural way to represent a decision-making process. At each internal node, the tree splits the data based on a feature and a threshold. The goal is to find the split that <em>best</em> (more on this later) separates the classes. In our example image, splitting at <span class="math inline">\(x_1=.5\)</span> wouldn’t separate the circle from the square points, but splitting at <span class="math inline">\(x_1=1.5\)</span> almost perfectly separates them.</p>
-<p>[example decision tree here]</p>
 <p>Like gradient descent, decision trees use a <em>greedy</em> approach to learning. As we build the tree, we recursively evaluate the data at each leaf, choosing the feature and threshold that best separates the classes. Let <span class="math inline">\(\ell\)</span> be a leaf <em>after</em> the split at the <em>prior</em> leaf, and <span class="math inline">\(p^{(\ell)}_c\)</span> be the proportion of points in leaf <span class="math inline">\(\ell\)</span> that are of class <span class="math inline">\(c\)</span>. Without loss of generality, suppose that <span class="math inline">\(c=0\)</span> is the majority class. (Soon, we’ll consider weighted points, in which case we will define the weighted majority.) If we reach leaf <span class="math inline">\(\ell\)</span>, we predict that the point belongs to the majority class.</p>
 <p>The question is what split minimizes the loss of the resulting predictions. In particular, we’d like to minimize the <em>expected</em> loss of the predictions where the expectation is taken over the proportion of points that make it to the leaf <span class="math inline">\(p^{(\ell)}\)</span>: <span class="math display">\[
 \mathbb{E}_\ell[\mathcal{L}(\ell)] = \sum_\ell \mathcal{L}(\ell) \cdot p^{(\ell)}.
@@ -253,7 +254,13 @@ e^{-\alpha_t} \sum_{i : y^{(i)} = f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1}
 \alpha_t = \frac{1}{2} \log\left(\frac{1-\epsilon_t}{\epsilon_t}\right)
 \]</span> where <span class="math inline">\(\epsilon_t = \frac{\sum_{i : y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1}}{\sum_{i=1}^n w^{(i)}_{t-1}}\)</span> is the weighted error rate of the model <span class="math inline">\(f_t\)</span>.</p>
 <p>At each iteration <span class="math inline">\(t\)</span>, we compute the weights <span class="math inline">\(w^{(i)}_{t-1}\)</span> based on which points the current ensemble model <span class="math inline">\(F_{t-1}\)</span> are misclassifying. We then learn a new model <span class="math inline">\(f_t\)</span> that minimizes the weighted error, adapting to correct the mistakes of the current ensemble. Finally, we compute the optimal weight <span class="math inline">\(\alpha_t\)</span> for the new model based on its weighted error rate.</p>
-<p>[image here of the AdaBoost algorithm]</p>
+<center>
+<img src="images/tree_adaboost_learning.svg" class="responsive-img">
+</center>
+<p>The final prediction algorithm combines each of the weak learners.</p>
+<center>
+<img src="images/tree_adaboost_predicting.svg" class="responsive-img">
+</center>
 <p>The AdaBoost algorithm is agnostic to the choice of weak learner, but decision trees are efficient and interpretable: Each weak learner can be trained quickly, and the resulting decision tree can be understood as a weighted vote of the individual trees.</p>
 </section>
 <section id="gradient-boosting" class="level3">
