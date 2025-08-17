@@ -1505,14 +1505,14 @@ window.Quarto = {
 </section>
 <section id="autoencoders" class="level2">
 <h2 class="anchored" data-anchor-id="autoencoders">Autoencoders</h2>
-<div id="cell-27" class="cell" data-execution_count="100">
+<div id="cell-27" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image, ImageOps</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.<span class="bu">open</span>(<span class="st">"images/cmc_seal_rgb.png"</span>).convert(<span class="st">"L"</span>)</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>img_arr <span class="op">=</span> np.array(img) <span class="op">/</span> <span class="dv">255</span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>cmc_red <span class="op">=</span> np.array([<span class="dv">139</span>, <span class="dv">39</span>, <span class="dv">52</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-28" class="cell">
+<div id="cell-28" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scipy linalg</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.linalg</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>U, s, Vh <span class="op">=</span> scipy.linalg.svd(img_arr, full_matrices<span class="op">=</span><span class="va">False</span>)</span>
@@ -1521,16 +1521,16 @@ window.Quarto = {
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_k_approx(k):</span>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (U[:, :k] <span class="op">*</span> s[:k]) <span class="op">@</span> Vh[:k, :]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-29" class="cell">
+<div id="cell-29" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>approx <span class="op">=</span> build_k_approx(<span class="dv">100</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>gray_image <span class="op">=</span> Image.fromarray((approx <span class="op">*</span> <span class="dv">255</span>).astype(np.uint8), mode<span class="op">=</span><span class="st">"L"</span>)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>red_image <span class="op">=</span> ImageOps.colorize(gray_image, black<span class="op">=</span>cmc_red, white<span class="op">=</span><span class="st">"white"</span>)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>red_image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/7z/sn61c8nx2yq9f35pd6932s1hzz6mr5/T/ipykernel_45799/1576587091.py:2: DeprecationWarning: 'mode' parameter is deprecated and will be removed in Pillow 13 (2026-10-15)
+<pre><code>/var/folders/7z/sn61c8nx2yq9f35pd6932s1hzz6mr5/T/ipykernel_31053/404908843.py:2: DeprecationWarning: 'mode' parameter is deprecated and will be removed in Pillow 13 (2026-10-15)
   gray_image = Image.fromarray((approx * 255).astype(np.uint8), mode="L")</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="101">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 <figure class="figure">
 <p><img src="code_files/figure-html/cell-24-output-2.png" class="img-fluid figure-img"></p>
@@ -1538,7 +1538,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="cell-30" class="cell" data-execution_count="113">
+<div id="cell-30" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'text.usetex'</span>] <span class="op">=</span> <span class="va">False</span>  <span class="co"># avoid LaTeX dependency</span></span>
@@ -1591,7 +1591,7 @@ window.Quarto = {
 <span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/autoencoder_approximations.svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/7z/sn61c8nx2yq9f35pd6932s1hzz6mr5/T/ipykernel_45799/1783938776.py:16: DeprecationWarning: 'mode' parameter is deprecated and will be removed in Pillow 13 (2026-10-15)
+<pre><code>/var/folders/7z/sn61c8nx2yq9f35pd6932s1hzz6mr5/T/ipykernel_31053/1783938776.py:16: DeprecationWarning: 'mode' parameter is deprecated and will be removed in Pillow 13 (2026-10-15)
   gray = Image.fromarray((a * 255).astype(np.uint8), mode="L")</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1602,7 +1602,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="cell-31" class="cell" data-execution_count="117">
+<div id="cell-31" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1641,6 +1641,66 @@ window.Quarto = {
 <div>
 <figure class="figure">
 <p><img src="code_files/figure-html/cell-26-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="concentration-inequalities" class="level2">
+<h2 class="anchored" data-anchor-id="concentration-inequalities">Concentration Inequalities</h2>
+<div id="cell-33" class="cell" data-execution_count="102">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="fl">.01</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>,top<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">1</span><span class="op">/</span>t, linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">epsilon</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">Pr</span><span class="kw">(</span><span class="vs">X </span><span class="er">\</span><span class="vs">geq </span><span class="er">\</span><span class="vs">epsilon </span><span class="er">\</span><span class="vs">cdot </span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[X]</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Markov's Inequality"</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/concentration_markov.svg"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="code_files/figure-html/cell-27-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-34" class="cell" data-execution_count="99">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">1</span><span class="op">/</span>t<span class="op">**</span><span class="dv">2</span>, linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">epsilon</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">Pr</span><span class="kw">(</span><span class="cf">|</span><span class="vs">X-</span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[X]</span><span class="cf">|</span><span class="vs"> </span><span class="er">\</span><span class="vs">geq </span><span class="er">\</span><span class="vs">epsilon </span><span class="er">\</span><span class="vs">cdot </span><span class="dv">\s</span><span class="vs">qrt{</span><span class="ch">\t</span><span class="vs">ext{Var}</span><span class="kw">(</span><span class="vs">X</span><span class="kw">)</span><span class="vs">}</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>,top<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Chebyshev's Inequality"</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/concentration_chebyshev.svg"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="code_files/figure-html/cell-28-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-35" class="cell" data-execution_count="104">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">2</span><span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t<span class="op">**</span><span class="dv">2</span>), linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">epsilon</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">Pr</span><span class="kw">(</span><span class="cf">|</span><span class="dv">\b</span><span class="vs">ar{X}-</span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[</span><span class="ch">\b</span><span class="pp">ar{X}]</span><span class="cf">|</span><span class="vs"> </span><span class="er">\</span><span class="vs">geq </span><span class="er">\</span><span class="vs">epsilon </span><span class="er">\</span><span class="vs">cdot </span><span class="ch">\f</span><span class="vs">rac{b-a}{</span><span class="dv">\s</span><span class="vs">qrt{n}}</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>,top<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Hoeffding's Inequality"</span>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/concentration_hoeffding.svg"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="code_files/figure-html/cell-29-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
