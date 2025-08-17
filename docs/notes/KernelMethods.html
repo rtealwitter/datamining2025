@@ -195,7 +195,9 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="k-nearest-neighbors"><span class="math inline">\(k\)</span>-Nearest Neighbors</h3>
 <p>We’ll start with the <span class="math inline">\(k\)</span>-nearest neighbors algorithm, which is a simple yet powerful non-parametric method for classification and regression. As usual in the supervised learning setting, we have <span class="math inline">\(n\)</span> labeled training examples <span class="math inline">\(\{(\mathbf{x}^{(i)}, y^{(i)})\}_{i=1}^n\)</span>, where <span class="math inline">\(\mathbf{x}^{(i)} \in \mathbb{R}^d\)</span> is the feature vector and <span class="math inline">\(y^{(i)} \in \mathbb{R}\)</span> is the label. When we get a new unlabeled example <span class="math inline">\(\mathbf{x}\)</span>, we find the <span class="math inline">\(k\)</span> training examples that are <em>closest</em> to <span class="math inline">\(\mathbf{x}\)</span>, then we predict the label of <span class="math inline">\(\mathbf{x}\)</span> as the <em>average</em> of the labels of these <span class="math inline">\(k\)</span> neighbors.</p>
 <p>We can visualize the <span class="math inline">\(k\)</span>-nearest neighbors predictions as a kind of Voronoi diagram, where each point in the feature space is assigned to the label of its nearest neighbor(s).</p>
-<p>[image here]</p>
+<center>
+<img src="images/kernel_knn.svg" class="responsive-img">
+</center>
 <p>We typically measure closeness via <em>cosine similarity</em> i.e., the cosine of the angle between two vectors. Consider two vectors <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{w}\)</span>, the cosine similarity is: <span class="math display">\[
 \cos(\theta) = \frac{\langle \mathbf{x}, \mathbf{w} \rangle}{\|\mathbf{x}\| \|\mathbf{w}\|}
 \]</span> where <span class="math inline">\(\theta\)</span> is the angle between the two vectors.</p>
@@ -216,7 +218,9 @@ Proof of Cosine Identity
 - Small angle <span class="math inline">\(\theta\)</span>.<br>
 - Small distance <span class="math inline">\(\|\mathbf{x} - \mathbf{w}\|_2\)</span>.</p>
 <p>Let’s apply the <span class="math inline">\(k\)</span>-nearest neighbors algorithm to the MNIST dataset, which contains images of handwritten digits. Each image is a <span class="math inline">\(28 \times 28\)</span> pixel grayscale image, which we can flatten into a vector of length <span class="math inline">\(784\)</span>. When we compute the cosine similarity between two images, we are essentially measuring how similar the two images are based on their pixel values in each dimension. A search for the nearest neighbors will find the images that are closest in terms of pixel values, which often corresponds to similar handwriting styles.</p>
-<p>[image here]</p>
+<center>
+<img src="images/kernel_mnist_knn.svg" class="responsive-img">
+</center>
 <p>While quite accurate out of the box, it’s difficult to improve its accuracy because we do not have parameters to tune. Instead, we can use feature transformations to more <em>expressively</em> represent the data in higher dimensions.</p>
 </section>
 <section id="kernel-trick" class="level3">
@@ -265,7 +269,9 @@ K(\mathbf{x}, \mathbf{w}) &amp;= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
 \arg \min_{\ell \in [q]} \langle \mathbf{w}^{(\ell)}, \mathbf{x} \rangle.
 \]</span></p>
 <p>In the context of MNIST, the weight vectors look something like this:</p>
-<p>[image here]</p>
+<center>
+<img src="images/kernel_mnist_weights.svg" class="responsive-img">
+</center>
 <p>While vaguely resembling the digits, they are not very interpretable, and it’s unclear how much they capture the underlying structure of the data. We would really like to represent the data in a more expressive way <em>without</em> explicitly computing the feature transformation, similar to the kernel trick we applied to the <span class="math inline">\(k\)</span>-nearest neighbors algorithm.</p>
 <p>For notational simplicity, consider binary logistic regression, where we have a single weight vector <span class="math inline">\(\mathbf{w} \in \mathbb{R}^d\)</span>. The optimization problem is to find <span class="math display">\[
 \arg \min_{\mathbf{w} \in \mathbb{R}^{d}} \mathcal{L}(\sigma(\mathbf{Xw}), \mathbf{y})

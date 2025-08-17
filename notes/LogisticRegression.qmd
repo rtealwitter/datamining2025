@@ -134,7 +134,6 @@ But, we can change this threshold to an arbitrary value $\tau \in [0, 1]$.
 Increasing the threshold can only decrease the TPR, since we are less likely to predict a positive class;
 simultaneously, the FPR can only increase, since we are more likely to predict a negative class.
 
-[image here] 2D plots with linearly separable data, with different thresholds $\tau$.
 <center><img src="images/classification_boundaries.svg" class="responsive-img"></center>
 
 We can visualize the trade-off between TPR and FPR by plotting the **Receiver Operating Characteristic (ROC) curve**. The ROC curve is a plot of the TPR against the FPR for different threshold values $\tau$.

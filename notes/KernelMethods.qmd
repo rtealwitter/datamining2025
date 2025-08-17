@@ -18,7 +18,7 @@ When we get a new unlabeled example $\mathbf{x}$, we find the $k$ training examp
 
 We can visualize the $k$-nearest neighbors predictions as a kind of Voronoi diagram, where each point in the feature space is assigned to the label of its nearest neighbor(s).
 
-[image here]
+<center><img src="images/kernel_knn.svg" class="responsive-img"></center>
 
 We typically measure closeness via *cosine similarity* i.e., the cosine of the angle between two vectors.
 Consider two vectors $\mathbf{x}$ and $\mathbf{w}$, the cosine similarity is:
@@ -57,7 +57,7 @@ Each image is a $28 \times 28$ pixel grayscale image, which we can flatten into 
 When we compute the cosine similarity between two images, we are essentially measuring how similar the two images are based on their pixel values in each dimension.
 A search for the nearest neighbors will find the images that are closest in terms of pixel values, which often corresponds to similar handwriting styles.
 
-[image here]
+<center><img src="images/kernel_mnist_knn.svg" class="responsive-img"></center>
 
 While quite accurate out of the box, it's difficult to improve its accuracy because we do not have parameters to tune.
 Instead, we can use feature transformations to more *expressively* represent the data in higher dimensions.
@@ -132,7 +132,7 @@ $$
 
 In the context of MNIST, the weight vectors look something like this:
 
-[image here]
+<center><img src="images/kernel_mnist_weights.svg" class="responsive-img"></center>
 
 While vaguely resembling the digits, they are not very interpretable, and it's unclear how much they capture the underlying structure of the data.
 We would really like to represent the data in a more expressive way *without* explicitly computing the feature transformation, similar to the kernel trick we applied to the $k$-nearest neighbors algorithm.
