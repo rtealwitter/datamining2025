@@ -14,7 +14,9 @@ Data mining is the process of discovering patterns in large data sets using tech
 
 **Resources**: The primary resource for this class are the typed notes on the homepage. I highly recommend reading them before each class (it should take about 15 minutes). In addition, I will post my preparation for the slides the night before each class.
 
-**Discussion**: Please post all your course related questions on Canvas. If your question reveals your solution to a homework problem, please email me instead.
+**Discussion**: Please post all your course related questions on Discord. If your question reveals your solution to a homework problem, please direct message me instead.
+
+**Devices**: Phones, computers, and even tablets are distracting to you and your peers. Please do not use them during class. If you'd like to take notes, I encourage you to print out my slides and write on them by hand.
 
 ### **Grading**
 
