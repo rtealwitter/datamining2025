@@ -23,4 +23,6 @@ website:
       - text: "Gradescope"
       - text: "Syllabus"
         href: syllabus.html
+      - text: "Discord"
+        href: https://discord.gg/dES3fSPEeC
       
