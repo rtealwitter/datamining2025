@@ -69,8 +69,7 @@ Consider the composite function $g({f}(x))$.
 By the chain rule, the derivative of $g({f}(x))$ with respect to $x$ is
 $$
 \frac{\partial }{\partial x}[g({f}(x))]
-= \frac{\partial g}{\partial x}({f}(x))
-\frac{\partial}{\partial x}[{f}(x)].
+= g'(f(x)) f'(x).
 $$
 
 Often, we will also multiply functions together.
@@ -88,7 +87,7 @@ Consider ${f}: \mathbb{R}^d \to \mathbb{R}$.
 The output of the function is still a real number but the input consists of $d$ real numbers.
 We will use the vector $\mathbf{x} \in \mathbb{R}^d$ to represent all $d$ inputs $x_1, \ldots, x_d$.
 
-Instead of the derivative, we will talk use the partial derivative.
+Instead of the derivative, we will use the partial derivative.
 The partial derivative with respect to $x_i$ is denoted by $\frac{\partial}{\partial x_i}[{f}(\mathbf{x})]$.
 In effect, the partial derivative tells us how ${f}$ changes when we change $x_i$, while keeping all other inputs fixed.
 
@@ -104,12 +103,12 @@ Just like the derivative in one dimension, the gradient contains information abo
 ### Vector and Matrix Multiplication
 
 Vector and matrix multiplication lives at the heart of machine learning.
-In fact, neural networks only really started to take off when researchers realized that the Graphical Processing Unit (GPU) could be used to perform gradient updates in addition to the matrix multiplication it was designed to do for gaming.
+In fact, neural networks only really started to take off when researchers realized that the Graphics Processing Unit (GPU) could be used to perform gradient updates in addition to the matrix multiplication it was designed to do for gaming.
 
 Consider two vectors $\mathbf{u} \in \mathbb{R}^d$ and $\mathbf{v} \in \mathbb{R}^d$.
 We will use $\mathbf{u} \cdot \mathbf{v} = \sum_{i=1}^d u_i v_i$ to denote the inner product of $\mathbf{u}$ and $\mathbf{v}$.
 We can also write the inner product as $\mathbf{u}^\top \mathbf{v}$, where $\mathbf{u}^\top \in \mathbb{R}^{1\times d}$ is the transpose of $\mathbf{u}$.
-The $\mathcal{\ell}_2$-norm of $\mathbf{v}$ is given by $\|\mathbf{v}\|_2 = \sqrt{\mathbf{v} \cdot \mathbf{v}}$.
+The $\ell_2$-norm of $\mathbf{v}$ is given by $\|\mathbf{v}\|_2 = \sqrt{\mathbf{v} \cdot \mathbf{v}}$.
 
 Consider two matrices: $\mathbf{A} \in \mathbb{R}^{d \times m}$ and $\mathbf{B} \in \mathbb{R}^{m \times n}$ where $d \neq n$.
 We can only multiply two matrices when their *inner* dimension agrees.
@@ -143,8 +142,9 @@ The primary challenge when dealing with matrices is that our favorite operations
 For example, it's not obvious how to divide one matrix by another, or how to take the square root of a matrix.
 Eigenvalues and eigenvectors provide a way to decompose matrices into simpler components that we can work with in more familiar ways.
 
-As we may remember from linear algebra, an eigenvector of a square matrix $\mathbf{A} \in \mathbb{R}^{d \times d}$ is a vector $\mathbf{v} \in \mathbb{R}^d$ such that $\mathbf{Av} = \lambda \mathbf{v}$ for some scalar $\lambda$.
-Let $r$ be the *rank*, i.e., the number of eigenvectors of $\mathbf{A}$.
+Consider a square and symmetric matrix $\mathbf{A} \in \mathbb{R}^{d \times d}$.
+As we may remember from linear algebra, an eigenvector of $\mathbf{A}$ is a vector $\mathbf{v} \in \mathbb{R}^d$ such that $\mathbf{Av} = \lambda \mathbf{v}$ for some scalar $\lambda$.
+Let $r$ be the *rank*, i.e., the number of eigenvectors with nonzero eigenvalues (counting multiplicity). 
 Then, we can write the eigenvectors as $\mathbf{v}_1, \ldots, \mathbf{v}_r$, with corresponding eigenvalues $\lambda_1 \geq \ldots \geq \lambda_r$.
 The eigenvectors are orthonormal, meaning that $\mathbf{v}_i \cdot \mathbf{v}_j = 0$ for $i \neq j$ and $\|\mathbf{v}_i\|_2 = 1$ for all $i$.
 
@@ -183,6 +183,12 @@ $$
 = \mathbf{I}_{n \times n},
 $$
 where we repeatedly used the fact that $\mathbf{V}^\top \mathbf{V} = \mathbf{I}_{r \times r}$ because the eigenvectors are orthonormal.
+The last equality requires that the matrix is full rank, i.e., $r=d$.
+If $r < d$, the inverse doesn’t exist; the Moore–Penrose pseudoinverse is 
+$\mathbf{A}^{+} = \mathbf{V}\,\mathbf{\Lambda}^{+}\mathbf{V}^\top$
+with 
+$\mathbf{\Lambda}^{+} = \mathrm{diag}\!\left(\tfrac{1}{\lambda_1}, \ldots, \tfrac{1}{\lambda_r}\right).$
+
 
 In our outer product form, we can write the inverse as
 $$\mathbf{A}^{-1} = \sum_{i=1}^r \frac{1}{\lambda_i} \mathbf{v}_i \mathbf{v}_i^\top$$
