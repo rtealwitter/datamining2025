@@ -19,11 +19,11 @@ In general, mathematicians tell us to be careful about whether we can differenti
 But, we're computer scientists so we'll risk it for the biscuit.
 
 Let $x \in \mathbb{R}$ be the input to ${f}$.
-The derivative of ${f}$ with respect to its input $x$ is mathematically denoted by $\frac{\partial}{\partial x}[{f}(x)]$.
+The derivative of ${f}$ with respect to its input $x$ is mathematically denoted by $f'(x) = \frac{d}{d x}[{f}(x)]$.
 
 Formally, the derivative is defined as
 $$
-\frac{\partial}{\partial x}[{f}(x)]
+\frac{d}{d x}[{f}(x)]
 = \lim_{h \to 0} \frac{{f}(x + h) - {f}(x)}{h}.
 $$
 If we were to plot ${f}$, the derivative at a point $x$ would be the slope of the tangent line to the curve at that point.
@@ -68,16 +68,16 @@ Consider the composite function $g({f}(x))$.
 
 By the chain rule, the derivative of $g({f}(x))$ with respect to $x$ is
 $$
-\frac{\partial }{\partial x}[g({f}(x))]
+\frac{d}{d x}[g({f}(x))]
 = g'(f(x)) f'(x).
 $$
 
 Often, we will also multiply functions together.
 The product rule tells us that
 $$
-\frac{\partial }{\partial x}[g(x) {f}(x)]
-= g(x) \frac{\partial}{\partial x}[{f}(x)]
-+ {f}(x) \frac{\partial}{\partial x}[g(x)].
+\frac{d}{d x}[g(x) {f}(x)]
+= g(x) \frac{d}{d x}[{f}(x)]
++ {f}(x) \frac{d}{d x}[g(x)].
 $$
 
 ### Gradients
@@ -184,11 +184,10 @@ $$
 $$
 where we repeatedly used the fact that $\mathbf{V}^\top \mathbf{V} = \mathbf{I}_{r \times r}$ because the eigenvectors are orthonormal.
 The last equality requires that the matrix is full rank, i.e., $r=d$.
-If $r < d$, the inverse doesn’t exist; the Moore–Penrose pseudoinverse is 
+If $r < d$, the inverse doesn’t exist; instead, the Moore–Penrose pseudoinverse is 
 $\mathbf{A}^{+} = \mathbf{V}\,\mathbf{\Lambda}^{+}\mathbf{V}^\top$
 with 
 $\mathbf{\Lambda}^{+} = \mathrm{diag}\!\left(\tfrac{1}{\lambda_1}, \ldots, \tfrac{1}{\lambda_r}\right).$
-
 
 In our outer product form, we can write the inverse as
 $$\mathbf{A}^{-1} = \sum_{i=1}^r \frac{1}{\lambda_i} \mathbf{v}_i \mathbf{v}_i^\top$$
@@ -196,4 +195,4 @@ where $\mathbf{v}_i$ are the eigenvectors of $\mathbf{A}$.
 Can you more easily see why $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}$?
 
 Going forward, we will apply the linear algebra tools we learned today to understand machine learning algorithms.
-The first algorithm we will study is PageRank, which, hiding behind the scenes, simply uses the eigenvalue decomposition to find the most important pages on the internet.
+The first algorithm we will study is PageRank, which, at its foundation, simply uses the eigenvalue decomposition to find the most important pages on the internet.

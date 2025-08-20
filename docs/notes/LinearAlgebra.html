@@ -133,22 +133,16 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <span class="nav-link">
-<span class="menu-text">Canvas</span>
-    </span>
+    <a class="nav-link" href="https://discord.gg/dES3fSPEeC"> 
+<span class="menu-text">Discord</span></a>
   </li>  
   <li class="nav-item">
-    <span class="nav-link">
-<span class="menu-text">Gradescope</span>
-    </span>
+    <a class="nav-link" href="https://www.gradescope.com/courses/1091652"> 
+<span class="menu-text">Gradescope</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../syllabus.html"> 
 <span class="menu-text">Syllabus</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="https://discord.gg/dES3fSPEeC"> 
-<span class="menu-text">Discord</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -201,9 +195,9 @@ window.Quarto = {
 <section id="derivatives" class="level3">
 <h3 class="anchored" data-anchor-id="derivatives">Derivatives</h3>
 <p>Consider a function <span class="math inline">\({f}: \mathbb{R} \to \mathbb{R}\)</span>. The mapping notation means that <span class="math inline">\({f}\)</span> takes a single real number as input and outputs a single real number. In general, mathematicians tell us to be careful about whether we can differentiate a function. But, we’re computer scientists so we’ll risk it for the biscuit.</p>
-<p>Let <span class="math inline">\(x \in \mathbb{R}\)</span> be the input to <span class="math inline">\({f}\)</span>. The derivative of <span class="math inline">\({f}\)</span> with respect to its input <span class="math inline">\(x\)</span> is mathematically denoted by <span class="math inline">\(\frac{\partial}{\partial x}[{f}(x)]\)</span>.</p>
+<p>Let <span class="math inline">\(x \in \mathbb{R}\)</span> be the input to <span class="math inline">\({f}\)</span>. The derivative of <span class="math inline">\({f}\)</span> with respect to its input <span class="math inline">\(x\)</span> is mathematically denoted by <span class="math inline">\(f'(x) = \frac{d}{d x}[{f}(x)]\)</span>.</p>
 <p>Formally, the derivative is defined as <span class="math display">\[
-\frac{\partial}{\partial x}[{f}(x)]
+\frac{d}{d x}[{f}(x)]
 = \lim_{h \to 0} \frac{{f}(x + h) - {f}(x)}{h}.
 \]</span> If we were to plot <span class="math inline">\({f}\)</span>, the derivative at a point <span class="math inline">\(x\)</span> would be the slope of the tangent line to the curve at that point.</p>
 <p>Here are several examples of functions and their derivatives that you might remember from calculus.</p>
@@ -263,13 +257,13 @@ window.Quarto = {
 <p>While working with a simple basic function is easy, we’re not always so lucky. Modern machine learning chains many many complicated functions together. Fortunately, we will think of these operations modularly.</p>
 <p>Let <span class="math inline">\(g: \mathbb{R} \to \mathbb{R}\)</span> be another function. Consider the composite function <span class="math inline">\(g({f}(x))\)</span>.</p>
 <p>By the chain rule, the derivative of <span class="math inline">\(g({f}(x))\)</span> with respect to <span class="math inline">\(x\)</span> is <span class="math display">\[
-\frac{\partial }{\partial x}[g({f}(x))]
+\frac{d}{d x}[g({f}(x))]
 = g'(f(x)) f'(x).
 \]</span></p>
 <p>Often, we will also multiply functions together. The product rule tells us that <span class="math display">\[
-\frac{\partial }{\partial x}[g(x) {f}(x)]
-= g(x) \frac{\partial}{\partial x}[{f}(x)]
-+ {f}(x) \frac{\partial}{\partial x}[g(x)].
+\frac{d}{d x}[g(x) {f}(x)]
+= g(x) \frac{d}{d x}[{f}(x)]
++ {f}(x) \frac{d}{d x}[g(x)].
 \]</span></p>
 </section>
 <section id="gradients" class="level3">
@@ -315,9 +309,9 @@ window.Quarto = {
 = \mathbf{V} \mathbf{I}_{r \times r} \mathbf{V}^\top
 = \mathbf{V} \mathbf{V}^\top
 = \mathbf{I}_{n \times n},
-\]</span> where we repeatedly used the fact that <span class="math inline">\(\mathbf{V}^\top \mathbf{V} = \mathbf{I}_{r \times r}\)</span> because the eigenvectors are orthonormal. The last equality requires that the matrix is full rank, i.e., <span class="math inline">\(r=d\)</span>. If <span class="math inline">\(r &lt; d\)</span>, the inverse doesn’t exist; the Moore–Penrose pseudoinverse is <span class="math inline">\(\mathbf{A}^{+} = \mathbf{V}\,\mathbf{\Lambda}^{+}\mathbf{V}^\top\)</span> with <span class="math inline">\(\mathbf{\Lambda}^{+} = \mathrm{diag}\!\left(\tfrac{1}{\lambda_1}, \ldots, \tfrac{1}{\lambda_r}\right).\)</span></p>
+\]</span> where we repeatedly used the fact that <span class="math inline">\(\mathbf{V}^\top \mathbf{V} = \mathbf{I}_{r \times r}\)</span> because the eigenvectors are orthonormal. The last equality requires that the matrix is full rank, i.e., <span class="math inline">\(r=d\)</span>. If <span class="math inline">\(r &lt; d\)</span>, the inverse doesn’t exist; instead, the Moore–Penrose pseudoinverse is <span class="math inline">\(\mathbf{A}^{+} = \mathbf{V}\,\mathbf{\Lambda}^{+}\mathbf{V}^\top\)</span> with <span class="math inline">\(\mathbf{\Lambda}^{+} = \mathrm{diag}\!\left(\tfrac{1}{\lambda_1}, \ldots, \tfrac{1}{\lambda_r}\right).\)</span></p>
 <p>In our outer product form, we can write the inverse as <span class="math display">\[\mathbf{A}^{-1} = \sum_{i=1}^r \frac{1}{\lambda_i} \mathbf{v}_i \mathbf{v}_i^\top\]</span> where <span class="math inline">\(\mathbf{v}_i\)</span> are the eigenvectors of <span class="math inline">\(\mathbf{A}\)</span>. Can you more easily see why <span class="math inline">\(\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}\)</span>?</p>
-<p>Going forward, we will apply the linear algebra tools we learned today to understand machine learning algorithms. The first algorithm we will study is PageRank, which, hiding behind the scenes, simply uses the eigenvalue decomposition to find the most important pages on the internet.</p>
+<p>Going forward, we will apply the linear algebra tools we learned today to understand machine learning algorithms. The first algorithm we will study is PageRank, which, at its foundation, simply uses the eigenvalue decomposition to find the most important pages on the internet.</p>
 
 
 
