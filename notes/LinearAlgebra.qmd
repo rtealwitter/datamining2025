@@ -161,16 +161,18 @@ where $\mathbf{v}_i \mathbf{v}_i^\top$ is the outer product of the eigenvector $
 We can check that the eigenvalue decomposition is correct by multiplying by each eigenvector.
 Since the eigenvectors are orthonormal, we have $\mathbf{A} \mathbf{v}_i = \lambda_i \mathbf{v}_i$ for each $i$.
 
+### Matrix Inversion
+
 Let's see the power of the eigenvalue decomposition in the context of matrix inversion.
 If we have a scalar equation $ax = b$, we can simply solve for $x$ by dividing both sides by $a$.
 In effect, we are applying the inverse of $a$ to $a$ i.e., $\frac1{a} a =1$.
 The same principle applies to matrices.
-The $n \times n$ identity matrix generalizes the scalar identity $1$.
-This identity matrix is denoted by $\mathbf{I}_{n \times n} \in \mathbb{R}^{n \times n}$: the on-diagonal entries $(i,i)$ are 1 while the off-diagonal entries $(i,j)$ for $i\neq j$ are 0.
+The $d \times d$ identity matrix generalizes the scalar identity $1$.
+This identity matrix is denoted by $\mathbf{I}_{d \times d} \in \mathbb{R}^{d \times d}$: the on-diagonal entries $(i,i)$ are 1 while the off-diagonal entries $(i,j)$ for $i\neq j$ are 0.
 
-For a matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$, we use $\mathbf{A}^{-1}$ to denote its inverse.
+For a matrix $\mathbf{A} \in \mathbb{R}^{d \times d}$, we use $\mathbf{A}^{-1}$ to denote its inverse.
 (When $\mathbf{A}$ does not have full rank, i.e., $r < d$, the inverse is not defined, but we can still use the eigenvalue decomposition to find a pseudo-inverse.)
-The inverse is defined so that $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}$ where $\mathbf{I}_{n \times n}$ is the identity matrix.
+The inverse is defined so that $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{d \times d}$ where $\mathbf{I}_{d \times d}$ is the identity matrix.
 In terms of our eigenvalue decomposition, the inverse of $\mathbf{A}$ is given by
 $$\mathbf{A}^{-1} = \mathbf{V} \mathbf{\Lambda}^{-1} \mathbf{V}^\top$$
 where $\mathbf{\Lambda}^{-1} = \text{diag}(\frac{1}{\lambda_1}, \ldots, \frac{1}{\lambda_r})$ is the diagonal matrix of the inverses of the eigenvalues.
@@ -180,7 +182,7 @@ $$
 = \mathbf{V} \mathbf{\Lambda}^{-1} \mathbf{\Lambda} \mathbf{V}^\top
 = \mathbf{V} \mathbf{I}_{r \times r} \mathbf{V}^\top
 = \mathbf{V} \mathbf{V}^\top
-= \mathbf{I}_{n \times n},
+= \mathbf{I}_{d \times d},
 $$
 where we repeatedly used the fact that $\mathbf{V}^\top \mathbf{V} = \mathbf{I}_{r \times r}$ because the eigenvectors are orthonormal.
 The last equality requires that the matrix is full rank, i.e., $r=d$.
@@ -192,7 +194,7 @@ $\mathbf{\Lambda}^{+} = \mathrm{diag}\!\left(\tfrac{1}{\lambda_1}, \ldots, \tfra
 In our outer product form, we can write the inverse as
 $$\mathbf{A}^{-1} = \sum_{i=1}^r \frac{1}{\lambda_i} \mathbf{v}_i \mathbf{v}_i^\top$$
 where $\mathbf{v}_i$ are the eigenvectors of $\mathbf{A}$.
-Can you more easily see why $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{n \times n}$?
+Can you more easily see why $\mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_{d \times d}$?
 
 Going forward, we will apply the linear algebra tools we learned today to understand machine learning algorithms.
 The first algorithm we will study is PageRank, which, at its foundation, simply uses the eigenvalue decomposition to find the most important pages on the internet.
