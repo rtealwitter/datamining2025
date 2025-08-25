@@ -1,3 +1,9 @@
 /.quarto/
 .DS_Store
 ~$images.pptx
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.log
+*.aux
+*.out
