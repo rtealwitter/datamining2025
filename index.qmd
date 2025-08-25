@@ -57,11 +57,11 @@ output:
   </tr>
   <tr>
     <td>Project Proposal</td>
-    <td></td>
+    <td>Monday 12/1</td>
   </tr>
   <tr>
     <td>Project</td>
-    <td></td>
+    <td>Friday 12/12</td>
   </tr>
 </table>
 
