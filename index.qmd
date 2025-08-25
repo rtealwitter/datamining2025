@@ -86,7 +86,7 @@ output:
     <td>Week 1 (8/27 and 8/29)</td>
     <td><a href="notes/LinearAlgebra.qmd">Linear Algebra</a></td>
     <td><a href="notes/PageRank.qmd">PageRank</a></td>
-    <td></td>
+    <td><a href="slides/Week1.pdf">Slides</a></td>
     <td></td>
   </tr>
 
