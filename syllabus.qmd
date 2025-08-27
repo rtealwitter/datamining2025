@@ -12,7 +12,7 @@ Data mining is the process of discovering patterns in large data sets using tech
 
 **Structure:** We will meet on Tuesdays and Thursdays. The first section is from 2:45 to 4pm and the second section is from 4:15 to 5:30pm. I will hold my office hours TBD.
 
-**Resources**: Most of the material we cover comes from either Chris Musco's phenomenal [machine learning course](https://www.chrismusco.com/machinelearning2024_grad/), or Chinmay Hegde's fantastic [deep learning course](https://chinmayhegde.github.io/dl-notes/). While we do not have a textbook, we do have typed notes for every lecture. I highly recommend you read these notes before each class (this should take 15 minutes or so). I will also provide a copy of my handwritten notes the night before each lecture.
+**Resources**: Most of the material we cover comes from either Chris Musco's phenomenal [machine learning course](https://www.chrismusco.com/machinelearning2024_grad/), or Chinmay Hegde's fantastic [deep learning course](https://chinmayhegde.github.io/dl-notes/). While we do not have a textbook, we do have typed notes; I **highly** recommend you read the notes before each class.
 
 **Electronic Devices**: Phones, computers, and even tablets are distracting to you and your peers. Please do not use them during class. If you'd like to take notes, I encourage you to print out my slides and write on them by hand.
 

@@ -7,8 +7,8 @@ format:
     include-after-body: readtime.html
 ---
 
-Behind the real world impact of the machine learning algorithms we will study this semester, there is a rich mathematical foundation.
-Today, we will see how the eigenvalue decomposition of a matrix can be used to solve a real-world problem: finding the most important pages on the internet.
+There is a rich mathematical foundation behind machine learning.
+Today, we will see how the eigenvalue decomposition of a matrix can be used to solve a real-world data science problem: finding the most important pages on the internet.
 This algorithm is known as PageRank, and it was the key technology that powered Google in its early days.
 
 There are lots of webpages on the internet, and they are all interconnected by hyperlinks.
@@ -33,7 +33,7 @@ Let $\mathbf{p}^{(0)} \in \mathbb{R}^n$ be the initial importance vector, where 
 We will then iteratively update the importance vector so that the new importance of each page depends on how many pages link to it, and their importance in turn.
 We will use the following update rule:
 $$
-p_i^{(t+1)} = \sum_{j: j \text{ links to } i } \frac{p_j^{(t)}}{d_j},
+p_i^{(t+1)} = \sum_{j=1}^n \mathbb{1}[j \text{ links to } i] \frac{p_j^{(t)}}{d_j},
 $$
 where $d_j$ is the out-degree of page $j$, i.e., the number of pages that page $j$ links to.
 Why do we divide by $d_j$?
@@ -55,10 +55,10 @@ $$
 \mathbf{p}^{(t+1)} = \mathbf{A} \mathbf{p}^{(t)},
 $$
 where $\mathbf{A} \in \mathbb{R}^{n \times n}$ is the matrix whose $i$th row is $\mathbf{A}_i$.
-One useful observation is that each *column* of $\mathbf{A}$ sums to 1, i.e., $\sum_{i=1}^n \mathbf{A}_{i,j} = \sum_{i: j \text{ links to i }} \frac1{d_j} = \frac{d_j}{d_j} = 1$ for each $j$.
+One useful observation is that each *column* of $\mathbf{A}$ sums to 1, i.e., $\sum_{i=1}^n [\mathbf{A}]_{i,j} = \sum_{i=1}^n \mathbb{1}[j \text{ links to } i ] \frac1{d_j} = \frac{d_j}{d_j} = 1$ for each $j$.
 This means that $\mathbf{p}^{(t+1)}$ will have the same sum as $\mathbf{p}^{(t)}$ i.e.,
 $$
-\sum_{i=1}^n p_i^{(t+1)} = \sum_{i=1}^n \left( \sum_{j=1}^n \mathbf{A}_{i,j} p_j^{(t)} \right) = \sum_{j=1}^n p_j^{(t)} \sum_{i=1}^n \mathbf{A}_{i,j} = \sum_{j=1}^n p_j^{(t)}.
+\sum_{i=1}^n p_i^{(t+1)} = \sum_{i=1}^n \left( \sum_{j=1}^n [\mathbf{A}]_{i,j} p_j^{(t)} \right) = \sum_{j=1}^n p_j^{(t)} \sum_{i=1}^n [\mathbf{A}]_{i,j} = \sum_{j=1}^n p_j^{(t)}.
 $$
 Since we initialize $\mathbf{p}^{(0)}$ to have sum 1, we can see that $\mathbf{p}^{(t)}$ will always have sum 1.
 This enables us to interpret the importance vector $\mathbf{p}^{(t)}$ as a probability distribution over the pages.
