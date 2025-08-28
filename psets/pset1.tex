@@ -89,7 +89,7 @@ Define a matrix $\mathbf{A}$ so that
 
 Using the \texttt{networkx} package in Python, load a small graph of your choice (e.g., the karate club graph). Build the matrix $\mathbf{A}$ for this graph. Then update a randomly initialized opinion vector 100 times.
 
-\subsection*{Part C: Standardization}
+\subsection*{Part C: Mean Centering and Normalization}
 
 As you may expect, averaging the opinions will make them converge to a scaling of the all ones vector (under some mild assumptions about the structure of the graph).
 
@@ -99,11 +99,17 @@ Socially, this is like zooming in to focus only on the \textit{differences} in o
 
 Now, plot the opinions after 100 updates.
 (It will help if you fix the position of the nodes in the visualization from one random run to the next.)
-
-\subsection*{Part D: Philosophy?}
-
 What do you notice about the final opinions when you visualize them for different randomly initialized opinions?
-What could you conclude about the way people form opinions?
+
+\subsection*{Part D: Eigenvector View}
+
+Use \texttt{numpy} to compute the eigenvectors of $\mathbf{A}$.
+What is the first eigenvector?
+Overlay the second eigenvector on your graph visualization, how does it compare to the final opinion vector when you mean center and normalize?
+
+\subsection*{Part E: Philosophy}
+
+Let's assume DeGroot dynamics are realistic, what could you conclude about the way people form opinions?
 
 %\input{solutions/solution1_2}
 
