@@ -18,52 +18,21 @@ output:
   
   **Class Times**: We meet Tuesdays and Thursdays; Sec. 1 is scheduled from 2:45 to 4:00pm in Kravis 164, and Sec. 2 from 4:15 to 5:30pm in Kravis 165.
   
-  **Office Hours**: Tuesday, Wednesday and Thursday from 12:30 to 1:30pm in Adams 213.
+  **Office Hours**: Mondays and Wednesdays from 12:30 to 2pm in Adams 213.
   
   **Participation**: I expect you to engage in class, ask questions, and make connections. To receive credit, please fill out [this](https://forms.gle/zQG3iLAqCDTzDyv98) form after every lecture.
+
+  **Problem Sets**: Your primary opportunity to learn the material will be on problem sets. You may work with others to solve the problems, but you must write your solutions by yourself, and explicitly acknowledge any outside help (websites, people, LLMs).
+
+  </div>
+  <div class="col" markdown="1">
 
   **Quizzes**:
   There will be short quizzes at the beginning of our Tuesday classes. These quizzes will test your understanding of the problem sets and the concepts from the prior week.
 
   **Exams**: The two exams are the primary method of assessing your understanding of the material. The first exam will cover the content from the first half of the course, while the second exam will cover the content from the second half.
-    
-  </div>
-  <div class="col" markdown="1">
-
-  **Problem Sets**: Your primary opportunity to learn the material will be on problem sets. You may work with others to solve the problems, but you must write your solutions by yourself, and explicitly acknowledge any outside help (websites, people, LLMs).
 
   **Project**: The  project offers a chance to explore an area that interests you, practice writing high quality code, and develop your ability to communicate technical ideas to an audience. In addition to your codebase, you will write a report and give a short presentation at the end of the semester. 
-
-  <table style="width: 100%; border-collapse: collapse;">
-  <tr>
-    <td>Assignment</td>
-    <td>Due</td>
-  </tr>
-  <tr>
-    <td>[Problem Set 1](psets/pset1.pdf) ([LaTeX](psets/pset1.tex))</td>
-    <td>Friday 9/19</td>
-  </tr>
-  <tr>
-    <td>Problem Set 2</td>
-    <td>Friday 10/17</td>
-  </tr>
-  <tr>
-    <td>Problem Set 3</td>
-    <td>Friday 11/7</td>
-  </tr>
-  <tr>
-    <td>Problem Set 4</td>
-    <td>Friday 11/21</td>
-  </tr>
-  <tr>
-    <td>Project Proposal</td>
-    <td>Monday 12/1</td>
-  </tr>
-  <tr>
-    <td>Project</td>
-    <td>Friday 12/12</td>
-  </tr>
-</table>
 
   </div>
 </div>
@@ -87,7 +56,7 @@ output:
     <td><a href="notes/LinearAlgebra.qmd">Linear Algebra</a></td>
     <td><a href="notes/PageRank.qmd">PageRank</a></td>
     <td><a href="slides/Week1.pdf">Slides</a></td>
-    <td></td>
+    <td>[Pset 1](psets/pset1.pdf) ([TeX](psets/pset1.tex)) due 9/22</td>
   </tr>
 
   <tr class="section-header">
@@ -97,8 +66,8 @@ output:
     <td>Week 2 (9/2 and 9/4)</td>
     <td><a href="notes/LinearRegression.qmd">Linear Regression</a></td>
     <td><a href="notes/LinearRegression.qmd">Optimization</a></td>
-    <td></td>
-    <td></td>
+    <td><a href="slides/Week2.pdf">Slides</a></td>
+    <td>[Pset 2](psets/pset2.pdf) ([TeX](psets/pset2.tex)) due 9/8 </td>
   </tr>
   <tr>
     <td>Week 3 (9/9 and 9/11)</td>

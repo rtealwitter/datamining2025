@@ -9,24 +9,22 @@ format:
 
 ## Supervised Learning
 
-Machine learning is incredibly popular. Seen extensive progress in the past several decades, and especially recently with the advent of generative AI.
-
-There are many problems that fall under the umbrella of machine learning:
+Machine learning is incredibly popular. The area has seen extensive progress in the past several decades, and especially recently with the advent of generative AI. There are many problems that fall under the umbrella of machine learning. For example:
 
 - Predicting temperature based on present weather conditions,
 
-- Identifying whether an image contains a cat or dog, and
+- Identifying objects in an image, and
 
 - Generating the next word in a sentence.
 
-This course is about how we go about solving these problems.
+This course covers how to solve these problems.
 The first half of the course will cover *supervised learning*, where we are given labeled data, and our goal is to train a function to approximately match the labels.
 
 Concretely, we are given $n$ data points $\mathbf{x}^{(1)}, \ldots, \mathbf{x}^{(n)} \in \mathbb{R}^d$, each with $d$ dimensions, and associated labels $y^{(1)}, y^{(2)}, \ldots, y^{(n)} \in \mathbb{R}$.
 Our goal is to learn a function $f: \mathbb{R}^d \to \mathbb{R}$ so that $f(\mathbf{x}^{(i)}) \approx y^{(i)}$ for all data points $i \in \{1,2,\ldots,n\}$.
 
 Our general approach to solving supervised learning problems will be to use *empirical risk minimization*, which gives a flexible scaffolding that encompasses many of the topics we'll discuss in this course.
-Given a function class (e.g., linear functions or neural networks), the idea is to select the function that most closely explains the data.
+Given a function class, the idea is to select the function that most closely explains the data.
 In particular, there are three components to empirical risk minimization:
 
 - **Function Class:** The function class $\mathcal{F}$ from which we will select the function $f$ that most closely fits the observed data.
@@ -52,12 +50,12 @@ Let $w \in \mathbb{R}$ be a weight parameter.
 The linear function (for one-dimensional inputs) is given by $f(x) = wx$.
 
 Unlike many machine learning functions, we can visualize the linear function since it is given by a line.
-In the plot, we have the $n=10$ data points plotted in two dimensions.
+In the plot, we have $n=10$ data points plotted in two dimensions.
 There is one linear function $f(x) = 2x$ that closely approximates the data and another linear function $f(x)=\frac12 x$ that poorly approximates the data.
 
 <center><img src="images/regression_1d.svg" class="responsive-img"></center>
 
-Our goal is to learn how to find a linear function that fits the data well. Before we can do this, though, we will need to define what it means for a function to "fit the data well".
+Our goal is to learn how to find a linear function that fits the data well. Before we can do this, though, we will need to define what a "good" fit means.
 
 ### Mean Squared Error Loss
 
@@ -70,7 +68,9 @@ The benefit of the absolute value is that the loss is $0$ if and only if $f(x^{(
 However, the absolute value function is not differentiable, which is a property we'll need for optimization.
 Instead, we use the squared loss:
 
-$\mathcal{L}(w) = \frac1{n} \sum_{i=1}^n (f(x^{(i)}) - y^{(i)})^2.$
+$$
+\mathcal{L}(w) = \frac1{n} \sum_{i=1}^n (f(x^{(i)}) - y^{(i)})^2.
+$$
 
 Here, we use the mean squared error loss, which is the average squared difference between the prediction and the true output over the dataset.
 Unlike the absolute value function, the squared function is differentiable everywhere.
@@ -89,19 +89,19 @@ In particular, we want to find $w$ that minimizes $\mathcal{L}(w)$.
 While the language we're using is new, the problem is not.
 We've actually been studying how to do this since pre-calculus!
 
-The squared loss is convex (a bowl facing up versus the downward facing *cave* of con*cave*); see the plot above for a 'proof' by example.
+The squared loss is convex (a bowl facing up versus the downward facing *cave* of con*cave*, see the plot above).
 In this case, we know there is only one minimum.
 Not only that but we can find the minimum by setting the derivative to $0$.
 
-As such, our game plan is to set $\frac{\partial \mathcal{L}}{\partial w}$ to $0$ and solve for $w$.
+Our game plan is to set $\frac{\partial \mathcal{L}}{\partial w}$ to $0$ and solve for $w$.
 Recall that $f(x) = wx$.
 We will use the linearity of the derivative, the chain rule, and the power rule to compute the derivative of $\mathcal{L}$ with respect to $w$:
 
 $$
 \begin{align}
 \frac{\partial}{\partial w}[\mathcal{L}(w)]
-&= \frac1{n} \sum_{i=1}^n \frac{\partial}{\partial w} [(f(x^{(i)}) - y^{(i)})^2]
-\notag \\&= \frac1{n} \sum_{i=1}^n 2(f(x^{(i)}) - y^{(i)}) \frac{\partial}{\partial w} [(f(x^{(i)}) - y^{(i)})]
+&= \frac1{n} \sum_{i=1}^n \frac{\partial}{\partial w} [(w x^{(i)} - y^{(i)})^2]
+\notag \\&= \frac1{n} \sum_{i=1}^n 2(w x^{(i)} - y^{(i)}) \frac{\partial}{\partial w} [(w x^{(i)} - y^{(i)})]
 \notag \\&= \frac1{n} \sum_{i=1}^n 2(w x^{(i)} - y^{(i)}) x^{(i)}.
 \end{align}
 $$
@@ -127,7 +127,7 @@ Instead of using a single weight $w \in \mathbb{R}$, we will use $d$ weights $\m
 Then the function is given by $f(x) = \langle \mathbf{w}, \mathbf{x} \rangle$.
 
 Instead of using a *line* to fit the data, we use a *hyperplane*.
-While visualizing the function is difficult in high dimensions, we can still see the function when $d=2$.
+While visualizing the function is difficult in high dimensions, we can still plot the function when $d=2$.
 
 <center><img src="images/regression_2d.svg" class="responsive-img"></center>
 
@@ -150,7 +150,7 @@ $$
 Just like computing the derivative and setting it to $0$, we can compute the gradient and set it to the zero vector $\mathbf{0} \in \mathbb{R}^d$.
 In mathematical notation, we will set $\nabla_\mathbf{w} \mathcal{L}(\mathbf{w}^*) = \mathbf{0}$ and solve for $\mathbf{w}^*$.
 The intuition is that such a point is a local minimum in every direction; that is, we cannot improve the loss by moving in any of the dimensions.
-Since the loss is convex (i.e., there can be only one minima), such a point is the unique global minimum and achieves the optimal loss.
+Since the loss is convex, there can be only one minima.
 
 As you may recall from multivariate calculus, the gradient $\nabla_\mathbf{w} \mathcal{L}(\mathbf{w})$ is simply a vector with the same dimension as $\mathbf{w}$; the value in the $i$th dimension is $\frac{\partial \mathcal{L}(\mathbf{w})}{\partial w_i}$.
 
@@ -164,8 +164,8 @@ $$
 $$
 Let $\mathbf{a}, \mathbf{b}$ be two vectors in the same dimensional space.
 We have $\|\mathbf{a} + \mathbf{b} \|^2 = \langle \mathbf{a} + \mathbf{b} , \mathbf{a} + \mathbf{b} \rangle = \| \mathbf{a} \|^2 + 2\langle \mathbf{a}, \mathbf{b} \rangle + \| \mathbf{b}\|^2$,
-where we foiled to reach the final equality, and used that $\langle \mathbf{a}, \mathbf{b} \rangle = \langle \mathbf{a}, \mathbf{b} \rangle$.
-By letting $\mathbf{a} = \mathbf{X w - b}$ and $\mathbf{b} = \Delta \mathbf{X} \mathbf{e}_i$, we reach
+where we foiled to reach the final equality, and used that $\langle \mathbf{a}, \mathbf{b} \rangle = \langle \mathbf{b}, \mathbf{a} \rangle$.
+By letting $\mathbf{a} = \mathbf{X w - y}$ and $\mathbf{b} = \Delta \mathbf{X} \mathbf{e}_i$, we reach
 $$
 \begin{align}
 \frac{\partial \mathcal{L}(\mathbf{w})}{\partial w_i}
@@ -175,11 +175,10 @@ $$
 - \| \mathbf{X} \mathbf{w} - \mathbf{y}\|^2 }{\Delta}.
 \\&= \lim_{\Delta \to 0} \frac{2 \Delta \langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle
 +\Delta^2 \|\mathbf{X e}_i\|^2}{\Delta}
-\\&= \lim_{\Delta \to 0} 2 \langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle + \Delta \|\mathbf{X e}_i\|^2
-\\&=\langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle.
+\\&=2\langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle.
 \end{align}
 $$
-Let $\mathbf{X}_i = \mathbf{Xe}_i$ be the $i$th row of $\mathbf{X}$.
+Let $\mathbf{X}_i = \mathbf{Xe}_i$ be the $i$th column of $\mathbf{X}$.
 Then, the full gradient is given by
 $$
 \begin{align}
@@ -204,9 +203,27 @@ $$
 \mathbf{w}^* &= (\mathbf{X}^\top \mathbf{X})^+ \mathbf{X}^\top \mathbf{y}
 \end{align}
 $$
-where $(\cdot)^+$ is the pseudoinverse i.e., $(\mathbf{M})^+ \mathbf{M} = \mathbf{I}$ for all symmetric matrices $\mathbf{M}$.
+where $(\cdot)^+$ is the pseudoinverse.
 
-Question: Is the pseudoinverse also defined for non-symmetric square matrices?
+### Singular Value Decomposition
+
+Even when a matrix is not square, we can still use a generalization of the eigendecomposition.
+Suppose $\mathbf{X} = \sum_{i=1}^r \sigma_i \mathbf{u}_i \mathbf{v}_i^\top$ is the singular value decomposition (SVD) of $\mathbf{X}$, where $\mathbf{u}_i \in \mathbb{R}^n$ are the left singular vectors, $\mathbf{v}_i \in \mathbb{R}^d$ are the right singular vectors, and $\sigma_i \in \mathbb{R}$ are the singular values.
+The pseudoinverse is 
+$$
+\mathbf{X}^+ = \sum_{i=1}^r \frac{1}{\sigma_i} \mathbf{v}_i \mathbf{u}_i^\top.
+$$
+
+For our equation, we can compute $\mathbf{X}^\top \mathbf{X} = \sum_{i=1}^r \sigma_i^2 \mathbf{v}_i \mathbf{v}_i^\top$.
+So $(\mathbf{X}^\top \mathbf{X})^+ = \sum_{i=1}^r \frac{1}{\sigma_i^2} \mathbf{v}_i \mathbf{v}_i^\top$.
+Together, we have
+$$
+(\mathbf{X}^\top \mathbf{X})^+ \mathbf{X}^\top
+= \left( \sum_{i=1}^r \frac{1}{\sigma_i^2} \mathbf{v}_i \mathbf{v}_i^\top\right) 
+\sum_{j=1}^r \sigma_j \mathbf{v}_j \mathbf{u}_j^\top
+= \sum_{i=1}^r \frac{1}{\sigma_i} \mathbf{v}_i \mathbf{u}_i^\top
+= \mathbf{X}^+.
+$$
 
 ## Empirical Risk Minimization
 
@@ -270,7 +287,7 @@ This is a powerful result that justifies our use of the mean squared error loss.
 While we have seen the benefits of exactly optimizing linear regression functions, there are several limitations that we will address.
 
 **Computational Complexity**
-We saw (and you will prove) that the exact solution to linear regression is given by $\mathbf{w}^* = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}$.
+We saw that the exact solution to linear regression is given by $\mathbf{w}^* = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}$.
 This requires building the matrix $\mathbf{X}^\top \mathbf{X}$, which takes $O(nd^2)$ time, and then inverting it, which takes $O(d^3)$.
 When we have a large number of data points $n$ and/or a large number of features $d$, this can be prohibitively expensive.
 

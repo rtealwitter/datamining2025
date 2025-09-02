@@ -172,6 +172,7 @@ window.Quarto = {
   <li><a href="#linear-function" id="toc-linear-function" class="nav-link" data-scroll-target="#linear-function">Linear function</a></li>
   <li><a href="#mean-squared-error" id="toc-mean-squared-error" class="nav-link" data-scroll-target="#mean-squared-error">Mean Squared Error</a></li>
   <li><a href="#exact-optimization-1" id="toc-exact-optimization-1" class="nav-link" data-scroll-target="#exact-optimization-1">Exact Optimization</a></li>
+  <li><a href="#singular-value-decomposition" id="toc-singular-value-decomposition" class="nav-link" data-scroll-target="#singular-value-decomposition">Singular Value Decomposition</a></li>
   </ul></li>
   <li><a href="#empirical-risk-minimization" id="toc-empirical-risk-minimization" class="nav-link" data-scroll-target="#empirical-risk-minimization">Empirical Risk Minimization</a></li>
   <li><a href="#looking-forward" id="toc-looking-forward" class="nav-link" data-scroll-target="#looking-forward">Looking Forward</a></li>
@@ -202,16 +203,15 @@ window.Quarto = {
 
 <section id="supervised-learning" class="level2">
 <h2 class="anchored" data-anchor-id="supervised-learning">Supervised Learning</h2>
-<p>Machine learning is incredibly popular. Seen extensive progress in the past several decades, and especially recently with the advent of generative AI.</p>
-<p>There are many problems that fall under the umbrella of machine learning:</p>
+<p>Machine learning is incredibly popular. The area has seen extensive progress in the past several decades, and especially recently with the advent of generative AI. There are many problems that fall under the umbrella of machine learning. For example:</p>
 <ul>
 <li><p>Predicting temperature based on present weather conditions,</p></li>
-<li><p>Identifying whether an image contains a cat or dog, and</p></li>
+<li><p>Identifying objects in an image, and</p></li>
 <li><p>Generating the next word in a sentence.</p></li>
 </ul>
-<p>This course is about how we go about solving these problems. The first half of the course will cover <em>supervised learning</em>, where we are given labeled data, and our goal is to train a function to approximately match the labels.</p>
+<p>This course covers how to solve these problems. The first half of the course will cover <em>supervised learning</em>, where we are given labeled data, and our goal is to train a function to approximately match the labels.</p>
 <p>Concretely, we are given <span class="math inline">\(n\)</span> data points <span class="math inline">\(\mathbf{x}^{(1)}, \ldots, \mathbf{x}^{(n)} \in \mathbb{R}^d\)</span>, each with <span class="math inline">\(d\)</span> dimensions, and associated labels <span class="math inline">\(y^{(1)}, y^{(2)}, \ldots, y^{(n)} \in \mathbb{R}\)</span>. Our goal is to learn a function <span class="math inline">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> so that <span class="math inline">\(f(\mathbf{x}^{(i)}) \approx y^{(i)}\)</span> for all data points <span class="math inline">\(i \in \{1,2,\ldots,n\}\)</span>.</p>
-<p>Our general approach to solving supervised learning problems will be to use <em>empirical risk minimization</em>, which gives a flexible scaffolding that encompasses many of the topics we’ll discuss in this course. Given a function class (e.g., linear functions or neural networks), the idea is to select the function that most closely explains the data. In particular, there are three components to empirical risk minimization:</p>
+<p>Our general approach to solving supervised learning problems will be to use <em>empirical risk minimization</em>, which gives a flexible scaffolding that encompasses many of the topics we’ll discuss in this course. Given a function class, the idea is to select the function that most closely explains the data. In particular, there are three components to empirical risk minimization:</p>
 <ul>
 <li><p><strong>Function Class:</strong> The function class <span class="math inline">\(\mathcal{F}\)</span> from which we will select the function <span class="math inline">\(f\)</span> that most closely fits the observed data.</p></li>
 <li><p><strong>Loss:</strong> The loss function that measures how well a function <span class="math inline">\(f\)</span> fits the observed data. (Without loss of generality, we will assume that lower is better.)</p></li>
@@ -225,17 +225,19 @@ window.Quarto = {
 <section id="linear-functions" class="level3">
 <h3 class="anchored" data-anchor-id="linear-functions">Linear functions</h3>
 <p>As its name suggests, linear regression uses a linear function to process the input into an approximation of the output. Let <span class="math inline">\(w \in \mathbb{R}\)</span> be a weight parameter. The linear function (for one-dimensional inputs) is given by <span class="math inline">\(f(x) = wx\)</span>.</p>
-<p>Unlike many machine learning functions, we can visualize the linear function since it is given by a line. In the plot, we have the <span class="math inline">\(n=10\)</span> data points plotted in two dimensions. There is one linear function <span class="math inline">\(f(x) = 2x\)</span> that closely approximates the data and another linear function <span class="math inline">\(f(x)=\frac12 x\)</span> that poorly approximates the data.</p>
+<p>Unlike many machine learning functions, we can visualize the linear function since it is given by a line. In the plot, we have <span class="math inline">\(n=10\)</span> data points plotted in two dimensions. There is one linear function <span class="math inline">\(f(x) = 2x\)</span> that closely approximates the data and another linear function <span class="math inline">\(f(x)=\frac12 x\)</span> that poorly approximates the data.</p>
 <center>
 <img src="images/regression_1d.svg" class="responsive-img">
 </center>
-<p>Our goal is to learn how to find a linear function that fits the data well. Before we can do this, though, we will need to define what it means for a function to “fit the data well”.</p>
+<p>Our goal is to learn how to find a linear function that fits the data well. Before we can do this, though, we will need to define what a “good” fit means.</p>
 </section>
 <section id="mean-squared-error-loss" class="level3">
 <h3 class="anchored" data-anchor-id="mean-squared-error-loss">Mean Squared Error Loss</h3>
 <p>Our goal for the loss function is to measure how closely the data fits the prediction made by our function. Intuitively, we should take the difference between the prediction and the true outcome <span class="math inline">\(f(x^{(i)})-y^{(i)}\)</span>.</p>
 <p>The issue with this approach is that <span class="math inline">\(f(x^{(i)})-y^{(i)}\)</span> can be small (negative) even when <span class="math inline">\(f(x^{(i)}) \neq y^{(i)}\)</span>. A natural fix is to take the absolute value <span class="math inline">\(|f(x^{(i)}) - y^{(i)}|\)</span>. The benefit of the absolute value is that the loss is <span class="math inline">\(0\)</span> if and only if <span class="math inline">\(f(x^{(i)}) = y^{(i)}\)</span>. However, the absolute value function is not differentiable, which is a property we’ll need for optimization. Instead, we use the squared loss:</p>
-<p><span class="math inline">\(\mathcal{L}(w) = \frac1{n} \sum_{i=1}^n (f(x^{(i)}) - y^{(i)})^2.\)</span></p>
+<p><span class="math display">\[
+\mathcal{L}(w) = \frac1{n} \sum_{i=1}^n (f(x^{(i)}) - y^{(i)})^2.
+\]</span></p>
 <p>Here, we use the mean squared error loss, which is the average squared difference between the prediction and the true output over the dataset. Unlike the absolute value function, the squared function is differentiable everywhere. In addition, the squared error disproportionately penalizes predictions that are far from the true labels, a property that may be desirable when we want <em>all</em> of our predictions to be reasonably accurate.</p>
 <center>
 <img src="images/regression_losses.svg" class="responsive-img">
@@ -245,13 +247,13 @@ window.Quarto = {
 <section id="exact-optimization" class="level3">
 <h3 class="anchored" data-anchor-id="exact-optimization">Exact Optimization</h3>
 <p>We now have our function class and loss function: linear functions and mean squared error loss. The question becomes how to update the weights of the function to minimize the loss. In particular, we want to find <span class="math inline">\(w\)</span> that minimizes <span class="math inline">\(\mathcal{L}(w)\)</span>. While the language we’re using is new, the problem is not. We’ve actually been studying how to do this since pre-calculus!</p>
-<p>The squared loss is convex (a bowl facing up versus the downward facing <em>cave</em> of con<em>cave</em>); see the plot above for a ‘proof’ by example. In this case, we know there is only one minimum. Not only that but we can find the minimum by setting the derivative to <span class="math inline">\(0\)</span>.</p>
-<p>As such, our game plan is to set <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial w}\)</span> to <span class="math inline">\(0\)</span> and solve for <span class="math inline">\(w\)</span>. Recall that <span class="math inline">\(f(x) = wx\)</span>. We will use the linearity of the derivative, the chain rule, and the power rule to compute the derivative of <span class="math inline">\(\mathcal{L}\)</span> with respect to <span class="math inline">\(w\)</span>:</p>
+<p>The squared loss is convex (a bowl facing up versus the downward facing <em>cave</em> of con<em>cave</em>, see the plot above). In this case, we know there is only one minimum. Not only that but we can find the minimum by setting the derivative to <span class="math inline">\(0\)</span>.</p>
+<p>Our game plan is to set <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial w}\)</span> to <span class="math inline">\(0\)</span> and solve for <span class="math inline">\(w\)</span>. Recall that <span class="math inline">\(f(x) = wx\)</span>. We will use the linearity of the derivative, the chain rule, and the power rule to compute the derivative of <span class="math inline">\(\mathcal{L}\)</span> with respect to <span class="math inline">\(w\)</span>:</p>
 <p><span class="math display">\[
 \begin{align}
 \frac{\partial}{\partial w}[\mathcal{L}(w)]
-&amp;= \frac1{n} \sum_{i=1}^n \frac{\partial}{\partial w} [(f(x^{(i)}) - y^{(i)})^2]
-\notag \\&amp;= \frac1{n} \sum_{i=1}^n 2(f(x^{(i)}) - y^{(i)}) \frac{\partial}{\partial w} [(f(x^{(i)}) - y^{(i)})]
+&amp;= \frac1{n} \sum_{i=1}^n \frac{\partial}{\partial w} [(w x^{(i)} - y^{(i)})^2]
+\notag \\&amp;= \frac1{n} \sum_{i=1}^n 2(w x^{(i)} - y^{(i)}) \frac{\partial}{\partial w} [(w x^{(i)} - y^{(i)})]
 \notag \\&amp;= \frac1{n} \sum_{i=1}^n 2(w x^{(i)} - y^{(i)}) x^{(i)}.
 \end{align}
 \]</span></p>
@@ -267,7 +269,7 @@ w = \frac{\sum_{i=1}^n y^{(i)} \cdot x^{(i)}}{\sum_{i=1}^n (x^{(i)})^2}.
 <section id="linear-function" class="level3">
 <h3 class="anchored" data-anchor-id="linear-function">Linear function</h3>
 <p>Instead of using a single weight <span class="math inline">\(w \in \mathbb{R}\)</span>, we will use <span class="math inline">\(d\)</span> weights <span class="math inline">\(\mathbf{w} \in \mathbb{R}^d\)</span>. Then the function is given by <span class="math inline">\(f(x) = \langle \mathbf{w}, \mathbf{x} \rangle\)</span>.</p>
-<p>Instead of using a <em>line</em> to fit the data, we use a <em>hyperplane</em>. While visualizing the function is difficult in high dimensions, we can still see the function when <span class="math inline">\(d=2\)</span>.</p>
+<p>Instead of using a <em>line</em> to fit the data, we use a <em>hyperplane</em>. While visualizing the function is difficult in high dimensions, we can still plot the function when <span class="math inline">\(d=2\)</span>.</p>
 <center>
 <img src="images/regression_2d.svg" class="responsive-img">
 </center>
@@ -282,7 +284,7 @@ w = \frac{\sum_{i=1}^n y^{(i)} \cdot x^{(i)}}{\sum_{i=1}^n (x^{(i)})^2}.
 </section>
 <section id="exact-optimization-1" class="level3">
 <h3 class="anchored" data-anchor-id="exact-optimization-1">Exact Optimization</h3>
-<p>Just like computing the derivative and setting it to <span class="math inline">\(0\)</span>, we can compute the gradient and set it to the zero vector <span class="math inline">\(\mathbf{0} \in \mathbb{R}^d\)</span>. In mathematical notation, we will set <span class="math inline">\(\nabla_\mathbf{w} \mathcal{L}(\mathbf{w}^*) = \mathbf{0}\)</span> and solve for <span class="math inline">\(\mathbf{w}^*\)</span>. The intuition is that such a point is a local minimum in every direction; that is, we cannot improve the loss by moving in any of the dimensions. Since the loss is convex (i.e., there can be only one minima), such a point is the unique global minimum and achieves the optimal loss.</p>
+<p>Just like computing the derivative and setting it to <span class="math inline">\(0\)</span>, we can compute the gradient and set it to the zero vector <span class="math inline">\(\mathbf{0} \in \mathbb{R}^d\)</span>. In mathematical notation, we will set <span class="math inline">\(\nabla_\mathbf{w} \mathcal{L}(\mathbf{w}^*) = \mathbf{0}\)</span> and solve for <span class="math inline">\(\mathbf{w}^*\)</span>. The intuition is that such a point is a local minimum in every direction; that is, we cannot improve the loss by moving in any of the dimensions. Since the loss is convex, there can be only one minima.</p>
 <p>As you may recall from multivariate calculus, the gradient <span class="math inline">\(\nabla_\mathbf{w} \mathcal{L}(\mathbf{w})\)</span> is simply a vector with the same dimension as <span class="math inline">\(\mathbf{w}\)</span>; the value in the <span class="math inline">\(i\)</span>th dimension is <span class="math inline">\(\frac{\partial \mathcal{L}(\mathbf{w})}{\partial w_i}\)</span>.</p>
 <p>Let’s compute this quantity <span class="math display">\[
 \begin{align}
@@ -290,7 +292,7 @@ w = \frac{\sum_{i=1}^n y^{(i)} \cdot x^{(i)}}{\sum_{i=1}^n (x^{(i)})^2}.
 &amp;= \lim_{\Delta \to 0} \frac{\mathcal{L}(\mathbf{w}+\Delta \mathbf{e}_i) - \mathcal{L}(\mathbf{w})}{\Delta}
 \\&amp;=\lim_{\Delta \to 0} \frac{\| \mathbf{X} (\mathbf{w}+\Delta \mathbf{e}_i) - \mathbf{y}\|^2 - \| \mathbf{X} \mathbf{w} - \mathbf{y}\|^2 }{\Delta}.
 \end{align}
-\]</span> Let <span class="math inline">\(\mathbf{a}, \mathbf{b}\)</span> be two vectors in the same dimensional space. We have <span class="math inline">\(\|\mathbf{a} + \mathbf{b} \|^2 = \langle \mathbf{a} + \mathbf{b} , \mathbf{a} + \mathbf{b} \rangle = \| \mathbf{a} \|^2 + 2\langle \mathbf{a}, \mathbf{b} \rangle + \| \mathbf{b}\|^2\)</span>, where we foiled to reach the final equality, and used that <span class="math inline">\(\langle \mathbf{a}, \mathbf{b} \rangle = \langle \mathbf{a}, \mathbf{b} \rangle\)</span>. By letting <span class="math inline">\(\mathbf{a} = \mathbf{X w - b}\)</span> and <span class="math inline">\(\mathbf{b} = \Delta \mathbf{X} \mathbf{e}_i\)</span>, we reach <span class="math display">\[
+\]</span> Let <span class="math inline">\(\mathbf{a}, \mathbf{b}\)</span> be two vectors in the same dimensional space. We have <span class="math inline">\(\|\mathbf{a} + \mathbf{b} \|^2 = \langle \mathbf{a} + \mathbf{b} , \mathbf{a} + \mathbf{b} \rangle = \| \mathbf{a} \|^2 + 2\langle \mathbf{a}, \mathbf{b} \rangle + \| \mathbf{b}\|^2\)</span>, where we foiled to reach the final equality, and used that <span class="math inline">\(\langle \mathbf{a}, \mathbf{b} \rangle = \langle \mathbf{b}, \mathbf{a} \rangle\)</span>. By letting <span class="math inline">\(\mathbf{a} = \mathbf{X w - y}\)</span> and <span class="math inline">\(\mathbf{b} = \Delta \mathbf{X} \mathbf{e}_i\)</span>, we reach <span class="math display">\[
 \begin{align}
 \frac{\partial \mathcal{L}(\mathbf{w})}{\partial w_i}
 &amp;=\lim_{\Delta \to 0} \frac{\| \mathbf{X} \mathbf{w} - \mathbf{y}\|^2
@@ -299,10 +301,9 @@ w = \frac{\sum_{i=1}^n y^{(i)} \cdot x^{(i)}}{\sum_{i=1}^n (x^{(i)})^2}.
 - \| \mathbf{X} \mathbf{w} - \mathbf{y}\|^2 }{\Delta}.
 \\&amp;= \lim_{\Delta \to 0} \frac{2 \Delta \langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle
 +\Delta^2 \|\mathbf{X e}_i\|^2}{\Delta}
-\\&amp;= \lim_{\Delta \to 0} 2 \langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle + \Delta \|\mathbf{X e}_i\|^2
-\\&amp;=\langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle.
+\\&amp;=2\langle \mathbf{X} \mathbf{w} - \mathbf{y}, \mathbf{X e}_i \rangle.
 \end{align}
-\]</span> Let <span class="math inline">\(\mathbf{X}_i = \mathbf{Xe}_i\)</span> be the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\mathbf{X}\)</span>. Then, the full gradient is given by <span class="math display">\[
+\]</span> Let <span class="math inline">\(\mathbf{X}_i = \mathbf{Xe}_i\)</span> be the <span class="math inline">\(i\)</span>th column of <span class="math inline">\(\mathbf{X}\)</span>. Then, the full gradient is given by <span class="math display">\[
 \begin{align}
 \nabla_\mathbf{w}\mathcal{L}(\mathbf{w})
 = 2 \begin{bmatrix}
@@ -321,8 +322,20 @@ w = \frac{\sum_{i=1}^n y^{(i)} \cdot x^{(i)}}{\sum_{i=1}^n (x^{(i)})^2}.
 \\ \Leftrightarrow
 \mathbf{w}^* &amp;= (\mathbf{X}^\top \mathbf{X})^+ \mathbf{X}^\top \mathbf{y}
 \end{align}
-\]</span> where <span class="math inline">\((\cdot)^+\)</span> is the pseudoinverse i.e., <span class="math inline">\((\mathbf{M})^+ \mathbf{M} = \mathbf{I}\)</span> for all symmetric matrices <span class="math inline">\(\mathbf{M}\)</span>.</p>
-<p>Question: Is the pseudoinverse also defined for non-symmetric square matrices?</p>
+\]</span> where <span class="math inline">\((\cdot)^+\)</span> is the pseudoinverse.</p>
+</section>
+<section id="singular-value-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="singular-value-decomposition">Singular Value Decomposition</h3>
+<p>Even when a matrix is not square, we can still use a generalization of the eigendecomposition. Suppose <span class="math inline">\(\mathbf{X} = \sum_{i=1}^r \sigma_i \mathbf{u}_i \mathbf{v}_i^\top\)</span> is the singular value decomposition (SVD) of <span class="math inline">\(\mathbf{X}\)</span>, where <span class="math inline">\(\mathbf{u}_i \in \mathbb{R}^n\)</span> are the left singular vectors, <span class="math inline">\(\mathbf{v}_i \in \mathbb{R}^d\)</span> are the right singular vectors, and <span class="math inline">\(\sigma_i \in \mathbb{R}\)</span> are the singular values. The pseudoinverse is <span class="math display">\[
+\mathbf{X}^+ = \sum_{i=1}^r \frac{1}{\sigma_i} \mathbf{v}_i \mathbf{u}_i^\top.
+\]</span></p>
+<p>For our equation, we can compute <span class="math inline">\(\mathbf{X}^\top \mathbf{X} = \sum_{i=1}^r \sigma_i^2 \mathbf{v}_i \mathbf{v}_i^\top\)</span>. So <span class="math inline">\((\mathbf{X}^\top \mathbf{X})^+ = \sum_{i=1}^r \frac{1}{\sigma_i^2} \mathbf{v}_i \mathbf{v}_i^\top\)</span>. Together, we have <span class="math display">\[
+(\mathbf{X}^\top \mathbf{X})^+ \mathbf{X}^\top
+= \left( \sum_{i=1}^r \frac{1}{\sigma_i^2} \mathbf{v}_i \mathbf{v}_i^\top\right)
+\sum_{j=1}^r \sigma_j \mathbf{v}_j \mathbf{u}_j^\top
+= \sum_{i=1}^r \frac{1}{\sigma_i} \mathbf{v}_i \mathbf{u}_i^\top
+= \mathbf{X}^+.
+\]</span></p>
 </section>
 </section>
 <section id="empirical-risk-minimization" class="level2">
@@ -365,7 +378,7 @@ y= \langle \mathbf{w}^*, \mathbf{x} \rangle + \eta.
 <section id="looking-forward" class="level2">
 <h2 class="anchored" data-anchor-id="looking-forward">Looking Forward</h2>
 <p>While we have seen the benefits of exactly optimizing linear regression functions, there are several limitations that we will address.</p>
-<p><strong>Computational Complexity</strong> We saw (and you will prove) that the exact solution to linear regression is given by <span class="math inline">\(\mathbf{w}^* = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}\)</span>. This requires building the matrix <span class="math inline">\(\mathbf{X}^\top \mathbf{X}\)</span>, which takes <span class="math inline">\(O(nd^2)\)</span> time, and then inverting it, which takes <span class="math inline">\(O(d^3)\)</span>. When we have a large number of data points <span class="math inline">\(n\)</span> and/or a large number of features <span class="math inline">\(d\)</span>, this can be prohibitively expensive.</p>
+<p><strong>Computational Complexity</strong> We saw that the exact solution to linear regression is given by <span class="math inline">\(\mathbf{w}^* = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}\)</span>. This requires building the matrix <span class="math inline">\(\mathbf{X}^\top \mathbf{X}\)</span>, which takes <span class="math inline">\(O(nd^2)\)</span> time, and then inverting it, which takes <span class="math inline">\(O(d^3)\)</span>. When we have a large number of data points <span class="math inline">\(n\)</span> and/or a large number of features <span class="math inline">\(d\)</span>, this can be prohibitively expensive.</p>
 <p><strong>Function Class Misspecification</strong> We have assumed that the data has a linear relationship (or close to linear relationship) with the labels. What happens when this is not true? That is, even the best linear function gives a poor approximation?</p>
 
 
