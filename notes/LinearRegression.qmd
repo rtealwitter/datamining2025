@@ -250,7 +250,7 @@ $$
 We will model this noise as distributed from a normal distribution, i.e., $\eta \sim \mathcal{N}(0, \sigma^2)$ for some unknown standard deviation $\sigma$.
 (To justify this choice, we imagine the noise as a sum of random variables from some other distribution(s) which, by the law of large numbers, will follow the normal distribution when the sum contains sufficiently many terms.)
 
-Recall that the goal of our empirical risk minimization strategy is to find the function which most closely aligns with the data, or, put differently, *we want the function that most likely generated the data we observed*.
+Recall that the goal of our empirical risk minimization strategy is to find the function which most closely aligns with the data, or, put differently, we want the **function that most likely generated the data we observed**.
 In order to compute this likelihood, we will use the probability density function of the normal distribution:
 The probability we observe a random variable $y$ drawn from a normal distribution with mean $\mu$ and standard deviation $\sigma$ is given by
 $$
