@@ -208,20 +208,21 @@ where $(\cdot)^+$ is the pseudoinverse.
 ### Singular Value Decomposition
 
 Even when a matrix is not square, we can still use a generalization of the eigendecomposition.
-Suppose $\mathbf{X} = \sum_{i=1}^r \sigma_i \mathbf{u}_i \mathbf{v}_i^\top$ is the singular value decomposition (SVD) of $\mathbf{X}$, where $\mathbf{u}_i \in \mathbb{R}^n$ are the left singular vectors, $\mathbf{v}_i \in \mathbb{R}^d$ are the right singular vectors, and $\sigma_i \in \mathbb{R}$ are the singular values.
+Suppose $\mathbf{X} = \sum_{i=1}^d \sigma_i \mathbf{u}_i \mathbf{v}_i^\top$ is the singular value decomposition (SVD) of $\mathbf{X}$, where $\mathbf{u}_i \in \mathbb{R}^n$ are the left singular vectors, $\mathbf{v}_i \in \mathbb{R}^d$ are the right singular vectors, and $\sigma_i \in \mathbb{R}$ are the singular values.
+(We'll assume that all the columns of $\mathbf{X}$ are linearly independent; otherwise, we could simply remove one without changing the optimization problem.)
 The pseudoinverse is 
 $$
-\mathbf{X}^+ = \sum_{i=1}^r \frac{1}{\sigma_i} \mathbf{v}_i \mathbf{u}_i^\top.
+\mathbf{X}^+ = \sum_{i=1}^d \frac{1}{\sigma_i} \mathbf{v}_i \mathbf{u}_i^\top.
 $$
 
-For our equation, we can compute $\mathbf{X}^\top \mathbf{X} = \sum_{i=1}^r \sigma_i^2 \mathbf{v}_i \mathbf{v}_i^\top$.
-So $(\mathbf{X}^\top \mathbf{X})^+ = \sum_{i=1}^r \frac{1}{\sigma_i^2} \mathbf{v}_i \mathbf{v}_i^\top$.
+For our equation, we can compute $\mathbf{X}^\top \mathbf{X} = \sum_{i=1}^d \sigma_i^2 \mathbf{v}_i \mathbf{v}_i^\top$.
+So $(\mathbf{X}^\top \mathbf{X})^+ = \sum_{i=1}^d \frac{1}{\sigma_i^2} \mathbf{v}_i \mathbf{v}_i^\top$.
 Together, we have
 $$
 (\mathbf{X}^\top \mathbf{X})^+ \mathbf{X}^\top
-= \left( \sum_{i=1}^r \frac{1}{\sigma_i^2} \mathbf{v}_i \mathbf{v}_i^\top\right) 
-\sum_{j=1}^r \sigma_j \mathbf{v}_j \mathbf{u}_j^\top
-= \sum_{i=1}^r \frac{1}{\sigma_i} \mathbf{v}_i \mathbf{u}_i^\top
+= \left( \sum_{i=1}^d \frac{1}{\sigma_i^2} \mathbf{v}_i \mathbf{v}_i^\top\right) 
+\sum_{j=1}^d \sigma_j \mathbf{v}_j \mathbf{u}_j^\top
+= \sum_{i=1}^d \frac{1}{\sigma_i} \mathbf{v}_i \mathbf{u}_i^\top
 = \mathbf{X}^+.
 $$
 
