@@ -7,29 +7,80 @@ format:
     include-after-body: readtime.html
 ---
 
+We have so far seen linear regression models.
+In the last lecture, we saw how to more efficiently compute the parameters of a linear regression model using gradient descent.
+However, we still have the issue that linear models are not very expressive models.
+In this lecture, we will see how to make linear models more expressive by adding additional features.
+
 ## Polynomial Regression
 
-Introduce variables that give better fit to the data, manipulate the data to create new features, e.g., polynomial regression.
+A linear model learns weights for each feature i.e.,
 
-Claim: The fit of the regression model can only be improved by adding additional features.
+$$
+f(\mathbf{x}) = w_0 + w_1 x_1 + w_2 x_2 + \ldots + w_d x_d.
+$$
 
-(Add picture here of polynomial regression with various degrees of polynomial, e.g., linear, quadratic, cubic, etc.)
+In polynomial regression, we add additional features that are polynomial functions of the original features, e.g.,
+$$
+f(\mathbf{x}) = w_0 + w_1 x_1 x_2 + w_3 x_1^2 + w_4 x_2^2.
+$$
 
-In picture, we can tell which gives the right fit
+In terms of matrix multiplication view of linear regression, we can think of adding additional columns to the feature matrix $\mathbf{X}$ by multiplying existing columns together, or raising them to a power.
 
-How do we do this automatically?
+<center><img src="images/regression_extra_columns.svg" class="responsive-img"></center>
+
+Notice that the model is still linear in the parameters, so we can still use the same techniques to fit the model; the only change is that we have more features.
+
+Polynomial regression certainly adds more terms to the model, but does it actually help?
+
+**Claim:** The fit of the regression model can only be improved by adding additional features. Formally,
+
+$$
+\min_{\mathbf{w}} \|\mathbf{y} - \mathbf{X}'\mathbf{w}\|^2_2 \leq \min_{\mathbf{w}} \|\mathbf{y} - \mathbf{X}\mathbf{w}\|^2_2
+$$
+
+where $\mathbf{X}$ is the original data matrix, and $\mathbf{X}'$ is the augmented data matrix with additional polynomial features.
+
+To see this, note that any weight vector $\mathbf{w}$ for the original data matrix $\mathbf{X}$ can be extended to a weight vector $\mathbf{w}'$ for the augmented data matrix $\mathbf{X}'$ by setting the weights corresponding to the additional features to zero.
+
+Let's see an example of polynomial regression in action.
+Consider a quadratic function with some noise for $x \in [-1, 1]$.
+We will fit polynomial regression models of varying degrees to this data.
+
+<center><img src="images/regression_polynomial.svg" class="responsive-img"></center>
+
+The degree 1 polynomial (linear regression) does not fit the data well, the degree 2 polynomial gives a much better fit, and the degree 10 polynomial fits the data perfectly.
+However, the degree 10 polynomial appears to be fitting even the noise in the data, to the point where it appears to be oscillating wildly between data points.
+This phenomenon is called *overfitting*, where the model effectively memorizes the training data.
+
+In the picture, we can tell which gives the right fit. The degree 2 polynomial gets the *trend* right, without overfitting to the noise.
+But how can we tell this in practice, when we don't have the option of visualizing the data?
 
 ### Generalization Error
 
-Training data versus testing data
+If a model memorizes the training data to the point of overfitting, it will not generalize well to unseen data drawn from the same distribution as the training data.
+We can measure this by splitting the data into a training set and a testing set.
+We train the model on the training set, and measure the performance on both the training set and the testing set.
 
-Generalization error
+This withheld data is called the *test set* or *validation set*.
+Because, just like the training data, the test set is a random sample from the true data distribution, it gives us an unbiased estimate of the generalization error.
+We can use the test loss as an approximation for the generalization error when we choose the best model and hyperparameters.
 
-If we withhold data, this gives us an unbiased estimate of the generalization error: Expectation of performance on random sample, is performance on true data set.
+The most common way to split the data is to use 80% of the data for training and 20% for testing.
+However, this is not ideal because it reduces the amount of data available for training and for approximating the test error.
+An alternative is to use *cross-validation*, where we split the data into $k$ folds, and use each fold as the test set while training on the remaining $k-1$ folds.
+This gives a better estimate of the test error, and allows us to use more data for training.
+However, the cost is the increased computational cost of training the model $k$ times.
+On the problem set, we saw how to circumvent this cost for linear regression by exactly computing leave-one-out predictions.
+To get the $n$ fold cross-validation error, we can simply average the error for each of our leave-one-out predictions.
 
-Can we use data more efficiently? $k$-fold cross validation
+In practice, we often bias this process by using the test set to tune the model.
+In particular, we often train and test a model, update the model (hyperparameters, architecture, training method), train and test the updated version, update again, and so on. The repeated use of the test data introduces a dependence between our model and the test data.
+Eventually, the model can overfit to the test data, even though we are not using the test data to train the model.
 
-In practice, we often bias this process by training, testing, updating the model (hyperparameters, architecture, training method), training, testing, updating the model, etc. The repeated use of the test data means our model depends on the test data and eventually overfits to it, even though we are not using the test data to train the model.
+This is a subtle but important point: the test data is no longer an unbiased estimate of the generalization error, because the model has been tuned to perform well on the test data.
+More broadly, this is an instance of the problem of *data snooping*, where we use the data to make decisions about the model, and then use the same data to evaluate the model.
+It's related to the more general problem of [$p$-hacking in scientific research](https://xkcd.com/882/), where researchers try multiple analyses and only report the ones that give significant results.
 
 ### Regularization
 
@@ -37,9 +88,7 @@ Non-linear models are incredibly powerful models that can approximate any functi
 However, this power comes with a cost: non-linear models can be very complex models and can easily overfit the training data.
 That is, they can learn to memorize, but fail to generalize to unseen data.
 
-(Redo this figures with polynomial regression)
-
-<center><img src="images/regression_overfitting.svg" class="responsive-img"></center>
+<center><img src="images/regression_polynomial_weights.svg" class="responsive-img"></center>
 
 When we believe our data comes from a simpler generating process, it makes sense to use a simpler model.
 Even when that simpler generating process is not a linear model, we can attempt to find simpler models through *regularization*.
@@ -47,34 +96,33 @@ Regularization is a technique that adds a penalty to the loss function to discou
 
 $$
 \begin{align*}
-\frac1n \sum_{i=1}^n (f(\mathbf{x}^{(i)}) - y^{(i)})^2 + \lambda \|\mathbf{w}\|^2_2,
+\mathcal{L}(\mathbf{w}) + \lambda \|\mathbf{w}\|^2_2,
 \end{align*}
 $$
 where $\lambda$ is a hyperparameter that controls the strength of the penalty and $\|\mathbf{w}\|_2$ is the $\ell-2$ norm of the weights, which is the square root of the sum of the squares of the weights.
 
-
 The idea is that we can keep the model "simple" by penalizing large weights, which would otherwise allow the model to achieve large changes in the output for small changes in the input.
-
-<center><img src="images/regression_regularization.svg" class="responsive-img"></center>
-
-In the plot, we see data generated from a quadratic function.
-The linear model is too simple and fails to capture the underlying relationship, while the standard neural network is too complex and overfits the training data.
-The regularized neural network, however, is able to capture the underlying relationship while still being simple enough to generalize to unseen data.
 
 How to control the strength of the regularization $\lambda$?
 
 How do we minimize the regularized loss function for regression?
 
-We can also use a regularizaiton with $\ell_1$ norm, which penalizes the absolute value of the weights.
+We can also use a regularization with $\ell_1$ norm, which penalizes the absolute value of the weights.
 This is called *Lasso* regression, and it has the effect of encouraging sparsity in the model, i.e., some weights will be exactly zero.
+(Intuition here [notes](https://www.rtealwitter.com/rads2024/notes/19_sparse_recovery.html#Efficient_Algorithm))
 Useful when we have many features, but we believe only a few of them are actually relevant to the prediction.
 
-## Going Forward
+Implicit regularization [notes](https://www.rtealwitter.com/deeplearning2023/regularization.html).
 
-Today, we got a taste of how to use gradient descent to optimize non-linear models, particularly neural networks.
-This is a rich area that has seen incredible recent advancements, particularly in the context of generative AI.
-In fact, I teach an entire [course](https://www.rtealwitter.com/deeplearning2025/) dedicated to deep learning.
-In this course, however, we will instead focus on the mathematical foundations of machine learning.
+### Double Descent
 
-We have so far explored supervised learning in the regression setting, where the labels are real numbers.
-going forward, we will consider how to handle the case where the labels are categorical, e.g., we want to classify the data into two categories such as "cat" and "dog" or "spam" and "not spam".
+In most machine learning courses, the story is that there is a tradeoff between performance on the training data and performance on the test data.
+In particular, we should should carefully monitor both the training and validation loss, and stop training when the validation loss starts to increase, even if the training loss is still decreasing.
+One of the key insights of modern machine learning is that this story is not quite right:
+If we keep training a model that appears to be overfitting, we can often see the validation loss start to decrease again.
+
+<center><img src="images/regression_polynomial_loss.svg" class="responsive-img"></center>
+
+This phenomenon is called *double descent* and it has been observed in many different settings, including deep learning.
+One explanation relates to implicit regularization in the training process.
+As we keep training, the model finds a simpler solution that generalizes better to unseen data.

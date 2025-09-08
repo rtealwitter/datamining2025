@@ -16,7 +16,7 @@ We chose to measure loss via mean squared error, a choice both rooted in conveni
 In order to find the best parameters of the linear model, we used our knowledge of gradients to exactly compute the parameters that minimize the mean squared error loss.
 
 This week, we will address two of the nagging issues with computing the best parameters of a linear model.
-We begin with the issue of *runtime*; computing the optimal parameters requires building a large matrix and inverting it, which can be computationally expensive.
+We begin with the issue of *runtime*; computing the optimal parameters requires building a large matrix and inverting it, which takes $O(nd^2 + d^3)$ time, where $n$ is the number of data points and $d$ is the number of features.
 We will now see how we can use gradient descent to speed up this process.
 
 ### Gradient Descent
