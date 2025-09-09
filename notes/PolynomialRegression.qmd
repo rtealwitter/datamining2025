@@ -57,26 +57,25 @@ But how can we identify the right fit in general for higher dimensional and larg
 
 ### Generalization Error
 
-If a model memorizes the training data to the point of overfitting, it will not generalize well to unseen data drawn from the same distribution as the training data.
-We can measure this by splitting the data into a training set and a testing set.
-We train the model on the training set, and measure the performance on both the training set and the testing set.
+If a model memorizes the training data to the point of overfitting, it will not generalize well to new data.
+We can measure how well it will generalize by splitting the data into a training set and a validation set.
+We train the model on the training set, and measure the performance on both the training set and the validation set.
 
-This withheld data is called the *test set* or *validation set*.
-Because just like the training data, the test set is a random sample from the true data distribution, it gives us an unbiased estimate of the generalization error.
-We can use the test loss as an approximation for the generalization error when we choose the best model and hyperparameters.
+Because the validation set is a random sample from the true data distribution, it gives us an unbiased estimate of the generalization error.
+We can use the validation loss as an approximation for the generalization error when we choose the best model and hyperparameters.
 
-The most common way to split the data is to use 80% of the data for training and 20% for testing.
-However, this is not ideal because it reduces the amount of data available for training and for approximating the test error.
-An alternative is to use *cross-validation*, where we split the data into $k$ folds, and use each fold as the test set while training on the remaining $k-1$ folds.
-This gives a better estimate of the test error, and allows us to use more data for training.
+The most common way to split the data is to use 80% of the data for training and 10% for validation and 10% for testing.
+However, this is not ideal because it reduces the amount of data available for training and for approximating the generalization error.
+An alternative is to use *cross-validation*, where we split the non-test data into $k$ folds, and use each fold as the validation set while training on the remaining $k-1$ folds.
+This gives a better estimate of the generalization error, and allows us to use more data for training.
 However, the cost is the increased computational cost of training the model $k$ times.
 On the problem set, we saw how to circumvent this cost for linear regression by exactly computing leave-one-out predictions.
 
-In practice, we often introduce a bias by using the test set to tune the model.
-In particular, we often train and test a model, update the model (hyperparameters, architecture, training method), train and test the updated version, update again, and so on.
-The repeated use of the test data introduces a dependence between our model and the test data.
-Eventually, the model can achieve better performance on the test data, even though we never used the test data to train the model.
+In practice, we often introduce a bias by using the validation set to tune the model.
+When we train and evaluate a model multiple times on the same validation set to update the model (e.g., change hyperparameters, architecture, training method), we are effectively using the validation set as part of the training process.
+Eventually, the model can achieve better performance on the validation data, even though we never used the validation data to train the model.
 More broadly, this phenomenon is related to the more general problem of [$p$-hacking in scientific research](https://xkcd.com/882/), where researchers try multiple analyses and only report the ones that give significant results.
+Our solution is to use a separate test set that is only used once at the very end to report the final performance of the model.
 
 ### Regularization
 
@@ -122,3 +121,7 @@ If we *keep* training a model that appears to be overfitting, we can often see t
 This phenomenon is called *double descent*, because the validation loss curve descends first as the model fits the training data better, then ascends as the model overfits, and finally descends again.
 One explanation for the second descent is that the model is *implicitly regularized* by the training process.
 (Check out [these notes](https://www.rtealwitter.com/deeplearning2023/regularization.html) for a proof of implicit regularization in linear regression.)
+
+There is also another form of double descent that occurs as we increase the number of parameters in the model.
+When the number of parameters is greater than the number of training examples, the model can perfectly fit the training data, but it may not generalize well to new data.
+However, as we increase the number of parameters even further, it appears empirically that models implicitly regularize themselves and generalize better.

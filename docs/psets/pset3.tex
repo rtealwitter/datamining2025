@@ -40,16 +40,17 @@ If you would like to use LaTeX, you can import the source of this document (avai
 \newpage
 \section*{Problem 1: Gradient Descent on Quadratics}
 
-\subsection*{Part A: Closed-form iterates}
+Let's apply gradient descent to quadratic loss functions.
+Recall the gradient descent update is
+\begin{align}
+    \mathbf{w}^{(t+1)} \gets 
+    \mathbf{w}^{(t)}
+    - \alpha \nabla \mathcal{L}(\mathbf{w}).
+\end{align}
+
+\subsection*{Part A: Closed-form Iterates}
 Consider minimizing a one-dimensional quadratic loss
-\[
-\mathcal{L}(w) = \frac{a}{2} w^2 - b\, w + c
-\quad\text{with } a>0.
-\]
-Let $w^* = \argmin_w \mathcal{L}(w) = b/a$ and the gradient descent update
-\[
-w^{(t+1)} \gets w^{(t)} - \alpha \nabla \mathcal{L}(w^{(t)}).
-\]
+$\mathcal{L}(w) = \frac{a}{2} w^2 - b\, w + c$ with $a>0.$
 
 Show that the error contracts geometrically:
 \[
@@ -57,20 +58,22 @@ w^{(t)} - w^* = (1 - \alpha a)^t \,(w^{(0)} - w^*).
 \]
 For which $\alpha$ does this converge? What choice of $\alpha$ gives the fastest (one-step) convergence in 1D?
 
-\subsection*{Part B: Multi-dimensional extension}
+\textbf{Hint:} Find $w^*$, and write $b$ in terms of $w^*$.
+
+\subsection*{Part B: Multi-dimensional Extension}
 Let $\mathcal{L}(\mathbf{w}) = \tfrac12 \mathbf{w}^\top \mathbf{A} \mathbf{w} - \mathbf{b}^\top \mathbf{w} + c$ with $\mathbf{A} \in \mathbb{R}^{d\times d}$ symmetric positive definite (all eigenvalues are strictly positive).
-Show that for the gradient descent update $\mathbf{w}^{(t+1)}=\mathbf{w}^{(t)}-\alpha(\mathbf{A} \mathbf{w}^{(t)}-\mathbf{b})$,
-\[
+Show that for the gradient descent update 
+$$
 \|\mathbf{w}^{(t)}-\mathbf{w}^*\|_2 \le \rho^t \|\mathbf{w}^{(0)}-\mathbf{w}^*\|_2
 \quad\text{where}\quad
 \rho = \max_i |1-\alpha \lambda_i(\mathbf{A})|.
-\]
-Deduce that convergence holds iff $0<\alpha<2/\lambda_{\max}(A)$.
+$$
+Deduce that convergence holds iff $0<\alpha<2/\lambda_{\max}(\mathbf{A})$.
 
-\textbf{Hint:} Use the inequality that $\| \mathbf{M v} \|_2 \leq \| \mathbf{M} \|_2 \|\mathbf{v}\|_2$, for matrix $\mathbf{M}$ and vector $\mathbf{v}$, where $\| \mathbf{M} \|_2 = \lambda_{\text{max}} (\mathbf{M})$.
+\textbf{Hint:} Follow the same approach as before. Along the way, use the inequality that $\| \mathbf{M v} \|_2 \leq \| \mathbf{M} \|_2 \|\mathbf{v}\|_2$, for matrix $\mathbf{M}$ and vector $\mathbf{v}$, where $\| \mathbf{M} \|_2 = \lambda_{\text{max}} (\mathbf{M})$ is the \textit{spectral} norm of a matrix.
 
-\subsection*{Part C: Least squares specialization}
-For mean squared error $\mathcal{L}(\mathbf{w})=\tfrac1{2n}\|\mathbf{X}\mathbf{w}-\mathbf{y}\|_2^2$, identify $\mathbf{A}$ and $\mathbf{b}$ and express $\lambda_{\max}(\mathbf{A})$ in terms of $\mathbf{X}$. What step-size bound in terms of $\|\mathbf{X}\|_2$ guarantees convergence?
+\subsection*{Part C: Least Squares Specialization}
+For the MSE loss $\mathcal{L}(\mathbf{w})=\tfrac1{2}\|\mathbf{X}\mathbf{w}-\mathbf{y}\|_2^2$, identify $\mathbf{A}$ and $\mathbf{b}$ and express $\lambda_{\max}(\mathbf{A})$ in terms of $\mathbf{X}$. What step-size bound in terms of the singular value decomposition of $\mathbf{X}$ guarantees convergence?
 
 \subsection*{Part D: Empirical Checks}
 
@@ -79,5 +82,7 @@ With random initializations, repeatedly run gradient descent for $100$ epochs wi
 In particular, choose $\alpha$ at evenly spaced intervals from $0$ to twice the bound you found in the prior part.
 Plot the loss by these $\alpha$.
 What do you notice?
+
+%\input{solutions/solution3_1}
 
 \end{document}
