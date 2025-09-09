@@ -73,8 +73,8 @@ output:
     <td>Week 3 (9/9 and 9/11)</td>
     <td><a href="notes/GradientDescent.qmd">Gradient Descent</a></td>
     <td><a href="notes/PolynomialRegression.qmd">Polynomial Regression</a></td>
-    <td></td>
-    <td></td>
+    <td><a href="slides/Week3.pdf">Slides</a></td>
+    <td>[Pset 3](psets/pset3.pdf) ([TeX](psets/pset3.tex)) due 9/15 </td>
   </tr>
   <tr>
     <td>Week 4 (9/16 and 9/18)</td>
