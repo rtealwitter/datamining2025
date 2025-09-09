@@ -58,8 +58,8 @@ $$
 \end{align*}
 $$
 We want $\mathcal{L}(w+\Delta)$ to be smaller than $\mathcal{L}(w)$, so we want $\frac{\partial \mathcal{L}(w)}{\partial w} \Delta < 0$.
-This can be achieved by setting $\Delta = -\eta \frac{\partial \mathcal{L}(w)}{\partial w}$, where $\eta$ is a small positive constant.
-Then $w^{(t+1)} = w^{(t)} - \eta \frac{\partial \mathcal{L}(w^{(t)})}{\partial w}$ is a step in the direction of descent.
+This can be achieved by setting $\Delta = -\alpha \frac{\partial \mathcal{L}(w)}{\partial w}$, where $\alpha$ is a small positive constant.
+Then $w^{(t+1)} = w^{(t)} - \alpha \frac{\partial \mathcal{L}(w^{(t)})}{\partial w}$ is a step in the direction of descent.
 
 In the multi-dimensional setting, the partial derivative of the loss function with respect to each parameter is given by the gradient:
 $$
@@ -75,8 +75,8 @@ For a general vector $\mathbf{v}$, we can write
 $$
 \mathcal{L}(\mathbf{w} + \Delta \mathbf{v}) - \mathcal{L}(\mathbf{w}) \approx \langle \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}), \Delta \mathbf{v} \rangle.
 $$
-If we want to move in the direction of steepest descent, we can set $\Delta \mathbf{v} = -\eta \nabla_\mathbf{w} \mathcal{L}(\mathbf{w})$, where $\eta$ is a small positive constant.
-Then, we have $\mathcal{L}(\mathbf{w} - \eta \nabla_\mathbf{w} \mathcal{L}(\mathbf{w})) - \mathcal{L}(\mathbf{w}) \approx -\eta \langle \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}), \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}) \rangle = -\eta \|\nabla_\mathbf{w} \mathcal{L}(\mathbf{w})\|^2$.
+If we want to move in the direction of steepest descent, we can set $\Delta \mathbf{v} = -\alpha \nabla_\mathbf{w} \mathcal{L}(\mathbf{w})$, where $\alpha$ is a small positive constant.
+Then, we have $\mathcal{L}(\mathbf{w} - \alpha \nabla_\mathbf{w} \mathcal{L}(\mathbf{w})) - \mathcal{L}(\mathbf{w}) \approx -\alpha \langle \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}), \nabla_\mathbf{w} \mathcal{L}(\mathbf{w}) \rangle = -\alpha \|\nabla_\mathbf{w} \mathcal{L}(\mathbf{w})\|^2$.
 
 Could we choose a better direction $\mathbf{v}'$ to move in? Well, recall for any vectors $\mathbf{a}$ and $\mathbf{b}$, we have $\langle \mathbf{a}, \mathbf{b} \rangle = \|\mathbf{a}\| \|\mathbf{b}\| \cos(\theta)$, where $\theta$ is the angle between the two vectors.
 The largest value of $\cos(\theta)$ is $1$, which occurs when the two vectors are in the same direction.
