@@ -85,4 +85,68 @@ What do you notice?
 
 %\input{solutions/solution3_1}
 
+\newpage
+\section*{Problem 2: Polynomial Regression and Projections}
+
+In this problem, we'll explore polynomial regression, and what could happen if you accidentally delete your labels.
+
+\subsection*{Part A: Polynomial Regression Helps}
+
+Load a dataset of your choice.
+Let $\mathbf{X} \in \mathbb{R}^{n \times d}$ be the data matrix, and $\mathbf{y} \in \mathbb{R}^n$ be the target vector.
+Compute the optimal weights 
+\begin{align}
+\mathbf{w}^*_\text{orig} = \mathbf{X}^+ \mathbf{y},
+\end{align}
+and output the MSE.
+
+Suppose you want to lower your MSE.
+As you remember from our class on polynomial regression, you can add new features to your dataset that are derived from higher order functions of the features.
+Build an augmented data matrix $\mathbf{X}_\text{aug} = [\mathbf{X} \quad \mathbf{Z}]$, where $\mathbf{Z} \in \mathbb{R}^{n \times d'}$ contains $d'$ new features of your choice.
+(You can build these by multiplying various columns of $\mathbf{X}$ together.)
+Compute the optimal weights
+\begin{align}
+\mathbf{w}^*_\text{aug} = \mathbf{X}_\text{aug}^+ \mathbf{y},
+\end{align}
+and output the MSE.
+Ensure that the MSE of the predictions made with the original linear model are higher than the MSE of the predictions made with the augmented linear model.
+
+\subsection*{Part B: Oops}
+
+Suppose your labels $\mathbf{y}$ contain sensitive information, and so you delete them after learning $\mathbf{w}^*_\text{aug}$.
+But wait!
+You actually need the weights $\mathbf{w}^*_\text{orig}$ to prove that your new weights $\mathbf{w}^*_\text{aug}$ are better.
+Instead of re-collecting $\mathbf{y}$, let's try to use the predictions $\mathbf{X}_\text{aug} \mathbf{w}^*_\text{aug}$ as a stand in for $\mathbf{y}$.
+Compute the projected weights
+\begin{align}
+\mathbf{w}^*_\text{proj} = \mathbf{X}^+ (\mathbf{X}_\text{aug} \mathbf{w}^*_\text{aug}),
+\end{align}
+and output the MSE.
+You (should) notice that the MSE of $\mathbf{w}^*_\text{proj}$ is \textit{precisely} the same as the MSE of $\mathbf{w}^*_\text{orig}$.
+
+How could this be?
+Compare $\mathbf{w}^*_\text{proj}$ to $\mathbf{w}^*_\text{orig}$. They're the same!
+
+\subsection*{Part C: SVDs in Action}
+
+Remembering the handy SVD we covered in class, you set out to \textit{prove} that $\mathbf{w}^*_\text{proj} = \mathbf{w}^*_\text{orig}$ always.
+For simplicity, we'll assume that all the new columns in $\mathbf{Z}$ are orthogonal to the columns in $\mathbf{X}$ i.e., $\mathbf{X}^\top \mathbf{Z}$.
+
+Let $\mathbf{X} = \sum_{i=1}^d \sigma_i \mathbf{u}_i \mathbf{v}_i^\top$ be the SVD of $\mathbf{X}$, and $\mathbf{Z} = \sum_{i=1}^{d'} \sigma_i' \mathbf{u}_i' {\mathbf{v}_i'}^\top$ be the SVD of $\mathbf{Z}$.
+Compute $\mathbf{X}_\text{aug} \mathbf{X}_\text{aug}^\top$ in terms of their SVDs.
+By our orthogonality assumption, you have just computed the eigendecomposition of $\mathbf{X}_\text{aug} \mathbf{X}_\text{aug}^\top$.
+
+\textbf{Hint:} Look up how the transpose operation applies to \textit{block} matrices like $\mathbf{X}_\text{aug} = [\mathbf{X} \quad \mathbf{Z}]$.
+
+\subsection*{Part D: Projection}
+
+Observe that
+\begin{align}
+\mathbf{w}^*_\text{proj} = \mathbf{X}^+ \mathbf{X}_\text{aug} \mathbf{X}_\text{aug}^+ \mathbf{y}.
+\end{align}
+Compute $\mathbf{X}_\text{aug} \mathbf{X}_\text{aug}^+$ in terms of the eigendecomposition of the prior part.
+Finally, using the SVD of $\mathbf{X}$, show that $\mathbf{w}^*_\text{proj} = \mathbf{X}^+ \mathbf{y}.$
+
+%\input{solutions/solution3_2}
+
 \end{document}
