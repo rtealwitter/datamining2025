@@ -8,7 +8,7 @@ format:
 ---
 
 With a little probability, we saw how the Naive Bayes Classifier can be used to make predictions.
-However, the Naive Bayes Classifier assumes that the value of each feature is independent of the others, which is often not the case in practice (e.g., if the word "king" appears in an email, it is more likely that the word "queen" also appears).
+However, the Naive Bayes Classifier assumes that the value of each feature is independent of the others, which is often not the case in practice (e.g., if the word "discount" appears in an email, it is more likely that the word "sale" also appears).
 As an alternative approach to classification problems, we will see how we can generalize linear regression, with a little non-linearity.
 
 Our setup will be the standard supervised learning setting, where we have labelled data $(\mathbf{x}^{(1)}, y^{(1)}), \ldots, (\mathbf{x}^{(n)}, y^{(n)})$, for $\mathbf{x}^{(i)} \in \mathbb{R}^d$ the feature vector for the $i$th example. 
@@ -65,7 +65,7 @@ $$
 \end{align*}
 $$
 
-Observe that $\frac{e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{1 + e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}} = \frac1{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle} + 1} = 1-\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)$, and $\frac{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle} + 1} = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)$.
+Observe that $\frac{e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{1 + e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}} = \frac{1+e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{1 + e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}} - \frac1{1 + e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}} = 1-\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)$, and $\frac{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle} + 1} = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)$.
 Then, we can rewrite the partial derivative as
 $$
 \begin{align*}
@@ -167,7 +167,7 @@ $$
 Softmax applies the exponential function to each element of the vector, and then normalizes the resulting vector so that the sum of the resulting vector is 1.
 This ensures that the output is a valid probability distribution, where each probability is between 0 and 1 and the sum of all elements is 1.
 
-The loss function for multi-class classification is the *cross-entropy loss*, which is a generalization of the binary cross-entropy loss.
+The loss function for multi-class classification is the *cross-entropy loss*, which is a generalization of the binary cross-entropy loss:
 $$
 \begin{align*}
 \mathcal{L}(\mathbf{w}) &= - \sum_{i=1}^n \sum_{j=1}^k \mathbb{1}[y^{(i)}=j] \log\left(f_j(\mathbf{x}^{(i)})\right),

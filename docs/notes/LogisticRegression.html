@@ -190,7 +190,7 @@ window.Quarto = {
 </header>
 
 
-<p>With a little probability, we saw how the Naive Bayes Classifier can be used to make predictions. However, the Naive Bayes Classifier assumes that the value of each feature is independent of the others, which is often not the case in practice (e.g., if the word “king” appears in an email, it is more likely that the word “queen” also appears). As an alternative approach to classification problems, we will see how we can generalize linear regression, with a little non-linearity.</p>
+<p>With a little probability, we saw how the Naive Bayes Classifier can be used to make predictions. However, the Naive Bayes Classifier assumes that the value of each feature is independent of the others, which is often not the case in practice (e.g., if the word “discount” appears in an email, it is more likely that the word “sale” also appears). As an alternative approach to classification problems, we will see how we can generalize linear regression, with a little non-linearity.</p>
 <p>Our setup will be the standard supervised learning setting, where we have labelled data <span class="math inline">\((\mathbf{x}^{(1)}, y^{(1)}), \ldots, (\mathbf{x}^{(n)}, y^{(n)})\)</span>, for <span class="math inline">\(\mathbf{x}^{(i)} \in \mathbb{R}^d\)</span> the feature vector for the <span class="math inline">\(i\)</span>th example. However, unlike regression where we predict a continuous value <span class="math inline">\(y^{(i)} \in \mathbb{R}\)</span>, we will now predict a binary value <span class="math inline">\(y^{(i)} \in \{0, 1\}\)</span>. We can use the same linear model as before, i.e., we will predict the output as <span class="math inline">\(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle\)</span>, where <span class="math inline">\(\mathbf{w} \in \mathbb{R}^d\)</span> is the weight vector. But, we run into an issue: the output of the linear model can take on any real value, but we want to predict a binary value.</p>
 <section id="model-and-loss" class="level3">
 <h3 class="anchored" data-anchor-id="model-and-loss">Model and Loss</h3>
@@ -226,7 +226,7 @@ window.Quarto = {
 \left[y^{(i)} \frac1{1 + e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}} \cdot e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle} (-x_j^{(i)}) + (1 - y^{(i)}) \frac1{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle} + 1} \cdot e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle} x_j^{(i)}\right]\\
 \end{align*}
 \]</span></p>
-<p>Observe that <span class="math inline">\(\frac{e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{1 + e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}} = \frac1{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle} + 1} = 1-\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)\)</span>, and <span class="math inline">\(\frac{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle} + 1} = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)\)</span>. Then, we can rewrite the partial derivative as <span class="math display">\[
+<p>Observe that <span class="math inline">\(\frac{e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{1 + e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}} = \frac{1+e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{1 + e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}} - \frac1{1 + e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}} = 1-\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)\)</span>, and <span class="math inline">\(\frac{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}{e^{\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle} + 1} = \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)\)</span>. Then, we can rewrite the partial derivative as <span class="math display">\[
 \begin{align*}
 \frac{\partial}{\partial w_j} \mathcal{L}(\mathbf{w}) &amp;= \sum_{i=1}^n
 \left[-y^{(i)} (1 - \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle)) x_j^{(i)} + (1 - y^{(i)}) \sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle) x_j^{(i)}\right]\\
@@ -287,7 +287,7 @@ x_j^{(i)} \left[\sigma(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle) - y^{(i)}\r
 \end{bmatrix}
 \end{align*}
 \]</span> Softmax applies the exponential function to each element of the vector, and then normalizes the resulting vector so that the sum of the resulting vector is 1. This ensures that the output is a valid probability distribution, where each probability is between 0 and 1 and the sum of all elements is 1.</p>
-<p>The loss function for multi-class classification is the <em>cross-entropy loss</em>, which is a generalization of the binary cross-entropy loss. <span class="math display">\[
+<p>The loss function for multi-class classification is the <em>cross-entropy loss</em>, which is a generalization of the binary cross-entropy loss: <span class="math display">\[
 \begin{align*}
 \mathcal{L}(\mathbf{w}) &amp;= - \sum_{i=1}^n \sum_{j=1}^k \mathbb{1}[y^{(i)}=j] \log\left(f_j(\mathbf{x}^{(i)})\right),
 \end{align*}
