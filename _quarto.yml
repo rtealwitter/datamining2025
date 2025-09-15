@@ -1,7 +1,9 @@
 project:
   type: website
   output-dir: docs
-  resources: CNAME
+  resources:
+    - CNAME
+    - psets/starter_code
 
 format:
   html:

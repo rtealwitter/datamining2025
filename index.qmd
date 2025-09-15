@@ -81,7 +81,7 @@ output:
     <td><a href="notes/Probability.qmd">Probability</a></td>
     <td><a href="notes/LogisticRegression.qmd">Logistic Regression</a></td>
     <td></td>
-    <td></td>
+    <td>[Pset 4](psets/pset4.pdf) ([TeX](psets/pset4.tex)) due 9/22 </td>
   </tr>
   <tr>
     <td>Week 5 (9/23 and 9/25)</td>
