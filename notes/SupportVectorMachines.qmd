@@ -83,7 +83,7 @@ Observe that maximizing the margin is equivalent to minimizing the *inverse* of 
 Further, notice that we can simplify our constraints:
 $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \geq 1 \text{ for } y^{(i)} = 1$
 and $\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b \leq -1 \text{ for } y^{(i)} = -1$
-is equivalent to $ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1$ for all $i$.
+is equivalent to $y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1$ for all $i$.
 (This is why we relabelled the classes so that $y^{(i)} \in \{-1, 1\}$.)
 We can now write our optimization problem as follows:
 $$
