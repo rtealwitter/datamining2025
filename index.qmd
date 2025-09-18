@@ -80,7 +80,7 @@ output:
     <td>Week 4 (9/16 and 9/18)</td>
     <td><a href="notes/Probability.qmd">Probability</a></td>
     <td><a href="notes/LogisticRegression.qmd">Logistic Regression</a></td>
-    <td><a href="slides/Week4.{e^{-\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle}}pdf">Slides</a></td>
+    <td><a href="slides/Week4.pdf">Slides</a></td>
     <td>[Pset 4](psets/pset4.pdf) ([TeX](psets/pset4.tex)) due 9/22 </td>
   </tr>
   <tr>
