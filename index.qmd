@@ -87,7 +87,7 @@ output:
     <td>Week 5 (9/23 and 9/25)</td>
     <td><a href="notes/SupportVectorMachines.qmd">Support Vector Machines</a></td>
     <td><a href="notes/SupportVectorMachines.qmd">Constrained Optimization</a></td>
-    <td></td>
+    <td><a href="slides/Week5.pdf">Slides</a></td>
     <td>[Pset 5](psets/pset5.pdf) ([TeX](psets/pset5.tex)) due 9/29 </td>
   </tr>
   <tr>
