@@ -245,14 +245,14 @@ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \foral
 <p>The problem above is known as an example of a <em>constrained optimization problem</em>. More specifically, it is a <em>quadratic programming</em> problem: we have a quadratic objective function (the term <span class="math inline">\(\frac12 \| \mathbf{w} \|_2^2\)</span> is quadratic in <span class="math inline">\(\mathbf{w}\)</span>) and linear constraints (the constraints are linear in <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>). Constrained optimization problems in general, and quadratic programming in particular, are a rich area of study in optimization, and there are many techniques to solve them. However, the time complexity of these techniques will depend on the number of variables in <span class="math inline">\(\mathbf{w}\)</span>. For data in high dimensions (e.g., the transformed data after we add features to make the classes linearly separable), the time complexity can be quite high. In the next section, we will see how to find the <em>dual</em> of this problem, which can allow us to solve it more efficiently.</p>
 <p>Before we do, let’s see why the hyperplane is called a <em>support vector machine</em>.</p>
 <p><strong>Claim</strong>: The optimal hyperplane <span class="math inline">\(\mathbf{w}^\star\)</span> is a linear combination of the support vectors: <span class="math display">\[
-\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)}
+\mathbf{w}^\star = \sum_{i=1}^n \beta_i  y^{(i)} \mathbf{x}^{(i)}
 \]</span> for some coefficients <span class="math inline">\(\beta_i \in \mathbb{R}\)</span>.</p>
 <div class="proof-block">
 <details open="">
 <summary>
 Proof
 </summary>
-<p>Suppose for contradiction that <span class="math inline">\(\mathbf{w}^\star\)</span> is not a linear combination of the support vectors. That is, <span class="math inline">\(\mathbf{w}^\star = \sum_{i \in \mathcal{S}} \beta_i  y^{(i)} \mathbf{x}^{(i)} + \mathbf{v}\)</span> for some vector <span class="math inline">\(\mathbf{v}\)</span> that is orthogonal to all support vectors. We will construct a new hyperplane <span class="math inline">\(\mathbf{w}' = \mathbf{w}^\star - \epsilon \mathbf{v}\)</span> for some small <span class="math inline">\(\epsilon &gt; 0\)</span>, so that each point is still correctly classified, and the margin is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>.</p>
+<p>Suppose for contradiction that <span class="math inline">\(\mathbf{w}^\star\)</span> is not a linear combination of the support vectors. That is, <span class="math inline">\(\mathbf{w}^\star = \sum_{i=1}^n \beta_i  y^{(i)} \mathbf{x}^{(i)} + \mathbf{v}\)</span> for some vector <span class="math inline">\(\mathbf{v}\)</span> that is orthogonal to all support vectors. We will construct a new hyperplane <span class="math inline">\(\mathbf{w}' = \mathbf{w}^\star - \epsilon \mathbf{v}\)</span> for some small <span class="math inline">\(\epsilon &gt; 0\)</span>, so that each point is still correctly classified, and the margin is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>.</p>
 <p>Let’s check that the new hyperplane <span class="math inline">\(\mathbf{w}'\)</span> still correctly classifies all points. First, for any support vector <span class="math inline">\(\mathbf{x}^{(i)}\)</span>, we have <span class="math display">\[
 \langle \mathbf{w}', \mathbf{x}^{(i)} \rangle = \langle \mathbf{w}^\star - \epsilon \mathbf{v}, \mathbf{x}^{(i)} \rangle = \langle \mathbf{w}^\star, \mathbf{x}^{(i)} \rangle
 \]</span> since <span class="math inline">\(\mathbf{v}\)</span> is orthogonal to all support vectors. By assumption, <span class="math inline">\(\mathbf{w}^\star\)</span> satisfies <span class="math inline">\(y^{(i)}(\langle \mathbf{w}^\star, \mathbf{x}^{(i)} \rangle - b) = 1\)</span>. Second, for any non-support vector <span class="math inline">\(\mathbf{x}^{(j)}\)</span>, we have <span class="math display">\[
@@ -261,9 +261,9 @@ Proof
 <p>Next, let’s check that the margin of <span class="math inline">\(\mathbf{w}'\)</span> is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>. Since <span class="math inline">\(\mathbf{v}\)</span> is orthogonal to all support vectors, we can write: <span class="math display">\[
 \begin{align}
 \| \mathbf{w}' \|_2^2
-&amp;= \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} - (1-\epsilon) \mathbf{v} \|_2^2 \\
-&amp;= \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + (1-\epsilon)^2 \| \mathbf{v} \|_2^2 \\
-&amp;&lt; \| \sum_{i \in \mathcal{S}} \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + \| \mathbf{v} \|_2^2 = \| \mathbf{w}^\star \|_2^2.
+&amp;= \| \sum_{i=1}^n \beta_i y^{(i)} \mathbf{x}^{(i)} - (1-\epsilon) \mathbf{v} \|_2^2 \\
+&amp;= \| \sum_{i=1}^n \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + (1-\epsilon)^2 \| \mathbf{v} \|_2^2 \\
+&amp;&lt; \| \sum_{i=1}^n \beta_i y^{(i)} \mathbf{x}^{(i)} \|_2^2 + \| \mathbf{v} \|_2^2 = \| \mathbf{w}^\star \|_2^2.
 \end{align}
 \]</span> Since the length of the normal vector <span class="math inline">\(\mathbf{w}\)</span> is inversely proportional to the margin, we have that the margin of <span class="math inline">\(\mathbf{w}'\)</span> is larger than that of <span class="math inline">\(\mathbf{w}^\star\)</span>, a contradiction!</p>
 </details>
@@ -275,14 +275,13 @@ Proof
 <p><span class="math display">\[
 \begin{align}
 \min_{\mathbf{w}, b} \frac12 \| \mathbf{w} \|_2^2 \textnormal{ such that }
-y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \forall i \in \mathcal{S}.
+y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \forall i.
 \end{align}
 \]</span></p>
-<p>In the version above, we only include the constraints for the support vectors <span class="math inline">\(\mathcal{S}\)</span>. Notice that this is sufficient because the remaining points are correctly classified by the hyperplane defined by the support vectors.</p>
-<p>The challenge in directly solving the primal is that the number of variables in <span class="math inline">\(\mathbf{w}\)</span> is equal to the number of features, which can be very large especially if we apply feature transformations to the data. Fortunately, we can turn the <em>primal</em> into a <em>dual problem</em>, that, roughly speaking, converts each constraint into a variable, and each variable into a constraint. Notice that this is particularly useful because we only need the constraints for the support vectors, which could be much fewer than the total number of data points <span class="math inline">\(n\)</span>.</p>
+<p>The challenge in directly solving the primal is that the number of variables in <span class="math inline">\(\mathbf{w}\)</span> is equal to the number of features, which can be very large especially if we apply feature transformations to the data. Fortunately, we can turn the <em>primal</em> into a <em>dual problem</em>, that, roughly speaking, converts each constraint into a variable, and each variable into a constraint. The dual problem will have a number of variables equal to the number of data points, which can be much smaller than the number of features, especially if we run a convex hull algorithm to reduce to only the “external” points that could be support vectors.</p>
 <p>Let’s begin with the <em>Lagrangian</em> of the primal problem: <span class="math display">\[
 \begin{align}
-\min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \frac12 \| \mathbf{w} \|_2^2 - \sum_{i \in \mathcal{S}} \alpha_i \left( y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) - 1 \right)
+\min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \frac12 \| \mathbf{w} \|_2^2 - \sum_{i=1}^n \alpha_i \left( y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) - 1 \right)
 = \min_{\mathbf{w}, b} \max_{\boldsymbol{\alpha}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha}),
 \end{align}
 \]</span> where <span class="math inline">\(\boldsymbol{\alpha} \in \mathbb{R}^{|\mathcal{S}|}_+\)</span> is a vector of non-negative real numbers. Let’s see why the Lagrangian is equivalent to the primal problem: For a particular <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, the constraints in the primal problem must be satisfied by the Lagrangian, otherwise there is some <span class="math inline">\(i\)</span> such that <span class="math inline">\(y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) &lt; 1\)</span> and we can arbitrarily increase the Lagrangian objective by increasing <span class="math inline">\(\alpha_i\)</span>. Among these <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span> that satisfy the constraints, the Lagrangian objective is minimized when <span class="math inline">\(\frac12 \|\mathbf{w}\|_2^2\)</span> is as small as possible, which is equivalent to minimizing the objective of the primal problem.</p>
@@ -292,29 +291,29 @@ y^{(i)}(\langle \mathbf{w}, \mathbf{x}^{(i)} \rangle - b) \geq 1 \text{ } \foral
 \]</span></p>
 <p>Let’s fix a <span class="math inline">\(\boldsymbol{\alpha}\)</span> and minimize the Lagrangian with respect to <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>. Taking the gradient with respect to <span class="math inline">\(\mathbf{w}\)</span> and <span class="math inline">\(b\)</span>, and setting it to zero, we have: <span class="math display">\[
 \begin{align}
-\nabla_{\mathbf{w}} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
-&amp;= \mathbf{w} - \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)} = 0
-\\\nabla_{b} \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
-&amp;= \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} = 0.
+\nabla_{\mathbf{w}} \mathcal{L}(\mathbf{w}^*, b^*, \boldsymbol{\alpha})
+&amp;= \mathbf{w}^* - \sum_{i=1}^n \alpha_i y^{(i)} \mathbf{x}^{(i)} = 0
+\\\nabla_{b} \mathcal{L}(\mathbf{w}^*, b^*, \boldsymbol{\alpha})
+&amp;= \sum_{i=1}^n \alpha_i y^{(i)} = 0.
 \end{align}
-\]</span> Then we have <span class="math inline">\(\mathbf{w} = \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)}\)</span>. Notice that this implies the claim we made earlier: the optimal hyperplane <span class="math inline">\(\mathbf{w}^\star\)</span> is a linear combination of the support vectors, with coefficients <span class="math inline">\(\alpha_i y^{(i)}\)</span>. Further, we have that <span class="math inline">\(\sum_{i \in \mathcal{S}} \alpha_i y^{(i)} = 0\)</span>. We can plug these two equations into the Lagrangian to obtain <span class="math display">\[
+\]</span> We can plug these two equations into the Lagrangian to obtain <span class="math display">\[
 \begin{align}
 \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
 &amp;=
-\frac12 \left( \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} \mathbf{x}^{(i)} \right)^2
-- \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} {\mathbf{x}^{(i)}}^\top \sum_{j \in \mathcal{S}} \alpha_j y^{(j)} \mathbf{x}^{(j)}
-+ b \sum_{i \in \mathcal{S}} \alpha_i y^{(i)}
-+ \sum_{i \in \mathcal{S}} \alpha_i
+\frac12 \left( \sum_{i=1}^n \alpha_i y^{(i)} \mathbf{x}^{(i)} \right)^2
+- \sum_{i=1}^n \alpha_i y^{(i)} {\mathbf{x}^{(i)}}^\top \sum_{j=1}^n \alpha_j y^{(j)} \mathbf{x}^{(j)}
++ b \sum_{i=1}^n \alpha_i y^{(i)}
++ \sum_{i=1}^n \alpha_i
 \\&amp;=
-- \frac12 \sum_{i, j \in \mathcal{S}} \alpha_i \alpha_j y^{(i)} y^{(j)} \langle \mathbf{x}^{(i)}, \mathbf{x}^{(j)} \rangle
-+ \sum_{i \in \mathcal{S}} \alpha_i.
+- \frac12 \sum_{i,j=1}^n \alpha_i \alpha_j y^{(i)} y^{(j)} \langle \mathbf{x}^{(i)}, \mathbf{x}^{(j)} \rangle
++ \sum_{i=1}^n \alpha_i.
 \end{align}
 \]</span> Finally, the dual problem is given by <span class="math display">\[
 \begin{align}
-\max_{\boldsymbol{\alpha}} \sum_{i \in \mathcal{S}} \alpha_i - \frac12 \sum_{i, j \in \mathcal{S}} \alpha_i \alpha_j y^{(i)} y^{(j)} \langle \mathbf{x}^{(i)}, \mathbf{x}^{(j)} \rangle
-\text{ such that } \alpha_i \geq 0 \text{ and } \sum_{i \in \mathcal{S}} \alpha_i y^{(i)} = 0.
+\max_{\boldsymbol{\alpha}} \sum_{i=1}^n \alpha_i - \frac12 \sum_{i,j=1}^n \alpha_i \alpha_j y^{(i)} y^{(j)} \langle \mathbf{x}^{(i)}, \mathbf{x}^{(j)} \rangle
+\text{ such that } \alpha_i \geq 0 \text{ and } \sum_{i=1}^n \alpha_i y^{(i)} = 0.
 \end{align}
-\]</span></p>
+\]</span> We call the <span class="math inline">\(\alpha_i\)</span>’s the <em>dual variables</em>. The points with <span class="math inline">\(\alpha_i &gt; 0\)</span> are exactly the support vectors, and the optimal hyperplane can be computed as <span class="math inline">\(\mathbf{w}^* = \sum_{i \in \mathcal{S}}^n \alpha_i y^{(i)} \mathbf{x}^{(i)}\)</span>. To get the optimal bias <span class="math inline">\(b^*\)</span>, we can use any support vector <span class="math inline">\(\mathbf{x}^{(i)}\)</span> and compute <span class="math inline">\(b^* = \langle \mathbf{w}^*, \mathbf{x}^{(i)} \rangle - y^{(i)}\)</span> since we know that the support vector lies on the hyperplane.</p>
 </section>
 <section id="soft-margin" class="level3">
 <h3 class="anchored" data-anchor-id="soft-margin">Soft Margin</h3>
