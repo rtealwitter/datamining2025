@@ -203,7 +203,7 @@ $$
 \begin{align}
 \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})
 &=
-\frac12 \left( \sum_{i=1}^n \alpha_i y^{(i)} \mathbf{x}^{(i)} \right)^2
+\frac12 \left\| \sum_{i=1}^n \alpha_i y^{(i)} \mathbf{x}^{(i)} \right\|^2
 - \sum_{i=1}^n \alpha_i y^{(i)} {\mathbf{x}^{(i)}}^\top \sum_{j=1}^n \alpha_j y^{(j)} \mathbf{x}^{(j)} 
 + b \sum_{i=1}^n \alpha_i y^{(i)}
 + \sum_{i=1}^n \alpha_i
