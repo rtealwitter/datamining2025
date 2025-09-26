@@ -71,10 +71,12 @@ Let $\phi: \mathbb{R}^d \to \mathbb{R}^m$ be a feature transformation that maps 
 
 For most transformations, $m$ is very large, and explicitly computing the transformation $\phi(\mathbf{x}^{(i)})$ is infeasible.
 Fortunately, we can use the *kernel trick* to compute the inner product without explicitly computing the transformation.
-The kernel trick allows us to define a kernel function $K: \mathbb{R^d} \times \mathbb{R}^d \to \mathbb{R}$ such that
+The kernel trick allows us to define a kernel function $\mathbf{K}: \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}$ such that
 $$
 \begin{align}
-K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \langle \phi(\mathbf{x}^{(i)}), \phi(\mathbf{x}^{(j)}) \rangle.
+[\mathbf{K}]_{i,j}
+=k(\mathbf{x}^{(i)}, \mathbf{x}^{(j)})
+= \langle \phi(\mathbf{x}^{(i)}), \phi(\mathbf{x}^{(j)}) \rangle.
 \end{align}
 $$
 
@@ -82,7 +84,7 @@ For many years, I was confused about why the kernel trick works. Doesn't computi
 
 Let's see two examples:
 
-**Polynomial Kernel**: Consider the polynomial kernel $K(\mathbf{x}, \mathbf{x}') = (\langle \mathbf{x}, \mathbf{x}' \rangle + 1)^p$ for $p \in \mathbb{N}$.
+**Polynomial Kernel**: Consider the polynomial kernel $k(\mathbf{x}, \mathbf{x}') = (\langle \mathbf{x}, \mathbf{x}' \rangle + 1)^p$ for $p \in \mathbb{N}$.
 The explicit transformation $\phi$ when $p=2$ and $d=3$ is given by:
 $$
 \phi(\mathbf{x}) = \begin{bmatrix}
@@ -98,7 +100,7 @@ x_3^2 \\
 \sqrt{2} x_2 x_3 \\
 \end{bmatrix}
 $$
-However, we can efficiently compute the inner product without explicitly computing $\phi$. For example,
+However, we can efficiently compute the inner product without explicitly computing $\phi$:
 $$
 \begin{align}
 K(\mathbf{x}, \mathbf{w}) &= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
@@ -121,13 +123,13 @@ Let's see how we can apply the kernel trick to a more familiar tool: multi-class
 
 Let $q$ be the number of classes.
 We will learn $q$ weight vectors $\mathbf{w}^{(1)}, \ldots, \mathbf{w}^{(q)} \in \mathbb{R}^d$.
-Our final prediction is the class with the highest value (we previously normalized these outputs so that we could interpret them as probabilities):
+Our final prediction is the class with the highest value (we previously normalized these outputs via softmax so that we could interpret them as probabilities):
 $$
 \arg \max_{\ell \in [q]} \langle \mathbf{w}^{(\ell)}, \mathbf{x} \rangle.
 $$
-Equivalently, we can view the problem as a *similarity search*, where we want to find the class with smallest inner product:
+Equivalently, we can view the problem as a *similarity search*, where we want to find the class with smallest distance:
 $$
-\arg \min_{\ell \in [q]} \langle \mathbf{w}^{(\ell)}, \mathbf{x} \rangle.
+\arg \min_{\ell \in [q]} \|\mathbf{w}^{(\ell)} - \mathbf{x}\|_2^2.
 $$
 
 In the context of MNIST, the weight vectors look something like this:
@@ -172,14 +174,14 @@ $$
 \arg \min_{\mathbf{v} \in \mathbb{R}^{n}} \mathcal{L}(\sigma(\mathbf{X X}^\top \mathbf{v}), \mathbf{y}).
 $$
 
-Now, we can apply the kernel trick to compute the inner products of $K(\mathbf{X X^\top})$.
+Now, we can apply the kernel trick to compute the inner products of $\mathbf{X X^\top}$.
 At inference time, we can similarly use the kernel trick to compute the inner product between the input vector $\mathbf{x}$ and the weight vector $\mathbf{X}^\top \mathbf{v}$.
 
 The reparameterization trick allows us to expressively represent data without explicitly computing the feature transformation.
 We can also apply the trick to other linear models such as linear regression.
 
 While they allow us to expressively represent data without explicitly computing the feature transformation, the kernel and reparameterization tricks are still computationally expensive:
-We need to compute the $n \times n$ kernel matrix $K(\mathbf{X}, \mathbf{X})$.
+We need to compute the $n \times n$ kernel matrix $\mathbf{K}$.
 
 We will next see how neural networks allow us to *automatically* learn feature transformations, while basically maintaining the training and inference efficiency of linear models.
 

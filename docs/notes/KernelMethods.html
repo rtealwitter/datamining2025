@@ -227,14 +227,16 @@ Proof of Cosine Identity
 <center>
 <img src="images/kernel_transform.svg" class="responsive-img">
 </center>
-<p>For most transformations, <span class="math inline">\(m\)</span> is very large, and explicitly computing the transformation <span class="math inline">\(\phi(\mathbf{x}^{(i)})\)</span> is infeasible. Fortunately, we can use the <em>kernel trick</em> to compute the inner product without explicitly computing the transformation. The kernel trick allows us to define a kernel function <span class="math inline">\(K: \mathbb{R^d} \times \mathbb{R}^d \to \mathbb{R}\)</span> such that <span class="math display">\[
+<p>For most transformations, <span class="math inline">\(m\)</span> is very large, and explicitly computing the transformation <span class="math inline">\(\phi(\mathbf{x}^{(i)})\)</span> is infeasible. Fortunately, we can use the <em>kernel trick</em> to compute the inner product without explicitly computing the transformation. The kernel trick allows us to define a kernel function <span class="math inline">\(\mathbf{K}: \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}\)</span> such that <span class="math display">\[
 \begin{align}
-K(\mathbf{x}^{(i)}, \mathbf{x}^{(j)}) = \langle \phi(\mathbf{x}^{(i)}), \phi(\mathbf{x}^{(j)}) \rangle.
+[\mathbf{K}]_{i,j}
+=k(\mathbf{x}^{(i)}, \mathbf{x}^{(j)})
+= \langle \phi(\mathbf{x}^{(i)}), \phi(\mathbf{x}^{(j)}) \rangle.
 \end{align}
 \]</span></p>
 <p>For many years, I was confused about why the kernel trick works. Doesn’t computing the inner product require us to apply the transformation <span class="math inline">\(\phi\)</span>?</p>
 <p>Let’s see two examples:</p>
-<p><strong>Polynomial Kernel</strong>: Consider the polynomial kernel <span class="math inline">\(K(\mathbf{x}, \mathbf{x}') = (\langle \mathbf{x}, \mathbf{x}' \rangle + 1)^p\)</span> for <span class="math inline">\(p \in \mathbb{N}\)</span>. The explicit transformation <span class="math inline">\(\phi\)</span> when <span class="math inline">\(p=2\)</span> and <span class="math inline">\(d=3\)</span> is given by: <span class="math display">\[
+<p><strong>Polynomial Kernel</strong>: Consider the polynomial kernel <span class="math inline">\(k(\mathbf{x}, \mathbf{x}') = (\langle \mathbf{x}, \mathbf{x}' \rangle + 1)^p\)</span> for <span class="math inline">\(p \in \mathbb{N}\)</span>. The explicit transformation <span class="math inline">\(\phi\)</span> when <span class="math inline">\(p=2\)</span> and <span class="math inline">\(d=3\)</span> is given by: <span class="math display">\[
 \phi(\mathbf{x}) = \begin{bmatrix}
 1 \\
 \sqrt{2} x_1 \\
@@ -247,7 +249,7 @@ x_3^2 \\
 \sqrt{2} x_1 x_3 \\
 \sqrt{2} x_2 x_3 \\
 \end{bmatrix}
-\]</span> However, we can efficiently compute the inner product without explicitly computing <span class="math inline">\(\phi\)</span>. For example, <span class="math display">\[
+\]</span> However, we can efficiently compute the inner product without explicitly computing <span class="math inline">\(\phi\)</span>: <span class="math display">\[
 \begin{align}
 K(\mathbf{x}, \mathbf{w}) &amp;= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
 \\&amp;= (1 + x_1 x_1' + x_2 x_2' + x_3 x_3')^2
@@ -261,10 +263,10 @@ K(\mathbf{x}, \mathbf{w}) &amp;= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
 </section>
 <section id="reparameterization-trick" class="level3">
 <h3 class="anchored" data-anchor-id="reparameterization-trick">Reparameterization Trick</h3>
-<p>Let <span class="math inline">\(q\)</span> be the number of classes. We will learn <span class="math inline">\(q\)</span> weight vectors <span class="math inline">\(\mathbf{w}^{(1)}, \ldots, \mathbf{w}^{(q)} \in \mathbb{R}^d\)</span>. Our final prediction is the class with the highest value (we previously normalized these outputs so that we could interpret them as probabilities): <span class="math display">\[
+<p>Let <span class="math inline">\(q\)</span> be the number of classes. We will learn <span class="math inline">\(q\)</span> weight vectors <span class="math inline">\(\mathbf{w}^{(1)}, \ldots, \mathbf{w}^{(q)} \in \mathbb{R}^d\)</span>. Our final prediction is the class with the highest value (we previously normalized these outputs via softmax so that we could interpret them as probabilities): <span class="math display">\[
 \arg \max_{\ell \in [q]} \langle \mathbf{w}^{(\ell)}, \mathbf{x} \rangle.
-\]</span> Equivalently, we can view the problem as a <em>similarity search</em>, where we want to find the class with smallest inner product: <span class="math display">\[
-\arg \min_{\ell \in [q]} \langle \mathbf{w}^{(\ell)}, \mathbf{x} \rangle.
+\]</span> Equivalently, we can view the problem as a <em>similarity search</em>, where we want to find the class with smallest distance: <span class="math display">\[
+\arg \min_{\ell \in [q]} \|\mathbf{w}^{(\ell)} - \mathbf{x}\|_2^2.
 \]</span></p>
 <p>In the context of MNIST, the weight vectors look something like this:</p>
 <center>
@@ -292,9 +294,9 @@ Suppose for contradiction that <span class="math inline">\(\mathbf{w}\)</span> i
 <p>With the reparameterization trick in hand, we can represent the weight vector as <span class="math inline">\(\mathbf{X}^\top \mathbf{v}\)</span>. The optimization problem becomes: <span class="math display">\[
 \arg \min_{\mathbf{v} \in \mathbb{R}^{n}} \mathcal{L}(\sigma(\mathbf{X X}^\top \mathbf{v}), \mathbf{y}).
 \]</span></p>
-<p>Now, we can apply the kernel trick to compute the inner products of <span class="math inline">\(K(\mathbf{X X^\top})\)</span>. At inference time, we can similarly use the kernel trick to compute the inner product between the input vector <span class="math inline">\(\mathbf{x}\)</span> and the weight vector <span class="math inline">\(\mathbf{X}^\top \mathbf{v}\)</span>.</p>
+<p>Now, we can apply the kernel trick to compute the inner products of <span class="math inline">\(\mathbf{X X^\top}\)</span>. At inference time, we can similarly use the kernel trick to compute the inner product between the input vector <span class="math inline">\(\mathbf{x}\)</span> and the weight vector <span class="math inline">\(\mathbf{X}^\top \mathbf{v}\)</span>.</p>
 <p>The reparameterization trick allows us to expressively represent data without explicitly computing the feature transformation. We can also apply the trick to other linear models such as linear regression.</p>
-<p>While they allow us to expressively represent data without explicitly computing the feature transformation, the kernel and reparameterization tricks are still computationally expensive: We need to compute the <span class="math inline">\(n \times n\)</span> kernel matrix <span class="math inline">\(K(\mathbf{X}, \mathbf{X})\)</span>.</p>
+<p>While they allow us to expressively represent data without explicitly computing the feature transformation, the kernel and reparameterization tricks are still computationally expensive: We need to compute the <span class="math inline">\(n \times n\)</span> kernel matrix <span class="math inline">\(\mathbf{K}\)</span>.</p>
 <p>We will next see how neural networks allow us to <em>automatically</em> learn feature transformations, while basically maintaining the training and inference efficiency of linear models.</p>
 
 
