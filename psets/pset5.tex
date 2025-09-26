@@ -56,7 +56,7 @@ Suppose that $\lambda_1 \geq \lambda_2$.
 
 Show that
 \begin{align}
-    \| \mathbf{w}^*_{\lambda_1} \|_2^2 \geq
+    \| \mathbf{w}^*_{\lambda_1} \|_2^2 \leq
     \| \mathbf{w}^*_{\lambda_2} \|_2^2.
 \end{align}
 
@@ -67,7 +67,7 @@ Show that
 
 Show that
 \begin{align}
-    \mathcal{L}(\mathbf{w}^*_{\lambda_1}) \leq
+    \mathcal{L}(\mathbf{w}^*_{\lambda_1}) \geq
     \mathcal{L}(\mathbf{w}^*_{\lambda_2}).
 \end{align}
 
@@ -141,10 +141,10 @@ I used:
 
 \begin{verbatim}
     X, y = sklearn.datasets.make_classification(
-        n_features=2, n_redundant=0, n_informative=2, random_state=0, n_clusters_per_class=1
+        n_features=2, n_redundant=0, n_informative=2, 
+        random_state=0, n_clusters_per_class=1
     )
-    # Convert y to -1, 1
-    y = 2*y - 1
+    y = 2*y - 1 # Convert y to -1, 1
 \end{verbatim}
 
 Compute $\mathbf{P, q, G, h, A, b}$ in terms of your dataset (you'll have to wrap the \texttt{numpy} matrices in \texttt{cvxopt.matrix}).
@@ -152,5 +152,7 @@ Then solve for $\boldsymbol{\alpha}$, and find the optimal line $\mathbf{w}^*$ a
 Finally plot the data and your line.
 
 \textbf{Hint:} Generative AI is your friend for documentation, debugging, and examples!
+
+%\input{solutions/solution5_2}
 
 \end{document}
