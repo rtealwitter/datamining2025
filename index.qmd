@@ -94,8 +94,8 @@ output:
     <td>Week 6 (9/30 and 10/2)</td>
     <td><a href="notes/KernelMethods.qmd">Kernel Methods</a></td>
     <td><a href="notes/NeuralNetworks.qmd">Neural Networks</a></td>
-    <td></td>
-    <td></td>
+    <td><a href="slides/Week6.pdf">Slides</a></td>
+    <td>[Pset 6](psets/pset6.pdf) ([TeX](psets/pset6.tex)) due 10/6 </td>
   </tr>
   <tr>
     <td>Week 7 (10/7 and 10/9)</td>
