@@ -79,11 +79,11 @@ In this part, you'll find a solution to the problem:
 \begin{align}
     \min_{\mathbf{V} \in \mathbb{R}^{n \times k}}
     \mathcal{L}_{\text{CrossEntropy}}
-    (\mathbf{XX^\top W}, \mathbf{y}).
+    (\mathbf{XX^\top V}, \mathbf{y}).
 \end{align}
 
 Let's do logistic regression with the reparameterization trick.
-First, build your matrix $\mathbf{X} \in \mathbb{R}^{1000 \times 28*28}$, and compute the Gaussian kernel matrix $\mathbf{K} \in \mathbb{R}^{1000 \times 1000}$.
+First, build your matrix $\mathbf{X} \in \mathbb{R}^{n\times d}$, and compute the Gaussian kernel matrix $\mathbf{X X}^\top =\mathbf{K} \in \mathbb{R}^{n\times n}$.
 
 Recall:
 
@@ -108,5 +108,50 @@ Which variant of logistic regression train more quickly?
 Which scales better as we increase the number of training points?
 
 %\input{solutions/solution6_1}
+
+\newpage
+\section*{Problem 2: Logistic Regression to Neural Network}
+
+\subsection*{Part A: Sigmoid Derivative}
+
+At the heart of backpropagation is the idea of modularly computing the derivative.
+For a function $f$ with input $z$, we can compute the derivative of the loss with respect to $z$ by adding, for all functions $f$ that take $z$ as input,
+\begin{align}
+    \frac{\partial \mathcal{L}}{\partial z} += 
+    \frac{\partial \mathcal{L}}{\partial f}
+    \frac{\partial f}{\partial z}.
+\end{align}
+For functions like $f(z) = z^2$, computing $\frac{\partial f}{\partial z}$ is quite easy.
+In this problem, we will compute the derivative of the sigmoid function 
+\begin{align}
+  \sigma(z) = \frac1{1+e^{-z}}.
+\end{align}
+In particular, show that 
+\begin{align}
+    \frac{\partial }{\partial z}\sigma(z)
+    = \sigma(z)(1-\sigma(z)).
+\end{align}
+
+\textbf{Hint:} Try differentiating $\log (\sigma(z))$, and solve for $\frac{\partial \sigma(z)}{\partial z}$.
+
+\subsection*{Part B: Neural Network}
+
+One of the benefits of \texttt{torch} is that backpropagation is hidden under the hood.
+Given a number of layers $\ell$, build a model
+\begin{align}
+    f^{(\ell)}(\mathbf{x}) =
+    \mathbf{W}^{(\ell)} (\text{ReLU}(\mathbf{W}^{(\ell-1)}(\ldots
+    (\text{ReLU}(\mathbf{W}^{(1)}\mathbf{x})))
+\end{align}
+where $\mathbf{W}^{(1)} \in \mathbb{R}^{m \times d}$,
+$\mathbf{W}^{(\ell)} \in \mathbb{R}^{k \times m}$, and
+$\mathbf{W}^{(j)} \in \mathbb{R}^{m \times m}$ for some number of neurons $m$.
+Note: When $\ell=1$, there is only one matrix with dimension $k \times d$.
+
+\subsection*{Part C: Empirical Comparison}
+Train your model for $\ell=1,2,3$, and record the training and test loss for each epoch.
+Plot the training loss (solid line) and test loss (dotted line) for each depth of model. What do you notice?
+
+%\input{solutions/solution6_2}
 
 \end{document}
