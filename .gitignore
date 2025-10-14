@@ -8,3 +8,5 @@
 *.aux
 *.out
 *.dvi
+gradescope_grades.csv
+canvas_grades.csv
