@@ -22,7 +22,6 @@ Decision trees work by recursively partitioning the feature space into regions t
 The tree structure is incredibly intuitive, and likely the most natural way to represent a decision-making process.
 At each internal node, the tree splits the data based on a feature and a threshold.
 The goal is to find the split that *best* (more on this later) separates the classes.
-In our example image, splitting at $x_1=.5$ wouldn't separate the circle from the square points, but splitting at $x_1=1.5$ almost perfectly separates them.
 
 Like gradient descent, decision trees use a *greedy* approach to learning.
 As we build the tree, we recursively evaluate the data at each leaf, choosing the feature and threshold that best separates the classes.
