@@ -102,7 +102,7 @@ output:
     <td><a href="https://chinmayhegde.github.io/dl-notes/notes/lecture04/">Convolutional Networks</a></td>
     <td><a href="https://chinmayhegde.github.io/dl-notes/notes/lecture07/">Transformers</a></td>
     <td><a href="slides/Week7.pdf">Slides</a></td>
-    <td>[Pset 7](psets/pset7.pdf) ([TeX](psets/pset7.tex)) due 10/13 </td>
+    <td>[Pset 7](psets/pset7.pdf) ([TeX](psets/pset7.tex)) due 10/15 </td>
   </tr>
   <tr>
     <td>Week 8 (10/14 and 10/16)</td>
