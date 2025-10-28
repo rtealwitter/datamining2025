@@ -115,7 +115,7 @@ output:
     <td>Week 9 (10/21 and 10/23)</td>
     <td><i>Midterm Exam</i></td>
     <td><a href="notes/DecisionTrees.qmd">Boosting</a></td>
-    <td><a href="slides/Week89.pdf">Slides</a></td>
+    <td><a href="slides/Week8.pdf">Slides</a></td>
     <td></td>
   </tr>
   <tr class="section-header">
@@ -125,7 +125,7 @@ output:
     <td>Week 10 (10/28 and 10/30)</td>
     <td><a href="notes/Autoencoders.qmd">Autoencoders</a></td>
     <td><a href="notes/Autoencoders.qmd">Principal Component Analysis</a></td>
-    <td></td>
+    <td><a href="slides/Week10.pdf">Slides</a></td>
     <td></td>
   </tr>
   <tr>
