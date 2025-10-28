@@ -126,7 +126,7 @@ output:
     <td><a href="notes/Autoencoders.qmd">Autoencoders</a></td>
     <td><a href="notes/Autoencoders.qmd">Principal Component Analysis</a></td>
     <td><a href="slides/Week10.pdf">Slides</a></td>
-    <td></td>
+    <td>[Pset 9](psets/pset9.pdf) ([TeX](psets/pset9.tex)) due 11/3 </td>
   </tr>
   <tr>
     <td>Week 11 (11/4 and 11/6)</td>

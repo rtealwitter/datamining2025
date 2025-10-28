@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{amsmath, amsfonts}
+\usepackage{hyperref, graphicx}
+\usepackage{tikz, bbm, mathtools}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\title{CSCI 145 Problem Set 9}
+\author{} % TODO: Put your name here
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Submission Instructions}
+
+Please upload \textit{your} work by
+\textbf{11:59pm Monday November 3, 2025.}
+\begin{itemize}
+\item You are encouraged to discuss ideas
+and work with your classmates. However, you
+\textbf{must acknowledge} your collaborators
+at the top of each solution on which
+you collaborated with others 
+and you \textbf{must write} your solutions
+independently.
+\item Your solutions to theory questions must
+be written legibly, or typeset in LaTeX or markdown.
+If you would like to use LaTeX, you can import the source of this document (available from the course webpage) to Overleaf.
+\item I recommend that you write your solutions to coding questions in a Jupyter notebook using Google Colab.
+\item You should submit your solutions as a \textbf{single PDF} via the assignment on Gradescope.
+\end{itemize}
+
+\noindent
+\textbf{Grading:} The point of the problem set is for \textit{you} to learn. To this end, I hope to disincentivize the use of LLMs by \textbf{not} grading your work for correctness. Instead, you will grade your own work by comparing it to my solutions. This self-grade is due the Friday \textit{after} the problem set is due, also on Gradescope.
+
+\newpage
+\section*{Problem 1: Autoencoders and Variational Autoencoders}
+
+In this problem, we will explore unsupervised learning through autoencoders (AEs) and variational autoencoders (VAEs).
+
+\subsection*{Part A: KL Divergence from First Principles}
+
+Let $P$ be the univariate normal distribution $\mathcal{N}(\mu,\sigma^2)$ and $Q$ be the univariate normal distribution $\mathcal{N}(0,1)$.
+Starting from the scalar densities
+$$
+  p(z)=\frac{1}{\sqrt{2\pi}\,\sigma}\exp\!\Big(-\frac{(z-\mu)^2}{2\sigma^2}\Big),\quad
+  q(z)=\frac{1}{\sqrt{2\pi}}\exp\!\Big(-\frac{z^2}{2}\Big),
+$$
+derive the KL-divergence
+$$
+  \mathbb{E}_{z\sim P}\left[\frac{\log p(z)}{\log q(z)}\right]
+  =\tfrac12\big(\mu^2+\sigma^2-1-\log\sigma^2\big).
+$$
+\textbf{Hint:} Take logs, and notice that $\mathbb{E}[(z-\mu)^2]=\sigma^2$ and $\mathbb{E}[z^2]=\sigma^2+\mu^2$. 
+
+What is the KL divergence when we have a \textit{multivariate} distribution where each dimension is independent? That is,
+$$
+  p(\mathbf{z})=\prod_{i=1}^d \frac{1}{\sqrt{2\pi}\,\sigma_i}\exp\!\Big(-\frac{(z_i-\mu_i)^2}{2\sigma_i^2}\Big),\quad
+  q(\mathbf{z})=\prod_{i=1}^d \frac{1}{\sqrt{2\pi}}\exp\!\Big(-\frac{z_i^2}{2}\Big).
+$$
+
+\subsection*{Part B: Autoencoder}
+
+Implement and train an autoencoder with a bottleneck $k=2$ on MNIST.
+
+Once trained, sample a uniform grid of 25 points from the latent dimension in the domain $[0,1] \times [0,1]$.
+Decode those points with the decoder and plot the results.
+How do they look?
+
+
+\subsection*{Part C: Variational Autoencoder}
+
+Implement a VAE, also with bottleneck $k=2$. In particular, you should produce $\mathbf{\mu_x} \in \mathbb{R}^2$ and $\Sigma^2 = \begin{bmatrix}\sigma_1^2 & 0 \\ 0 & \sigma_2^2\end{bmatrix}$.
+Train the VAE with the reconstruction and multivariate KL loss you derived in part A.
+
+Like for the autoencoder, plot the 25 decoded points.
+How do those decoded with the VAE compare to those decoded with the autoencoder?
+
+%\input{solutions/solution9_1}
+
+\end{document}
