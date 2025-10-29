@@ -53,7 +53,7 @@ $$
 $$
 derive the KL-divergence
 $$
-  \mathbb{E}_{z\sim P}\left[\frac{\log p(z)}{\log q(z)}\right]
+  \mathbb{E}_{z\sim P}\left[\log \frac{p(z)}{q(z)}\right]
   =\tfrac12\big(\mu^2+\sigma^2-1-\log\sigma^2\big).
 $$
 \textbf{Hint:} Take logs, and notice that $\mathbb{E}[(z-\mu)^2]=\sigma^2$ and $\mathbb{E}[z^2]=\sigma^2+\mu^2$. 
@@ -68,9 +68,8 @@ $$
 
 Implement and train an autoencoder with a bottleneck $k=2$ on MNIST.
 
-Once trained, sample a uniform grid of 25 points from the latent dimension in the domain $[0,1] \times [0,1]$.
-Decode those points with the decoder and plot the results.
-How do they look?
+Take a random sample of 100 points and embed them into the latent space with your trained encoder.
+Label the points based on their class, what do you notice about where the points cluster?
 
 
 \subsection*{Part C: Variational Autoencoder}
@@ -78,8 +77,8 @@ How do they look?
 Implement a VAE, also with bottleneck $k=2$. In particular, you should produce $\mathbf{\mu_x} \in \mathbb{R}^2$ and $\Sigma^2 = \begin{bmatrix}\sigma_1^2 & 0 \\ 0 & \sigma_2^2\end{bmatrix}$.
 Train the VAE with the reconstruction and multivariate KL loss you derived in part A.
 
-Like for the autoencoder, plot the 25 decoded points.
-How do those decoded with the VAE compare to those decoded with the autoencoder?
+Like for the autoencoder, embed 100 points into the latent space.
+How do those encoded with the VAE compare to those encoded with the autoencoder?
 
 %\input{solutions/solution9_1}
 
