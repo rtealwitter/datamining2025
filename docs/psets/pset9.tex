@@ -82,4 +82,50 @@ How do those encoded with the VAE compare to those encoded with the autoencoder?
 
 %\input{solutions/solution9_1}
 
+\newpage
+\section*{Problem 2: Principal Component Analysis}
+
+\subsection*{Part A: Frobenius Norm}
+
+Let $\mathbf{X} = \mathbf{U \Sigma V^\top}$ be the rank $r$ singular value decomposition of $\mathbf{X}$.
+Suppose that
+$\mathbf{X} \in \mathbb{R}^{n \times d}$,
+$\mathbf{U} \in \mathbb{R}^{n \times r}$,
+$\mathbf{\Sigma} \in \mathbb{R}^{r \times r}$, and
+$\mathbf{V} \in \mathbb{R}^{d \times r}$.
+In this problem, you will show that
+$$
+\| \mathbf{X} \|_\text{F}^2 = \sum_{i=1}^r \sigma_i^2.
+$$
+
+Because the singular vectors are orthogonal, recall that $\mathbf{U}^\top \mathbf{U} = \mathbf{I}_{r \times r} = \mathbf{V}^\top \mathbf{V}$.
+Use this property to show that
+$$
+\| \mathbf{U \Sigma V^\top} \|_\text{F}^2 =
+\| \mathbf{\Sigma V^\top} \|_\text{F}^2 =
+\| \mathbf{\Sigma} \|_\text{F}^2.
+$$
+
+Finally, rewrite the previous equation as the sum of squared singular values.
+
+\subsection*{Part B: PCA Reconstruction}
+
+Load an image $\mathbf{X}$ of your choice.
+Compute its singular value decomposition $\mathbf{X} = \mathbf{U \Sigma V^\top}$,
+and plot the PCA reconstruction $\mathbf{X}_k$ for $k=1,10,50,100$.
+
+Using the singular values computed in $\Sigma$, plot the singular value \textit{spectrum} (singular value by index) and the reconstruction error you computed in class by $k$.
+
+\subsection*{Part C: Word Math}
+
+Load a text encoder of your choice.
+Choose $n$ words e.g., young, old, puppy, and dog, etc.
+Use the text encoder to represent each word in $d$ dimensions.
+Build the matrix $\mathbf{X} \in \mathbb{R}^{n \times d}$, and find its singular value decomposition.
+Compute the latent representations of the words with $k=2$.
+Plot and label the latent representations of the words.
+Can you get word math to work?
+
+%\input{solutions/solution9_2}
+
 \end{document}
