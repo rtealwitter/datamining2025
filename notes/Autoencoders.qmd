@@ -109,7 +109,7 @@ $$
 = \sum_{i=1}^n \sum_{j=1}^d (x_j^{(i)} - \tilde{x}_j^{(i)})^2
 = \| \mathbf{X} - \tilde{\mathbf{X}} \|_\text{F}^2
 $$
-where the Frobenius norm $\| \mathbf{A} \|_\text{F}$ is the sum of squared entries of $\mathbf{A}$,
+where the Frobenius norm $\| \mathbf{A} \|_\text{F}^2$ is the sum of squared entries of $\mathbf{A}$,
 and the last equality follows because $[\mathbf{X}]_{i,j} = x_j^{(i)}$ is the $j$th feature of the $i$th data point.
 
 We could apply gradient descent to minimize this loss with respect to the weights $\mathbf{W}_0$ and $\mathbf{W}_1$.
@@ -226,7 +226,7 @@ We call $\mathbf{X} \mathbf{V}_k = \mathbf{U}_k \boldsymbol{\Sigma}_k$ the laten
 When we perform PCA, we are effectively running a singular value decomposition on $\mathbf{X}$.
 In practice, we generally mean-center and normalize $\mathbf{X}$ first; in particular, we subtract the mean from each column, and divide each column by its $\ell_2$-norm.
 
-We could compute the singular value decomposition directly using e.g., the \texttt{scipy} library:
+We could compute the singular value decomposition directly using e.g., the scipy library:
 Returning the full decomposition requires $O(nd^2)$ time, while computing a rank-$k$ approximation can be done in $O(ndk)$ time.
 We could have also computed the eigendecomposition of $\mathbf{X}^\top \mathbf{X} = \mathbf{V} \boldsymbol{\Sigma}^2 \mathbf{V}^\top$, and $\mathbf{X} \mathbf{X}^\top = \mathbf{U} \boldsymbol{\Sigma}^2 \mathbf{U}^\top$.
 But, this approach is generally less efficient since it requires computing the full eigendecomposition of a $d \times d$ matrix and a $n\times n$, which is roughly $O(d^3 + n^3)$.
