@@ -262,7 +262,7 @@ D_{\text{KL}}(P, Q) =
 \mathbf{X}_k = \sum_{i=1}^k \mathbf{u}_i \sigma_i \mathbf{v}_i^\top.
 \]</span> With this notation, we are ready to state a useful linear algebra result.</p>
 <p><strong>Eckart-Young-Mirsky Theorem</strong>: The best rank-<span class="math inline">\(k\)</span> approximation of a matrix <span class="math inline">\(\mathbf{X}\)</span> in the Frobenius norm is given by its top <span class="math inline">\(k\)</span> singular values and corresponding singular vectors i.e., <span class="math display">\[
-\mathbf{X}_k = \arg \min_{\text{rank}-$k$ \tilde{\mathbf{X}}} \| \mathbf{X} - \tilde{\mathbf{X}} \|_\text{F}^2.
+\mathbf{X}_k = \arg \min_{\text{rank}-k \text{ } \tilde{\mathbf{X}}} \| \mathbf{X} - \tilde{\mathbf{X}} \|_\text{F}^2.
 \]</span></p>
 <div class="proof-block">
 <details open="">
@@ -303,7 +303,7 @@ Proof of Eckart-Young-Mirsky Theorem
 \]</span></p>
 </details>
 </div>
-<p>The Eckart-Young-Mirsky theorem tells us that the best rank-<span class="math inline">\(k\)</span> approximation of a matrix is given by its top <span class="math inline">\(k\)</span> singular values and corresponding singular vectors. So we’d like to choose <span class="math inline">\(\mathbf{W}_0\)</span> and <span class="math inline">\(\mathbf{W}_1\)</span> so that <span class="math inline">\(\tilde{\mathbf{X}} = \mathbf{X} \mathbf{W}_0 \mathbf{W}_1^\top\)</span>. Setting <span class="math inline">\(\mathbf{W}_0 = \mathbf{V}_k\)</span> and <span class="math inline">\(\mathbf{W}_1 = \mathbf{V}_k^\top\)</span> gives <span class="math display">\[
+<p>The Eckart-Young-Mirsky theorem tells us that the best rank-<span class="math inline">\(k\)</span> approximation of a matrix is given by its top <span class="math inline">\(k\)</span> singular values and corresponding singular vectors. So we’d like to choose <span class="math inline">\(\mathbf{W}_0\)</span> and <span class="math inline">\(\mathbf{W}_1\)</span> so that <span class="math inline">\(\tilde{\mathbf{X}} = \mathbf{X} \mathbf{W}_0 \mathbf{W}_1\)</span>. Setting <span class="math inline">\(\mathbf{W}_0 = \mathbf{V}_k\)</span> and <span class="math inline">\(\mathbf{W}_1 = \mathbf{V}_k^\top\)</span> gives <span class="math display">\[
 \tilde{\mathbf{X}}
 = \mathbf{X} \mathbf{V}_k \mathbf{V}_k^\top
 = \sum_{i=1}^r \mathbf{u}_i \sigma_i  \mathbf{v}_i^\top \sum_{j=1}^k \mathbf{v}_j \mathbf{v}_j^\top

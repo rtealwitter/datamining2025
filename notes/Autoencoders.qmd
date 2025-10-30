@@ -143,7 +143,7 @@ With this notation, we are ready to state a useful linear algebra result.
 **Eckart-Young-Mirsky Theorem**:
 The best rank-$k$ approximation of a matrix $\mathbf{X}$ in the Frobenius norm is given by its top $k$ singular values and corresponding singular vectors i.e.,
 $$
-\mathbf{X}_k = \arg \min_{\text{rank}-$k$ \tilde{\mathbf{X}}} \| \mathbf{X} - \tilde{\mathbf{X}} \|_\text{F}^2.
+\mathbf{X}_k = \arg \min_{\text{rank}-k \text{ } \tilde{\mathbf{X}}} \| \mathbf{X} - \tilde{\mathbf{X}} \|_\text{F}^2.
 $$
 
 ::: {.proof-block}
@@ -212,7 +212,7 @@ $$
 :::
 
 The Eckart-Young-Mirsky theorem tells us that the best rank-$k$ approximation of a matrix is given by its top $k$ singular values and corresponding singular vectors.
-So we'd like to choose $\mathbf{W}_0$ and $\mathbf{W}_1$ so that $\tilde{\mathbf{X}} = \mathbf{X} \mathbf{W}_0 \mathbf{W}_1^\top$.
+So we'd like to choose $\mathbf{W}_0$ and $\mathbf{W}_1$ so that $\tilde{\mathbf{X}} = \mathbf{X} \mathbf{W}_0 \mathbf{W}_1$.
 Setting $\mathbf{W}_0 = \mathbf{V}_k$ and $\mathbf{W}_1 = \mathbf{V}_k^\top$ gives
 $$
 \tilde{\mathbf{X}}
