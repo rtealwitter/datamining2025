@@ -133,7 +133,7 @@ output:
     <td><a href="https://chinmayhegde.github.io/dl-notes/notes/lecture09/">Reinforcement Learning</a></td>
     <td><a href="https://chinmayhegde.github.io/dl-notes/notes/lecture09/">Reinforcement Learning Applied</a></td>
     <td><a href="slides/Week11.pdf">Slides</a></td>
-    <td></td>
+    <td>[Pset 10](psets/pset10.pdf) ([TeX](psets/pset10.tex)) due 11/10 </td>
   </tr>
   <tr>
     <td>Week 12 (11/11 and 11/13)</td>
