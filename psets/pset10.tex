@@ -12,7 +12,6 @@
 \author{} % TODO: Put your name here
 \date{\today}
 
-
 \begin{document}
 
 \maketitle
@@ -82,6 +81,70 @@ Derive the optimal $b^*$ to minimize the variance of $X$.
 
 Suppose that $\mathbf{g}$ is independent of $R$, what is the optimal $b^*$?
 
+
 %\input{solutions/solution10_1}
+
+\newpage
+
+\section*{Problem 2: Reinforcement Learning in Action}
+
+\subsection*{Part A: A New Environment}
+
+Adapt the code from class to a different \href{https://gymnasium.farama.org/environments/classic_control/}{Gymnasium} environment.
+
+\subsection*{Part B: Baseline Shift Strategies}
+
+Define the per-step \emph{cost-to-go}
+$$
+R_\ell(\tau) \;=\; \sum_{t=\ell}^{L-1} (-r_t)\,\gamma^{\,t-\ell},
+$$
+and let
+$$
+g_\ell \;=\; \nabla_\Theta \log \pi_\Theta(a_\ell).
+$$
+Using a constant (per-episode) baseline $b$, the REINFORCE gradient is
+$$
+\hat{\mathbf{g}}
+\;=\;
+\sum_{\ell=0}^{L-1} \big(R_\ell - b\big)\, g_\ell.
+$$
+
+Compare the following choices of $b$:
+
+\paragraph{(a) No baseline}
+$$
+b \;=\; 0,
+\qquad
+\hat{\mathbf{g}}
+\;=\;
+\sum_{\ell=0}^{L-1} R_\ell\, g_\ell.
+$$
+
+\paragraph{(b) Mean (episode-average) baseline}
+$$
+\hat{b}
+\;=\;
+\frac{1}{L}\sum_{\ell=0}^{L-1} R_\ell,
+\qquad
+\hat{\mathbf{g}}
+\;=\;
+\sum_{\ell=0}^{L-1} \big(R_\ell - \hat{b}\big)\, g_\ell.
+$$
+
+\paragraph{(c) Grad-norm (variance-minimizing constant) baseline}
+$$
+\hat{b}
+\;=\;
+\frac{\sum_{\ell=0}^{L-1} R_\ell\,\|g_\ell\|_2^2}
+     {\sum_{\ell=0}^{L-1} \|g_\ell\|_2^2},
+\qquad
+\hat{\mathbf{g}}
+\;=\;
+\sum_{\ell=0}^{L-1} \big(R_\ell - \hat{b}\big)\, g_\ell.
+$$
+
+Plot the running average (window size $10$) of \emph{episode reward}.
+
+%\input{solutions/solution10_2}
 
 \end{document}
