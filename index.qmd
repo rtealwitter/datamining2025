@@ -18,7 +18,7 @@ output:
   
   **Class Times**: We meet Tuesdays and Thursdays; Sec. 1 is scheduled from 2:45 to 4:00pm in Kravis 164, and Sec. 2 from 4:15 to 5:30pm in Kravis 165.
   
-  **Office Hours**: Mondays and Wednesdays from 12:30 to 2pm in Adams 213.
+  **Office Hours**: Mondays and Thursdays from 12:30 to 2pm in Adams 213.
   
   **Participation**: I expect you to engage in class, ask questions, and make connections. To receive credit, please fill out [this](https://forms.gle/zQG3iLAqCDTzDyv98) form after every lecture.
 
