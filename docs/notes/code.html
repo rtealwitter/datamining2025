@@ -482,7 +482,7 @@ window.Quarto = {
 <span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="vs">w_2</span><span class="dv">$</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
 <span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'images/regression_momentum.svg'</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/Users/rwitter/miniconda3/envs/class/lib/python3.12/site-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/TensorShape.cpp:4324.)
+<pre><code>/opt/homebrew/Caskroom/miniconda/base/envs/rads/lib/python3.10/site-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/TensorShape.cpp:4316.)
   return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -496,7 +496,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="cell-10" class="cell" data-execution_count="121">
+<div id="cell-10" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -583,7 +583,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="97">
+<div id="cell-11" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loss curves</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">100</span> <span class="co"># Number of observations</span></span>
@@ -1567,7 +1567,7 @@ window.Quarto = {
 </section>
 <section id="kernel-methods" class="level2">
 <h2 class="anchored" data-anchor-id="kernel-methods">Kernel Methods</h2>
-<div id="cell-27" class="cell" data-execution_count="47">
+<div id="cell-27" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> to_rgb</span>
@@ -1688,14 +1688,14 @@ window.Quarto = {
 </section>
 <section id="autoencoders" class="level2">
 <h2 class="anchored" data-anchor-id="autoencoders">Autoencoders</h2>
-<div id="cell-29" class="cell" data-execution_count="22">
+<div id="cell-29" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image, ImageOps</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.<span class="bu">open</span>(<span class="st">"images/cmc_seal_rgb.png"</span>).convert(<span class="st">"L"</span>)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>img_arr <span class="op">=</span> np.array(img) <span class="op">/</span> <span class="dv">255</span></span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>cmc_red <span class="op">=</span> np.array([<span class="dv">139</span>, <span class="dv">39</span>, <span class="dv">52</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-30" class="cell" data-execution_count="23">
+<div id="cell-30" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scipy linalg</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.linalg</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>U, s, Vh <span class="op">=</span> scipy.linalg.svd(img_arr, full_matrices<span class="op">=</span><span class="va">False</span>)</span>
@@ -1704,122 +1704,114 @@ window.Quarto = {
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_k_approx(k):</span>
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (U[:, :k] <span class="op">*</span> s[:k]) <span class="op">@</span> Vh[:k, :]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-31" class="cell" data-execution_count="24">
+<div id="cell-31" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>approx <span class="op">=</span> build_k_approx(<span class="dv">100</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>gray_image <span class="op">=</span> Image.fromarray((approx <span class="op">*</span> <span class="dv">255</span>).astype(np.uint8), mode<span class="op">=</span><span class="st">"L"</span>)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>red_image <span class="op">=</span> ImageOps.colorize(gray_image, black<span class="op">=</span>cmc_red, white<span class="op">=</span><span class="st">"white"</span>)</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>red_image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/7z/sn61c8nx2yq9f35pd6932s1hzz6mr5/T/ipykernel_36898/404908843.py:2: DeprecationWarning: 'mode' parameter is deprecated and will be removed in Pillow 13 (2026-10-15)
-  gray_image = Image.fromarray((approx * 255).astype(np.uint8), mode="L")</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="25">
 <div>
 <figure class="figure">
-<p><img src="code_files/figure-html/cell-25-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="code_files/figure-html/cell-25-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="cell-32" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'text.usetex'</span>] <span class="op">=</span> <span class="va">False</span>  <span class="co"># avoid LaTeX dependency</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image, ImageOps</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># If not already defined:</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># cmc_red = (152, 26, 49)</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_red_pil(a, low<span class="op">=</span>(<span class="dv">152</span>, <span class="dv">26</span>, <span class="dv">49</span>), high<span class="op">=</span><span class="st">"white"</span>):</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Map a grayscale array [0,1] to a red-toned PIL image."""</span></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> np.asarray(a, dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ensure it's in [0,1]</span></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> a.<span class="bu">max</span>() <span class="op">&gt;</span> <span class="fl">1.0</span> <span class="kw">or</span> a.<span class="bu">min</span>() <span class="op">&lt;</span> <span class="fl">0.0</span>:</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> (a <span class="op">-</span> a.<span class="bu">min</span>()) <span class="op">/</span> (a.<span class="bu">max</span>() <span class="op">-</span> a.<span class="bu">min</span>() <span class="op">+</span> <span class="fl">1e-12</span>)</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    gray <span class="op">=</span> Image.fromarray((a <span class="op">*</span> <span class="dv">255</span>).astype(np.uint8), mode<span class="op">=</span><span class="st">"L"</span>)</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ImageOps.colorize(gray, black<span class="op">=</span>low, white<span class="op">=</span>high)</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Your desired ranks</span></span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>desired <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">500</span>, <span class="dv">1000</span>]</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a sample to infer full rank (min(H, W))</span></span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="co"># If you already have `approx` from build_k_approx(100), you can use that:</span></span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> build_k_approx(<span class="dv">1</span>)</span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>full_k <span class="op">=</span> <span class="bu">min</span>(sample.shape)</span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Cap any requested ranks to full_k to avoid errors</span></span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>ranks <span class="op">=</span> [<span class="bu">min</span>(k, full_k) <span class="cf">for</span> k <span class="kw">in</span> desired]</span>
-<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Add "full rank" explicitly at the end</span></span>
-<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>ranks_with_full <span class="op">=</span> ranks <span class="op">+</span> [full_k]</span>
-<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Make subplots</span></span>
-<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(ranks_with_full)</span>
-<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> <span class="dv">4</span></span>
-<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> <span class="bu">int</span>(np.ceil(n <span class="op">/</span> cols))</span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(rows, cols, figsize<span class="op">=</span>(<span class="dv">4</span><span class="op">*</span>cols, <span class="dv">4</span><span class="op">*</span>rows), constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> np.ravel(axes)</span>
-<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, k <span class="kw">in</span> <span class="bu">zip</span>(axes, ranks_with_full):</span>
-<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>    arr <span class="op">=</span> build_k_approx(k)</span>
-<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>    red_img <span class="op">=</span> to_red_pil(arr, low<span class="op">=</span>cmc_red, high<span class="op">=</span><span class="st">"white"</span>)</span>
-<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a>    ax.imshow(red_img)</span>
-<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="vs">rf"Rank </span><span class="dv">$</span><span class="sc">{</span>k<span class="sc">}</span><span class="dv">$</span><span class="vs"> Approximation"</span> <span class="cf">if</span> k <span class="op">!=</span> full_k <span class="cf">else</span> <span class="ss">f"Full Rank"</span>)</span>
-<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">"off"</span>)</span>
-<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-46"><a href="#cb29-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-47"><a href="#cb29-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide any unused axes</span></span>
-<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes[n:]:</span>
-<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">"off"</span>)</span>
-<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/pca_approximations.svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/7z/sn61c8nx2yq9f35pd6932s1hzz6mr5/T/ipykernel_36898/857433089.py:16: DeprecationWarning: 'mode' parameter is deprecated and will be removed in Pillow 13 (2026-10-15)
-  gray = Image.fromarray((a * 255).astype(np.uint8), mode="L")</code></pre>
-</div>
+<div id="cell-32" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'text.usetex'</span>] <span class="op">=</span> <span class="va">False</span>  <span class="co"># avoid LaTeX dependency</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image, ImageOps</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co"># If not already defined:</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co"># cmc_red = (152, 26, 49)</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_red_pil(a, low<span class="op">=</span>(<span class="dv">152</span>, <span class="dv">26</span>, <span class="dv">49</span>), high<span class="op">=</span><span class="st">"white"</span>):</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Map a grayscale array [0,1] to a red-toned PIL image."""</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> np.asarray(a, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ensure it's in [0,1]</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> a.<span class="bu">max</span>() <span class="op">&gt;</span> <span class="fl">1.0</span> <span class="kw">or</span> a.<span class="bu">min</span>() <span class="op">&lt;</span> <span class="fl">0.0</span>:</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> (a <span class="op">-</span> a.<span class="bu">min</span>()) <span class="op">/</span> (a.<span class="bu">max</span>() <span class="op">-</span> a.<span class="bu">min</span>() <span class="op">+</span> <span class="fl">1e-12</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    gray <span class="op">=</span> Image.fromarray((a <span class="op">*</span> <span class="dv">255</span>).astype(np.uint8), mode<span class="op">=</span><span class="st">"L"</span>)</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ImageOps.colorize(gray, black<span class="op">=</span>low, white<span class="op">=</span>high)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Your desired ranks</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>desired <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">500</span>, <span class="dv">1000</span>]</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a sample to infer full rank (min(H, W))</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co"># If you already have `approx` from build_k_approx(100), you can use that:</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> build_k_approx(<span class="dv">1</span>)</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>full_k <span class="op">=</span> <span class="bu">min</span>(sample.shape)</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Cap any requested ranks to full_k to avoid errors</span></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>ranks <span class="op">=</span> [<span class="bu">min</span>(k, full_k) <span class="cf">for</span> k <span class="kw">in</span> desired]</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Add "full rank" explicitly at the end</span></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>ranks_with_full <span class="op">=</span> ranks <span class="op">+</span> [full_k]</span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Make subplots</span></span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(ranks_with_full)</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> <span class="bu">int</span>(np.ceil(n <span class="op">/</span> cols))</span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(rows, cols, figsize<span class="op">=</span>(<span class="dv">4</span><span class="op">*</span>cols, <span class="dv">4</span><span class="op">*</span>rows), constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> np.ravel(axes)</span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, k <span class="kw">in</span> <span class="bu">zip</span>(axes, ranks_with_full):</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a>    arr <span class="op">=</span> build_k_approx(k)</span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>    red_img <span class="op">=</span> to_red_pil(arr, low<span class="op">=</span>cmc_red, high<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>    ax.imshow(red_img)</span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="vs">rf"Rank </span><span class="dv">$</span><span class="sc">{</span>k<span class="sc">}</span><span class="dv">$</span><span class="vs"> Approximation"</span> <span class="cf">if</span> k <span class="op">!=</span> full_k <span class="cf">else</span> <span class="ss">f"Full Rank"</span>)</span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">"off"</span>)</span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide any unused axes</span></span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes[n:]:</span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>    ax.axis(<span class="st">"off"</span>)</span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/pca_approximations.svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="code_files/figure-html/cell-26-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="code_files/figure-html/cell-26-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="cell-33" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Example data: replace with your singular values array</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># s should be sorted descending from your SVD</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># U, s, Vt = np.linalg.svd(A)</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>rank <span class="op">=</span> <span class="bu">len</span>(s)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert cmc_red (0–255 tuple) to Matplotlib's 0–1 float</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>cmc_red_norm <span class="op">=</span> <span class="bu">tuple</span>(np.array(cmc_red) <span class="op">/</span> <span class="dv">255</span>)</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute approximation error: error[k] = sum_{i=k}^rank σᵢ²</span></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: If you want k starting from 1, adjust indexing below</span></span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> [np.<span class="bu">sum</span>(s[k:]<span class="op">**</span><span class="dv">2</span>) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(rank)]</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create subplots</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Left subplot: Singular Value Spectrum ----</span></span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, rank<span class="op">+</span><span class="dv">1</span>), s, color<span class="op">=</span>cmc_red_norm, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_yscale(<span class="st">"log"</span>)</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"Singular Value Index"</span>)</span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Singular Values"</span>)</span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Singular Value Spectrum"</span>)</span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Right subplot: Approximation Error ----</span></span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, rank<span class="op">+</span><span class="dv">1</span>), errors, color<span class="op">=</span>cmc_red_norm, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_yscale(<span class="st">"log"</span>)</span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">k</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="vs">r"</span><span class="dv">$\s</span><span class="vs">um_{i=k</span><span class="op">+</span><span class="vs">1}</span><span class="dv">^</span><span class="vs">{r} </span><span class="dv">\s</span><span class="vs">igma_i</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Approximation Error"</span>)</span>
-<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/pca_spectrum.svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-33" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Example data: replace with your singular values array</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># s should be sorted descending from your SVD</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># U, s, Vt = np.linalg.svd(A)</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>rank <span class="op">=</span> <span class="bu">len</span>(s)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert cmc_red (0–255 tuple) to Matplotlib's 0–1 float</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>cmc_red_norm <span class="op">=</span> <span class="bu">tuple</span>(np.array(cmc_red) <span class="op">/</span> <span class="dv">255</span>)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute approximation error: error[k] = sum_{i=k}^rank σᵢ²</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: If you want k starting from 1, adjust indexing below</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> [np.<span class="bu">sum</span>(s[k:]<span class="op">**</span><span class="dv">2</span>) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(rank)]</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create subplots</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">4</span>))</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Left subplot: Singular Value Spectrum ----</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, rank<span class="op">+</span><span class="dv">1</span>), s, color<span class="op">=</span>cmc_red_norm, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_yscale(<span class="st">"log"</span>)</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"Singular Value Index"</span>)</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Singular Values"</span>)</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Singular Value Spectrum"</span>)</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Right subplot: Approximation Error ----</span></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, rank<span class="op">+</span><span class="dv">1</span>), errors, color<span class="op">=</span>cmc_red_norm, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_yscale(<span class="st">"log"</span>)</span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">k</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="vs">r"</span><span class="dv">$\s</span><span class="vs">um_{i=k</span><span class="op">+</span><span class="vs">1}</span><span class="dv">^</span><span class="vs">{r} </span><span class="dv">\s</span><span class="vs">igma_i</span><span class="dv">^</span><span class="vs">2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Approximation Error"</span>)</span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/pca_spectrum.svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1831,17 +1823,17 @@ window.Quarto = {
 </section>
 <section id="concentration-inequalities" class="level2">
 <h2 class="anchored" data-anchor-id="concentration-inequalities">Concentration Inequalities</h2>
-<div id="cell-35" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="fl">.01</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>,top<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">1</span><span class="op">/</span>t, linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">epsilon</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">Pr</span><span class="kw">(</span><span class="vs">X </span><span class="er">\</span><span class="vs">geq </span><span class="er">\</span><span class="vs">epsilon </span><span class="er">\</span><span class="vs">cdot </span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[X]</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Markov's Inequality"</span>)</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/concentration_markov.svg"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-35" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="fl">.01</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>,top<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">1</span><span class="op">/</span>t, linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">epsilon</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">Pr</span><span class="kw">(</span><span class="vs">X </span><span class="er">\</span><span class="vs">geq </span><span class="er">\</span><span class="vs">epsilon </span><span class="er">\</span><span class="vs">cdot </span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[X]</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Markov's Inequality"</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/concentration_markov.svg"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1850,17 +1842,17 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="cell-36" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">1</span><span class="op">/</span>t<span class="op">**</span><span class="dv">2</span>, linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">epsilon</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">Pr</span><span class="kw">(</span><span class="cf">|</span><span class="vs">X-</span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[X]</span><span class="cf">|</span><span class="vs"> </span><span class="er">\</span><span class="vs">geq </span><span class="er">\</span><span class="vs">epsilon </span><span class="er">\</span><span class="vs">cdot </span><span class="dv">\s</span><span class="vs">qrt{</span><span class="ch">\t</span><span class="vs">ext{Var}</span><span class="kw">(</span><span class="vs">X</span><span class="kw">)</span><span class="vs">}</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>,top<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Chebyshev's Inequality"</span>)</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/concentration_chebyshev.svg"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-36" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">1</span><span class="op">/</span>t<span class="op">**</span><span class="dv">2</span>, linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">epsilon</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">Pr</span><span class="kw">(</span><span class="cf">|</span><span class="vs">X-</span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[X]</span><span class="cf">|</span><span class="vs"> </span><span class="er">\</span><span class="vs">geq </span><span class="er">\</span><span class="vs">epsilon </span><span class="er">\</span><span class="vs">cdot </span><span class="dv">\s</span><span class="vs">qrt{Var</span><span class="kw">(</span><span class="vs">X</span><span class="kw">)</span><span class="vs">}</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>,top<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Chebyshev's Inequality"</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/concentration_chebyshev.svg"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1869,17 +1861,17 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="cell-37" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">2</span><span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t<span class="op">**</span><span class="dv">2</span>), linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">epsilon</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">Pr</span><span class="kw">(</span><span class="cf">|</span><span class="dv">\b</span><span class="vs">ar{X}-</span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[</span><span class="ch">\b</span><span class="pp">ar{X}]</span><span class="cf">|</span><span class="vs"> </span><span class="er">\</span><span class="vs">geq </span><span class="er">\</span><span class="vs">epsilon </span><span class="er">\</span><span class="vs">cdot </span><span class="ch">\f</span><span class="vs">rac{b-a}{</span><span class="dv">\s</span><span class="vs">qrt{n}}</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>,top<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Hoeffding's Inequality"</span>)</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/concentration_hoeffding.svg"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-37" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>ax.plot(t, <span class="dv">2</span><span class="op">*</span>np.exp(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>t<span class="op">**</span><span class="dv">2</span>), linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">epsilon</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="er">\</span><span class="vs">Pr</span><span class="kw">(</span><span class="cf">|</span><span class="dv">\b</span><span class="vs">ar{X}-</span><span class="dv">\m</span><span class="vs">athbb{E}</span><span class="pp">[</span><span class="ch">\b</span><span class="pp">ar{X}]</span><span class="cf">|</span><span class="vs"> </span><span class="er">\</span><span class="vs">geq </span><span class="er">\</span><span class="vs">epsilon </span><span class="er">\</span><span class="vs">cdot </span><span class="ch">\f</span><span class="vs">rac{b-a}{</span><span class="dv">\s</span><span class="vs">qrt{2n}}</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>,top<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Hoeffding's Inequality"</span>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"images/concentration_hoeffding.svg"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">

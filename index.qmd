@@ -139,7 +139,7 @@ output:
     <td>Week 12 (11/11 and 11/13)</td>
     <td><a href="notes/Concentration.qmd">Concentration Inequalities</a></td>
     <td><a href="notes/Bandits.qmd">Multi-Armed Bandits</a></td>
-    <td></td>
+    <td><a href="slides/Week12.pdf">Slides</a></td>
     <td></td>
   </tr>
   <tr>
