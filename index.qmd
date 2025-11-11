@@ -154,14 +154,14 @@ output:
     <td><i>Midterm Exam</i></td>
     <td><i>Thanksgiving (No Class)</i></td>
     <td></td>
-    <td></td>
+    <td>[Project Proposal](project/proposal.pdf) ([TeX](project/proposal.tex)) due 12/2 </td>
   </tr>
   <tr>
     <td>Week 15 (12/2 and 12/4)</td>
     <td><i>Project Preparation</i></td>
     <td><i>Project Preparation (No Class)</i></td>
     <td></td>
-    <td></td>
+    <td>[Project](project/project.pdf) ([TeX](project/project.tex)) due 12/9 </td>
   </tr>
   <tr>
     <td>Week 16 (12/9 and 12/11)</td>
