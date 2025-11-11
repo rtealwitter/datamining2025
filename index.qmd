@@ -140,7 +140,7 @@ output:
     <td><a href="notes/Concentration.qmd">Concentration Inequalities</a></td>
     <td><a href="notes/Bandits.qmd">Multi-Armed Bandits</a></td>
     <td><a href="slides/Week12.pdf">Slides</a></td>
-    <td></td>
+    <td>[Pset 11](psets/pset11.pdf) ([TeX](psets/pset11.tex)) due 11/10 </td>
   </tr>
   <tr>
     <td>Week 13 (11/18 and 11/20)</td>
