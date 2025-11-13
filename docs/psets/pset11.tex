@@ -74,6 +74,41 @@ Use Hoeffding's and the Union Bound to upper bound the probability that, for \te
 \end{align}
 How should we set $\epsilon$ if we want this probability to be $\frac1{100}$?
 
+
 %\input{solutions/solution11_1}
+
+\newpage
+\section*{Multi-armed Bandits}
+
+In this problem, we will explore some of the ideas from lecture in more detail.
+Before working on these problems, familiarize yourself with the proof of the regret theorem.
+
+\subsection*{Part A: Integral Upper Bound}
+In the proof of the regret theorem, we used several elegant mathematical bounds.
+Prove that
+\begin{align}
+    \sum_{i=1}^n \frac1{\sqrt{i}}
+    \leq 2\sqrt{n}.
+\end{align}
+Hint: Upper bound the summation with an integral $\int f(x) dx$ for an appropriately chosen function $f$.
+
+\subsection*{Part B: Cauchy-Schwarz Inequality}
+The Cauchy-Schwarz inequality is an incredibly useful tool.
+For vectors $\mathbf{a}, \mathbf{b} \in \mathbb{R}^k$, Cauchy-Schwarz tells us that
+\begin{align}
+    \langle \mathbf{a}, \mathbf{b} \rangle^2 \leq \| \mathbf{a} \|_2^2 \| \mathbf{b} \|_2^2.
+\end{align}
+Recall that $\sum_{a=1}^k n_{a}^{(T)}=T $.
+Use Cauchy-Schwarz to show that
+\begin{align}
+    \sum_{a=1}^k \sqrt{n_{a}^{(T)}} \leq \sqrt{k T}.
+\end{align}
+
+\subsection*{Part C: Another Agent}
+
+Develop another agent for solving the multi-armed bandit problem.
+Using the code from class, implement your agent and compare its performance to the greedy, random, and UCB agents we tried.
+
+%\input{solutions/solution11_2}
 
 \end{document}
