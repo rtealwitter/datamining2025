@@ -44,7 +44,7 @@ The following technical lemma will help us analyze the algorithm.
 
 **Lemma** For all time steps $t \in \{k+1, \ldots, T\}$ and arms $a \in \{1, \ldots, k\}$, with probability $1-\delta$, we have
 $$
-|\mu_a - \tilde{\mu}_a^{(t)}| \leq \epsilon_a^{(t)} = \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}
+|\mu_a - \tilde{\mu}_a^{(t)}| \leq \epsilon_a^{(t)} = \sqrt{\frac{2\log(\frac{2T k}{\delta})}{n_a^{(t)}}}
 $$
 where $n_a^{(t)}$ is the number of times arm $a$ has been pulled up to time $t$ i.e., $n_a^{(t)} = \sum_{s=1}^{t-1} \mathbb{1}(a^{(s)} = a)$.
 
@@ -98,8 +98,9 @@ Let $a^*$ be the optimal arm, i.e., the arm with the highest expected reward $\m
 **Regret Theorem:**
 The average regret of the UCB algorithm satisfies:
 $$
-\frac1{T} \sum_{t=1}^T \mu_{a^*} - \mu_{a^{(t)}}
-= O\left(\frac{k}{T} + \sqrt{\log\left(\frac{T k}{\delta}\right)} \frac{\sqrt{k}}{\sqrt{T}}\right).
+\mu_{a^*} - \frac1{T} \sum_{t=1}^T \mu_{a^{(t)}}
+= O\left(\frac{k}{T} + \sqrt{\log\left(\frac{T k}{\delta}\right)} \frac{\sqrt{k}}{\sqrt{T}}\right)
+= \tilde{O}\left(\sqrt{\frac{k}{T}}\right).
 $$
 
 Note that the logarithmic term is always small; for example, $\log_{10}(\# \text{atoms in the universe}) \approx \log_{10}(10^{80}) = 80$.
