@@ -44,7 +44,7 @@ The following technical lemma will help us analyze the algorithm.
 
 **Lemma** For all time steps $t \in \{k+1, \ldots, T\}$ and arms $a \in \{1, \ldots, k\}$, with probability $1-\delta$, we have
 $$
-\mu_a - \tilde{\mu}_a^{(t)} \leq \epsilon_a^{(t)} = \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}
+|\mu_a - \tilde{\mu}_a^{(t)}| \leq \epsilon_a^{(t)} = \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}
 $$
 where $n_a^{(t)}$ is the number of times arm $a$ has been pulled up to time $t$ i.e., $n_a^{(t)} = \sum_{s=1}^{t-1} \mathbb{1}(a^{(s)} = a)$.
 
@@ -55,27 +55,27 @@ where $n_a^{(t)}$ is the number of times arm $a$ has been pulled up to time $t$ 
 We will apply [Hoeffding's inequality](Concentration.html#hoeffding) to bound the estimation error.
 
 Consider $n$ independent random variables $X_1, X_2, \ldots, X_n$ that such that $a \leq X_i \leq b$ for all $i$. Let $\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i$ be the sample mean, and $\mu = \mathbb{E}[\bar{X}]$ be the expected value of the sample mean.
-Recall the one-sided version of Hoeffding's inequality: For any $\epsilon > 0$,
+Recall Hoeffding's inequality: For any $\epsilon > 0$,
 $$
-\Pr\left(\mathbb{E}[\bar{X}] - \bar{X} \geq \epsilon\right) \leq \exp\left(-\frac{2n\epsilon^2}{(b-a)^2}\right).
+\Pr\left(|\mathbb{E}[\bar{X}] - \bar{X}| \geq \epsilon\right) \leq 2 \exp\left(-\frac{2n\epsilon^2}{(b-a)^2}\right).
 $$
 In our setting, the rewards are bounded between $-1$ and $1$, so we have $a = -1$ and $b = 1$.
 Setting the failure probability to $\frac{\delta}{T k}$ and solving for $\epsilon$,
 we get
 $$
 \begin{align}
-\exp\left(-\frac{2 {n} \epsilon^2}{4}\right)
+2\exp\left(-\frac{2 {n} \epsilon^2}{4}\right)
 &= \frac{\delta}{T k}
 \\ \frac{{n} \epsilon^2}{2}
-&= \log\left(\frac{T k}{\delta}\right)
+&= \log\left(\frac{2T k}{\delta}\right)
 \\ \epsilon
-&= \sqrt{\frac{2 \log\left(\frac{T k}{\delta}\right)}{n}}.
+&= \sqrt{\frac{2 \log\left(\frac{2T k}{\delta}\right)}{n}}.
 \end{align}
 $$
 
 Applying Hoeffding's inequality, and this choice of $\epsilon$, to our reward estimation problem for a particular arm $a$ and time step $t$, we get
 $$
-\Pr\left(\mu_a - \tilde{\mu}_a^{(t)} \geq \epsilon_a^{(t)}\right) \leq \frac{\delta}{T k}.
+\Pr\left(|\mu_a - \tilde{\mu}_a^{(t)}| \geq \epsilon_a^{(t)}\right) \leq \frac{\delta}{T k}.
 $$
 
 We want this inequality to hold simultaneously for all arms and all time steps.
@@ -83,7 +83,7 @@ Union bounding over all $Tk$ events yields
 
 $$
 \Pr \left(
-  \bigcup_{t=1}^{T} \bigcup_{a=1}^{k} \left\{ \mu_a - \tilde{\mu}_a^{(t)} \geq \epsilon_a^{(t)} \right\}
+  \bigcup_{t=1}^{T} \bigcup_{a=1}^{k} \left\{ |\mu_a - \tilde{\mu}_a^{(t)}| \geq \epsilon_a^{(t)} \right\}
 \right)
 \leq \sum_{t=1}^T \sum_{a=1}^k \frac{\delta}{T k}
 = \delta.
@@ -117,43 +117,43 @@ Nonstochastic Multi-armed Bandit Problems](https://arxiv.org/pdf/1204.5721)).
 <details open>
 <summary>Proof of Regret Theorem</summary>
 
-Consider the difference between the reward of the optimal action $a^*$ and the reward of the action chosen by the algorithm $a^{(t)}$ at time $t$:
+We will first bound the difference between the reward of the optimal action $a^*$ and the reward of the action chosen by the algorithm $a^{(t)}$ at time $t$.
+By the lemma and the greedy choice of $a^{(t)}$, we have:
 $$
-\begin{align}
+\mu_{a^*}
+\leq 
+\tilde{\mu}_{a^*}^{(t)} + \epsilon_{a^*}^{(t)}
+\leq \tilde{\mu}_{a^{(t)}}^{(t)} + \epsilon_{a^{(t)}}^{(t)}
+\leq \mu_{a^{(t)}} + 2 \epsilon_{a^{(t)}}^{(t)}.
+$$
+Subtracting $\mu_{a^{(t)}}$ from both sides, we get
+$$
 \mu_{a^*} - \mu_{a^{(t)}}
-&\leq \tilde{\mu}_{a^{(t)}}^{(t)} + \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}} - \mu_{a^{(t)}}
-\\&\leq \mu_{a^{(t)}} + \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}} + \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}} - \mu_{a^{(t)}}
-\\&= 2 \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}.
-\end{align}
+\leq 2 \epsilon_{a^{(t)}}^{(t)}
+= 2 \sqrt{\frac{2\log(\frac{2T k}{\delta})}{n_a^{(t)}}}.
 $$
-The first inequality follows because we selected $a^{(t)}$ greedily i.e., 
-$$
-\tilde{\mu}_{a^*}^{(t)} + \epsilon_{a^*}^{(t)} \leq \tilde{\mu}_{a^{(t)}}^{(t)} + \epsilon_{a^{(t)}}^{(t)},
-$$
-and $\mu_{a^*} \leq \tilde{\mu}_{a^*}^{(t)} + \epsilon_{a^*}^{(t)}$ by the lemma.
-The second inequality follows directly from the lemma.
 
 Summing over all but the first $k$ time steps,
 $$
 \sum_{t=k+1}^T \mu_{a^*} - \mu_{a^{(t)}}
-\leq \sum_{t=k+1}^T 2 \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}
-= 2 \sqrt{2\log\left(\frac{T k}{\delta}\right)} \sum_{t=k+1}^T \frac{1}{\sqrt{n_a^{(t)}}}.
+\leq \sum_{t=k+1}^T 2 \sqrt{\frac{2\log(\frac{2T k}{\delta})}{n_a^{(t)}}}
+= 2 \sqrt{2\log\left(\frac{2T k}{\delta}\right)} \sum_{t=k+1}^T \frac{1}{\sqrt{n_a^{(t)}}}.
 $$
 We can write the inner summation as
 $$
 \sum_{t=k+1}^T \frac{1}{\sqrt{n_a^{(t)}}} 
 = \sum_{a=1}^k \sum_{i=1}^{n_a^{(T)}} \frac{1}{\sqrt{i}}
 \leq \sum_{a=1}^k 2 \sqrt{n_a^{(T)}}
-\leq \sqrt{T k},
+\leq 2 \sqrt{T k},
 $$
-where the first inequality follows by upper bounding the sum with an integral, and the second inequality follows from Cauchy-Schwarz. Do you see how?
+where the first inequality follows by upper bounding the sum with an integral, and the second inequality follows from [Cauchy-Schwarz](https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality). Do you see how?
 
 Then, the *average* regret is
 
 $$
 \frac1{T} \sum_{t=1}^T \mu_{a^*} - \mu_{a^{(t)}}
 \leq 2 \frac{k}{T} +\frac1{T} \sum_{t=k+1}^T \mu_{a^*} - \mu_{a^{(t)}}
-= 2 \frac{k}{T} + 2 \sqrt{2\log\left(\frac{T k}{\delta}\right)} \frac{\sqrt{k}}{\sqrt{T}}.
+= 2 \frac{k}{T} + 4 \sqrt{2\log\left(\frac{2T k}{\delta}\right)} \frac{\sqrt{k}}{\sqrt{T}}.
 $$
 
 </details>

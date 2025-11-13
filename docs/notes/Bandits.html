@@ -203,7 +203,7 @@ a^{(t)} = \arg \max_{a} \tilde{\mu}_a^{(t)} + \epsilon_a^{(t)}.
 <p>We will choose the confidence intervals so that the probability that our estimate deviates from the true mean by more than the confidence bound <em>at any point in the algorithm</em> is at most a user-defined parameter <span class="math inline">\(\delta\)</span>.</p>
 <p>The following technical lemma will help us analyze the algorithm.</p>
 <p><strong>Lemma</strong> For all time steps <span class="math inline">\(t \in \{k+1, \ldots, T\}\)</span> and arms <span class="math inline">\(a \in \{1, \ldots, k\}\)</span>, with probability <span class="math inline">\(1-\delta\)</span>, we have <span class="math display">\[
-\mu_a - \tilde{\mu}_a^{(t)} \leq \epsilon_a^{(t)} = \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}
+|\mu_a - \tilde{\mu}_a^{(t)}| \leq \epsilon_a^{(t)} = \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}
 \]</span> where <span class="math inline">\(n_a^{(t)}\)</span> is the number of times arm <span class="math inline">\(a\)</span> has been pulled up to time <span class="math inline">\(t\)</span> i.e., <span class="math inline">\(n_a^{(t)} = \sum_{s=1}^{t-1} \mathbb{1}(a^{(s)} = a)\)</span>.</p>
 <div class="proof-block">
 <details open="">
@@ -211,25 +211,25 @@ a^{(t)} = \arg \max_{a} \tilde{\mu}_a^{(t)} + \epsilon_a^{(t)}.
 Proof of Lemma
 </summary>
 <p>We will apply <a href="Concentration.html#hoeffding">Hoeffding’s inequality</a> to bound the estimation error.</p>
-<p>Consider <span class="math inline">\(n\)</span> independent random variables <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span> that such that <span class="math inline">\(a \leq X_i \leq b\)</span> for all <span class="math inline">\(i\)</span>. Let <span class="math inline">\(\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i\)</span> be the sample mean, and <span class="math inline">\(\mu = \mathbb{E}[\bar{X}]\)</span> be the expected value of the sample mean. Recall the one-sided version of Hoeffding’s inequality: For any <span class="math inline">\(\epsilon &gt; 0\)</span>, <span class="math display">\[
-\Pr\left(\mathbb{E}[\bar{X}] - \bar{X} \geq \epsilon\right) \leq \exp\left(-\frac{2n\epsilon^2}{(b-a)^2}\right).
+<p>Consider <span class="math inline">\(n\)</span> independent random variables <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span> that such that <span class="math inline">\(a \leq X_i \leq b\)</span> for all <span class="math inline">\(i\)</span>. Let <span class="math inline">\(\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i\)</span> be the sample mean, and <span class="math inline">\(\mu = \mathbb{E}[\bar{X}]\)</span> be the expected value of the sample mean. Recall Hoeffding’s inequality: For any <span class="math inline">\(\epsilon &gt; 0\)</span>, <span class="math display">\[
+\Pr\left(|\mathbb{E}[\bar{X}] - \bar{X}| \geq \epsilon\right) \leq 2 \exp\left(-\frac{2n\epsilon^2}{(b-a)^2}\right).
 \]</span> In our setting, the rewards are bounded between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>, so we have <span class="math inline">\(a = -1\)</span> and <span class="math inline">\(b = 1\)</span>. Setting the failure probability to <span class="math inline">\(\frac{\delta}{T k}\)</span> and solving for <span class="math inline">\(\epsilon\)</span>, we get <span class="math display">\[
 \begin{align}
-\exp\left(-\frac{2 {n} \epsilon^2}{4}\right)
+2\exp\left(-\frac{2 {n} \epsilon^2}{4}\right)
 &amp;= \frac{\delta}{T k}
 \\ \frac{{n} \epsilon^2}{2}
-&amp;= \log\left(\frac{T k}{\delta}\right)
+&amp;= \log\left(\frac{2T k}{\delta}\right)
 \\ \epsilon
-&amp;= \sqrt{\frac{2 \log\left(\frac{T k}{\delta}\right)}{n}}.
+&amp;= \sqrt{\frac{2 \log\left(\frac{2T k}{\delta}\right)}{n}}.
 \end{align}
 \]</span></p>
 <p>Applying Hoeffding’s inequality, and this choice of <span class="math inline">\(\epsilon\)</span>, to our reward estimation problem for a particular arm <span class="math inline">\(a\)</span> and time step <span class="math inline">\(t\)</span>, we get <span class="math display">\[
-\Pr\left(\mu_a - \tilde{\mu}_a^{(t)} \geq \epsilon_a^{(t)}\right) \leq \frac{\delta}{T k}.
+\Pr\left(|\mu_a - \tilde{\mu}_a^{(t)}| \geq \epsilon_a^{(t)}\right) \leq \frac{\delta}{T k}.
 \]</span></p>
 <p>We want this inequality to hold simultaneously for all arms and all time steps. Union bounding over all <span class="math inline">\(Tk\)</span> events yields</p>
 <p><span class="math display">\[
 \Pr \left(
-  \bigcup_{t=1}^{T} \bigcup_{a=1}^{k} \left\{ \mu_a - \tilde{\mu}_a^{(t)} \geq \epsilon_a^{(t)} \right\}
+  \bigcup_{t=1}^{T} \bigcup_{a=1}^{k} \left\{ |\mu_a - \tilde{\mu}_a^{(t)}| \geq \epsilon_a^{(t)} \right\}
 \right)
 \leq \sum_{t=1}^T \sum_{a=1}^k \frac{\delta}{T k}
 = \delta.
@@ -249,31 +249,32 @@ Proof of Lemma
 <summary>
 Proof of Regret Theorem
 </summary>
-<p>Consider the difference between the reward of the optimal action <span class="math inline">\(a^*\)</span> and the reward of the action chosen by the algorithm <span class="math inline">\(a^{(t)}\)</span> at time <span class="math inline">\(t\)</span>: <span class="math display">\[
-\begin{align}
+<p>We will first bound the difference between the reward of the optimal action <span class="math inline">\(a^*\)</span> and the reward of the action chosen by the algorithm <span class="math inline">\(a^{(t)}\)</span> at time <span class="math inline">\(t\)</span>. By the lemma and the greedy choice of <span class="math inline">\(a^{(t)}\)</span>, we have: <span class="math display">\[
+\mu_{a^*}
+\leq
+\tilde{\mu}_{a^*}^{(t)} + \epsilon_{a^*}^{(t)}
+\leq \tilde{\mu}_{a^{(t)}}^{(t)} + \epsilon_{a^{(t)}}^{(t)}
+\leq \mu_{a^{(t)}} + 2 \epsilon_{a^{(t)}}^{(t)}.
+\]</span> Subtracting <span class="math inline">\(\mu_{a^{(t)}}\)</span> from both sides, we get <span class="math display">\[
 \mu_{a^*} - \mu_{a^{(t)}}
-&amp;\leq \tilde{\mu}_{a^{(t)}}^{(t)} + \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}} - \mu_{a^{(t)}}
-\\&amp;\leq \mu_{a^{(t)}} + \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}} + \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}} - \mu_{a^{(t)}}
-\\&amp;= 2 \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}.
-\end{align}
-\]</span> The first inequality follows because we selected <span class="math inline">\(a^{(t)}\)</span> greedily i.e., <span class="math display">\[
-\tilde{\mu}_{a^*}^{(t)} + \epsilon_{a^*}^{(t)} \leq \tilde{\mu}_{a^{(t)}}^{(t)} + \epsilon_{a^{(t)}}^{(t)},
-\]</span> and <span class="math inline">\(\mu_{a^*} \leq \tilde{\mu}_{a^*}^{(t)} + \epsilon_{a^*}^{(t)}\)</span> by the lemma. The second inequality follows directly from the lemma.</p>
+\leq 2 \epsilon_{a^{(t)}}^{(t)}
+= 2 \sqrt{\frac{2\log(\frac{2T k}{\delta})}{n_a^{(t)}}}.
+\]</span></p>
 <p>Summing over all but the first <span class="math inline">\(k\)</span> time steps, <span class="math display">\[
 \sum_{t=k+1}^T \mu_{a^*} - \mu_{a^{(t)}}
-\leq \sum_{t=k+1}^T 2 \sqrt{\frac{2\log(\frac{T k}{\delta})}{n_a^{(t)}}}
-= 2 \sqrt{2\log\left(\frac{T k}{\delta}\right)} \sum_{t=k+1}^T \frac{1}{\sqrt{n_a^{(t)}}}.
+\leq \sum_{t=k+1}^T 2 \sqrt{\frac{2\log(\frac{2T k}{\delta})}{n_a^{(t)}}}
+= 2 \sqrt{2\log\left(\frac{2T k}{\delta}\right)} \sum_{t=k+1}^T \frac{1}{\sqrt{n_a^{(t)}}}.
 \]</span> We can write the inner summation as <span class="math display">\[
 \sum_{t=k+1}^T \frac{1}{\sqrt{n_a^{(t)}}}
 = \sum_{a=1}^k \sum_{i=1}^{n_a^{(T)}} \frac{1}{\sqrt{i}}
 \leq \sum_{a=1}^k 2 \sqrt{n_a^{(T)}}
-\leq \sqrt{T k},
-\]</span> where the first inequality follows by upper bounding the sum with an integral, and the second inequality follows from Cauchy-Schwarz. Do you see how?</p>
+\leq 2 \sqrt{T k},
+\]</span> where the first inequality follows by upper bounding the sum with an integral, and the second inequality follows from <a href="https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality">Cauchy-Schwarz</a>. Do you see how?</p>
 <p>Then, the <em>average</em> regret is</p>
 <p><span class="math display">\[
 \frac1{T} \sum_{t=1}^T \mu_{a^*} - \mu_{a^{(t)}}
 \leq 2 \frac{k}{T} +\frac1{T} \sum_{t=k+1}^T \mu_{a^*} - \mu_{a^{(t)}}
-= 2 \frac{k}{T} + 2 \sqrt{2\log\left(\frac{T k}{\delta}\right)} \frac{\sqrt{k}}{\sqrt{T}}.
+= 2 \frac{k}{T} + 4 \sqrt{2\log\left(\frac{2T k}{\delta}\right)} \frac{\sqrt{k}}{\sqrt{T}}.
 \]</span></p>
 </details>
 </div>
