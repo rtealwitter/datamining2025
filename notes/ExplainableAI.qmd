@@ -179,7 +179,6 @@ $$
 A similar calculation to before shows that this estimator is also right in expectation.
 However, its variance depends on $[v(S)]^2$ rather than $[v(S \cup \{i\}) - v(S)]^2$.
 In practice, we expect similar inputs $\mathbf{x}^{S \cup \{i\}}$ and $\mathbf{x}^{S}$ to yield similar outputs, so the variance of the Monte Carlo estimator is generally much smaller than the variance of the Maximum Sample Reuse estimator.
-Before we come up with an estimator that is both sample efficient and low-variance, let's discuss another application of Shapley values.
 
 ## Active Linear Regression
 
@@ -256,7 +255,7 @@ $$
 = \left( \mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{A} \right)^{+} \mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{b}
 $$
 Notice that we reweight the sampling matrix so that $\mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{A}$ and $\mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{b}$ are correct in expectation; that is, $\mathbb{E}[ \boldsymbol{\Pi}^\top \boldsymbol{\Pi}] = \mathbf{I}$.
-Because of the correlation between samples, this doesn't actually mean that the model is correct in expectation; that is, $\mathbb{E}[ \tilde{\boldsymbol{\beta}}] \neq \boldsymbolhi{\beta}^*$.
+Because of the correlation between samples, this doesn't actually mean that the model is correct in expectation; that is, $\mathbb{E}[ \tilde{\boldsymbol{\beta}}] \neq \boldsymbol{\beta}^*$.
 
 Unlike in most of the problems we've seen where sampled points are given to us in a dataset, we get to choose the sampled subsets that we use to solve the regression problem.
 

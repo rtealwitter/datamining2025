@@ -302,7 +302,7 @@ p_S
 \frac{1}{p_S}.
 \end{align}
 \]</span></p>
-<p>A similar calculation to before shows that this estimator is also right in expectation. However, its variance depends on <span class="math inline">\([v(S)]^2\)</span> rather than <span class="math inline">\([v(S \cup \{i\}) - v(S)]^2\)</span>. In practice, we expect similar inputs <span class="math inline">\(\mathbf{x}^{S \cup \{i\}}\)</span> and <span class="math inline">\(\mathbf{x}^{S}\)</span> to yield similar outputs, so the variance of the Monte Carlo estimator is generally much smaller than the variance of the Maximum Sample Reuse estimator. Before we come up with an estimator that is both sample efficient and low-variance, let’s discuss another application of Shapley values.</p>
+<p>A similar calculation to before shows that this estimator is also right in expectation. However, its variance depends on <span class="math inline">\([v(S)]^2\)</span> rather than <span class="math inline">\([v(S \cup \{i\}) - v(S)]^2\)</span>. In practice, we expect similar inputs <span class="math inline">\(\mathbf{x}^{S \cup \{i\}}\)</span> and <span class="math inline">\(\mathbf{x}^{S}\)</span> to yield similar outputs, so the variance of the Monte Carlo estimator is generally much smaller than the variance of the Maximum Sample Reuse estimator.</p>
 </section>
 </section>
 <section id="active-linear-regression" class="level2">
@@ -348,7 +348,7 @@ p_S
 \tilde{\boldsymbol{\beta}}=\arg \min_{\boldsymbol{\beta} \in \mathbb{R}^d}
 \| \boldsymbol{\Pi} \mathbf{A} \boldsymbol{\beta} - \boldsymbol{\Pi} \mathbf{b} \|_2
 = \left( \mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{A} \right)^{+} \mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{b}
-\]</span> Notice that we reweight the sampling matrix so that <span class="math inline">\(\mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{A}\)</span> and <span class="math inline">\(\mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{b}\)</span> are correct in expectation; that is, <span class="math inline">\(\mathbb{E}[ \boldsymbol{\Pi}^\top \boldsymbol{\Pi}] = \mathbf{I}\)</span>. Because of the correlation between samples, this doesn’t actually mean that the model is correct in expectation; that is, <span class="math inline">\(\mathbb{E}[ \tilde{\boldsymbol{\beta}}] \neq \boldsymbolhi{\beta}^*\)</span>.</p>
+\]</span> Notice that we reweight the sampling matrix so that <span class="math inline">\(\mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{A}\)</span> and <span class="math inline">\(\mathbf{A}^\top \boldsymbol{\Pi}^\top \boldsymbol{\Pi} \mathbf{b}\)</span> are correct in expectation; that is, <span class="math inline">\(\mathbb{E}[ \boldsymbol{\Pi}^\top \boldsymbol{\Pi}] = \mathbf{I}\)</span>. Because of the correlation between samples, this doesn’t actually mean that the model is correct in expectation; that is, <span class="math inline">\(\mathbb{E}[ \tilde{\boldsymbol{\beta}}] \neq \boldsymbol{\beta}^*\)</span>.</p>
 <p>Unlike in most of the problems we’ve seen where sampled points are given to us in a dataset, we get to choose the sampled subsets that we use to solve the regression problem.</p>
 </section>
 <section id="leverage-scores" class="level3">
