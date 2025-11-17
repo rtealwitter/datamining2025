@@ -108,7 +108,7 @@ output:
     <td>Week 8 (10/14 and 10/16)</td>
     <td><i>Fall Break (No Class)</i></td>
     <td><a href="notes/DecisionTrees.qmd">Decision Trees</a></td>
-    <td><a href="slides/Week89.pdf">Slides</a></td>
+    <td><a href="slides/Week8.pdf">Slides</a></td>
     <td>[Pset 8](psets/pset8.pdf) ([TeX](psets/pset8.tex)) due 10/27 </td>
   </tr>
   <tr>
