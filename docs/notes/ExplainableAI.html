@@ -213,6 +213,10 @@ x_i &amp; \text{if } j \in S \\
 b_j &amp; \text{if } j \notin S.
 \end{cases}
 \]</span> Then, one natural way to examine the effect of <span class="math inline">\(x_i\)</span> is to compare <span class="math inline">\(f(\mathbf{x}^{S \cup \{i\}}) - f(\mathbf{x}^S)\)</span> for all sets <span class="math inline">\(S \subseteq [d] \setminus \{i\}\)</span>. For notational convenience, define a function <span class="math inline">\(v: 2^{[d]} \to \mathbb{R}\)</span> so that <span class="math inline">\(v(S) = f(\mathbf{x}^{S})\)</span>.</p>
+<center>
+<img src="images/xai_hypercube.svg" class="responsive-img">
+</center>
+<p>We can think of <span class="math inline">\(v(S)\)</span> as defining a <em>value</em> for each vertex of the <span class="math inline">\(d\)</span>-dimensional hypercube. The attribution of the <span class="math inline">\(i\)</span>th element can then be thought of as the <em>average</em> marginal change from <span class="math inline">\(v(S)\)</span> to <span class="math inline">\(v(S \cup \{i\})\)</span> over all subsets <span class="math inline">\(S\)</span>. In order to define this average precisely, we need to decide how to weight the different subsets.</p>
 <section id="shapley-values" class="level2">
 <h2 class="anchored" data-anchor-id="shapley-values">Shapley Values</h2>
 <p>There are several desirable properties that we would like our attribution values to satisfy:</p>
@@ -222,7 +226,7 @@ b_j &amp; \text{if } j \notin S.
 <li><strong>Linearity</strong>: If the model is a linear combination of two models, the attribution should be a linear combination of the attributions of the individual models.</li>
 <li><strong>Efficiency</strong>: The total attribution across all features should equal the change in output from the baseline.</li>
 </ul>
-<p>These four properties have been studied since the mid-20th century in the context of fairly distributing payouts among players in a cooperative game <span class="math inline">\(v: 2^{[d]} \to \mathbb{R}\)</span>. The Shapley value, proposed by Nobel laureate Lloyd Shapley, <em>uniquely</em> satisfies the four properties: <span class="math display">\[
+<p>These four properties have been studied since the mid-20th century in the context of fairly distributing payouts among players in a cooperative game <span class="math inline">\(v: 2^{[d]} \to \mathbb{R}\)</span>. The Shapley value, proposed by Nobel laureate Lloyd Shapley, <em>uniquely</em> satisfies all four properties: <span class="math display">\[
 \begin{align}
 \phi_i &amp;= \frac1{d} \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{\binom{d-1}{|S|}}
 \\&amp;=
@@ -236,7 +240,7 @@ b_j &amp; \text{if } j \notin S.
   }_{\text{average over subsets of size }\ell}
 }_{\text{average over all subset sizes}}
 \end{align}
-\]</span> Intuitively, the Shapley value is the <em>average</em> contribution of a feature to the model’s output, where the distribution equally weights each set size <span class="math inline">\(\ell\)</span>. While different distributions will satisfy the first three properties, only the Shapley value satisfies efficiency. Mathematically, efficiency requires that <span class="math display">\[
+\]</span> Intuitively, the Shapley value is the <em>average</em> contribution of a feature to the model’s output, where the distribution equally weights each set size <span class="math inline">\(\ell\)</span>. While different distributions will satisfy the first three properties, only the Shapley value satisfies all four. Mathematically, efficiency requires that <span class="math display">\[
 \sum_{i=1}^{d} \phi_i = v([d]) - v(\emptyset) = f(\mathbf{x}) - f(\mathbf{b}).
 \]</span> Notably, this allows us to <em>decompose</em> the change in the prediction into contributions from each feature.</p>
 <center>

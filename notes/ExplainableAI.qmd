@@ -47,6 +47,12 @@ $$
 Then, one natural way to examine the effect of $x_i$ is to compare $f(\mathbf{x}^{S \cup \{i\}}) - f(\mathbf{x}^S)$ for all sets $S \subseteq [d] \setminus \{i\}$.
 For notational convenience, define a function $v: 2^{[d]} \to \mathbb{R}$ so that $v(S) = f(\mathbf{x}^{S})$.
 
+<center><img src="images/xai_hypercube.svg" class="responsive-img"></center>
+
+We can think of $v(S)$ as defining a *value* for each vertex of the $d$-dimensional hypercube.
+The attribution of the $i$th element can then be thought of as the *average* marginal change from $v(S)$ to $v(S \cup \{i\})$ over all subsets $S$.
+In order to define this average precisely, we need to decide how to weight the different subsets.
+
 ## Shapley Values
 
 There are several desirable properties that we would like our attribution values to satisfy:
@@ -57,7 +63,7 @@ There are several desirable properties that we would like our attribution values
 - **Efficiency**: The total attribution across all features should equal the change in output from the baseline.
 
 These four properties have been studied since the mid-20th century in the context of fairly distributing payouts among players in a cooperative game $v: 2^{[d]} \to \mathbb{R}$.
-The Shapley value, proposed by Nobel laureate Lloyd Shapley, *uniquely* satisfies the four properties:
+The Shapley value, proposed by Nobel laureate Lloyd Shapley, *uniquely* satisfies all four properties:
 $$
 \begin{align}
 \phi_i &= \frac1{d} \sum_{S \subseteq [d] \setminus \{i\}} \frac{v(S \cup \{i\}) - v(S)}{\binom{d-1}{|S|}}
@@ -74,7 +80,7 @@ $$
 \end{align}
 $$
 Intuitively, the Shapley value is the *average* contribution of a feature to the model's output, where the distribution equally weights each set size $\ell$.
-While different distributions will satisfy the first three properties, only the Shapley value satisfies efficiency.
+While different distributions will satisfy the first three properties, only the Shapley value satisfies all four.
 Mathematically, efficiency requires that
 $$
 \sum_{i=1}^{d} \phi_i = v([d]) - v(\emptyset) = f(\mathbf{x}) - f(\mathbf{b}).
