@@ -147,7 +147,7 @@ output:
     <td><a href="notes/ExplainableAI.qmd">Explainable AI</a></td>
     <td><a href="notes/ExplainableAI.qmd">Active Learning</a></td>
     <td><a href="slides/Week13.pdf">Slides</a></td>
-    <td></td>
+    <td>[Pset 12](psets/pset12.pdf) ([TeX](psets/pset12.tex)) due 11/16 </td>
   </tr>
   <tr>
     <td>Week 14 (11/25 and 11/27)</td>
