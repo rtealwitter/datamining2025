@@ -365,9 +365,9 @@ p_S
 \ell_S = \max_{\boldsymbol{\beta} \in \mathbb{R}^d}
 \frac{([\boldsymbol{A \beta}]_S)^2}{\| \boldsymbol{A \beta} \|_2^2}.
 \]</span> Notice that <span class="math inline">\(\ell_S\)</span> is defined independently of the target vector <span class="math inline">\(\mathbf{b}\)</span>: It measures, over all possible learned vectors <span class="math inline">\(\boldsymbol{\beta}\)</span>, what’s the largest the entry <span class="math inline">\([\boldsymbol{A \beta}]_S\)</span> can be relative to the overall norm of the fitted vector <span class="math inline">\(\boldsymbol{A \beta}\)</span>.</p>
-<p>When we sample according to leverage scores, we can get strong guarantees on the performance of our learned function. Roughly, with <span class="math inline">\(m=O(d \log(d) + \frac{d}{\epsilon})\)</span> samples, the solution to the approximate regression problem <span class="math inline">\(\boldsymbol{\beta}\)</span> satisfies, with high probability, <span class="math display">\[
+<p>When we sample according to leverage scores, we can get strong guarantees on the performance of our learned function. Roughly, with <span class="math inline">\(m=O(d \log(d) + \frac{d}{\epsilon^2})\)</span> samples, the solution to the approximate regression problem <span class="math inline">\(\boldsymbol{\beta}\)</span> satisfies, with high probability, <span class="math display">\[
 \| \boldsymbol{A} \tilde{\boldsymbol{\beta}} - \boldsymbol{b} \|_2^2 \leq
-(1-\epsilon) \| \boldsymbol{A} \boldsymbol{\beta}^* - \boldsymbol{b} \|_2^2.
+(1+\epsilon) \| \boldsymbol{A} \boldsymbol{\beta}^* - \boldsymbol{b} \|_2^2.
 \]</span> That is, the fit of the learned model is close to the fit of the optimal model. We unfortunately won’t cover the proofs of these results here, but the key technical tool is applying <em>matrix</em> concentration inequalities.</p>
 </section>
 <section id="regression-adjustment" class="level3">

@@ -283,10 +283,10 @@ Notice that $\ell_S$ is defined independently of the target vector $\mathbf{b}$:
 It measures, over all possible learned vectors $\boldsymbol{\beta}$, what's the largest the entry $[\boldsymbol{A \beta}]_S$ can be relative to the overall norm of the fitted vector $\boldsymbol{A \beta}$.
 
 When we sample according to leverage scores, we can get strong guarantees on the performance of our learned function.
-Roughly, with $m=O(d \log(d) + \frac{d}{\epsilon})$ samples, the solution to the approximate regression problem $\boldsymbol{\beta}$ satisfies, with high probability,
+Roughly, with $m=O(d \log(d) + \frac{d}{\epsilon^2})$ samples, the solution to the approximate regression problem $\boldsymbol{\beta}$ satisfies, with high probability,
 $$
 \| \boldsymbol{A} \tilde{\boldsymbol{\beta}} - \boldsymbol{b} \|_2^2 \leq
-(1-\epsilon) \| \boldsymbol{A} \boldsymbol{\beta}^* - \boldsymbol{b} \|_2^2.
+(1+\epsilon) \| \boldsymbol{A} \boldsymbol{\beta}^* - \boldsymbol{b} \|_2^2.
 $$
 That is, the fit of the learned model is close to the fit of the optimal model.
 We unfortunately won't cover the proofs of these results here, but the key technical tool is applying *matrix* concentration inequalities.
