@@ -119,7 +119,7 @@ Once we learn a decision tree $f_t$ that minimizes the weighted error, we can fi
 In particular, we have
 $$
 \frac{\partial \mathcal{L}(F_t)}{\partial \alpha_t}
-= - \sum_{i : y^{(i)} = f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} (-e^{-\alpha_t})
+= \sum_{i : y^{(i)} = f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} (-e^{-\alpha_t})
 + \sum_{i : y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} e^{\alpha_t}
 = 0
 $$

@@ -82,7 +82,7 @@ The **Naive Bayes Classifier** is a simple yet effective classification algorith
 Let's see an example with a spam classifier.
 Suppose we have a dataset of emails, each labelled as either spam or not spam. We want to predict whether a new email is spam or not based on its features, such as the presence of certain words.
 In particular, let $\mathbf{X} = (X_1, X_2, \ldots, X_d)$ be the features of the email, where $X_i$ is a binary variable indicating whether the $i$th word is present in the email.
-Let $p_i^{(1)} = \Pr(X_i=1 | Y=0)$ be the probability that the $i$th word is present in a spam email, while $p_i^{(0)} = \Pr(X_i=1 | Y=1)$ be the probability that the $i$th word is present in a non-spam email.
+Let $p_i^{(1)} = \Pr(X_i=1 | Y=1)$ be the probability that the $i$th word is present in a spam email, while $p_i^{(0)} = \Pr(X_i=1 | Y=0)$ be the probability that the $i$th word is present in a non-spam email.
 We will use the independence assumption to compute the likelihood of the features given the class label.
 For example,
 $$

@@ -251,7 +251,7 @@ x_3^2 \\
 \end{bmatrix}
 \]</span> However, we can efficiently compute the inner product without explicitly computing <span class="math inline">\(\phi\)</span>: <span class="math display">\[
 \begin{align}
-K(\mathbf{x}, \mathbf{w}) &amp;= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
+K(\mathbf{x}, \mathbf{x}') &amp;= (\langle \mathbf{x}, \mathbf{x}' \rangle + 1)^2
 \\&amp;= (1 + x_1 x_1' + x_2 x_2' + x_3 x_3')^2
 \\&amp;= 1 + 2x_1 x_1' + 2x_2 x_2' + 2x_3 x_3' + x_1^2 x_1'^2 + x_2^2 x_2'^2
 \\&amp; + x_3^2 x_3'^2 + 2x_1 x_2 x_1' x_2' + 2x_1 x_3 x_1' x_3' + 2x_2 x_3 x_2' x_3'

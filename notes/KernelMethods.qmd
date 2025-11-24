@@ -103,7 +103,7 @@ $$
 However, we can efficiently compute the inner product without explicitly computing $\phi$:
 $$
 \begin{align}
-K(\mathbf{x}, \mathbf{w}) &= (\langle \mathbf{x}, \mathbf{w} \rangle + 1)^2
+K(\mathbf{x}, \mathbf{x}') &= (\langle \mathbf{x}, \mathbf{x}' \rangle + 1)^2
 \\&= (1 + x_1 x_1' + x_2 x_2' + x_3 x_3')^2
 \\&= 1 + 2x_1 x_1' + 2x_2 x_2' + 2x_3 x_3' + x_1^2 x_1'^2 + x_2^2 x_2'^2 
 \\& + x_3^2 x_3'^2 + 2x_1 x_2 x_1' x_2' + 2x_1 x_3 x_1' x_3' + 2x_2 x_3 x_2' x_3'

@@ -239,7 +239,7 @@ F_t(x) = \alpha_1 f_1(x) + \alpha_2 f_2(x) + \ldots + \alpha_t f_t(x)
 \]</span></p>
 <p>With <span class="math inline">\(F_{t-1}\)</span> fixed, minimizing <span class="math inline">\(\mathcal{L}(F_t)\)</span> is equivalent to minimizing the weighted error of the new model <span class="math inline">\(f_t\)</span> i.e., the sum of the weights for all misclassified points. Once we learn a decision tree <span class="math inline">\(f_t\)</span> that minimizes the weighted error, we can find the optimal weight <span class="math inline">\(\alpha_t\)</span> by differentiating the loss with respect to <span class="math inline">\(\alpha_t\)</span> and setting it to zero. In particular, we have <span class="math display">\[
 \frac{\partial \mathcal{L}(F_t)}{\partial \alpha_t}
-= - \sum_{i : y^{(i)} = f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} (-e^{-\alpha_t})
+= \sum_{i : y^{(i)} = f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} (-e^{-\alpha_t})
 + \sum_{i : y^{(i)} \neq f_t(\mathbf{x}^{(i)})} w^{(i)}_{t-1} e^{\alpha_t}
 = 0
 \]</span> which tells us that <span class="math display">\[

@@ -131,8 +131,9 @@ Precision measures how well the model identifies positive examples among all pre
 If we have a model that does not achieve the desired TPR or FPR, we have a hidden lever we can pull: the threshold for predicting a positive class.
 By default, we predict a positive class if the predicted probability is greater than $\frac12$.
 But, we can change this threshold to an arbitrary value $\tau \in [0, 1]$.
-Increasing the threshold can only decrease the TPR, since we are less likely to predict a positive class;
-simultaneously, the FPR can only increase, since we are more likely to predict a negative class.
+Increasing the threshold decreases the number of positive predictions, which decreases both TPR and FPR:
+The TPR decreases because we are less likely to predict a positive class, so we will miss more true positives.
+The FPR decreases because we are less likely to predict a positive class, so we will make fewer false positive predictions.
 
 <center><img src="images/classification_boundaries.svg" class="responsive-img"></center>
 
